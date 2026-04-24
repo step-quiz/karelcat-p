@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 9 — Combinant condicions | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 9</span>
+        <h1>Combinant condicions</h1>
+      </header>
+
+
+      <section class="chapter-section">
+        <h2>Més d'una condició alhora</h2>
+        <p>Fins ara sabem fer actuar en Karel segons una única condició. Tanmateix, de vegades necessitem que en Karel comprovi dues o més coses alhora, abans de moure's o actuar.</p>
+       <p>Per fer-ho, podem combinar condicions utilitzant aquests tres connectors: <strong><code>and</code></strong>, <strong><code>or</code></strong>, <strong><code>not</code></strong>.</p>
+        <ul>
+          <li><strong><code>and</code></strong>: Es compleix només si <em>totes dues</em> condicions són certes alhora. Actua com la conjunció «i».</li>
+          <li><strong><code>or</code></strong>: Es compleix si <em>almenys una</em> de les condicions és certa. Actua com la conjunció «o»</li>
+          <li><strong><code>not</code></strong>: Serveix per comprovar el contrari (per exemple, <code>not front_is_clear()</code> vol dir que tens un obstacle al davant). Actua com la negació «no»</li>
+        </ul>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Exemple 1: L'operador "and"</h2>
+        <p>Imagina que volem que en Karel avanci <strong>només sobre una estora de perles</strong>. S'ha d'aturar en sec quan les perles s'acabin. Si fem servir <code>while pearl_here(): move()</code>, en Karel avançarà molt bé, però... i si la catifa arriba just on hi ha una roca? En Karel farà un últim <code>move()</code> que provocarà un xoc amb la roca, i això és un error de programació!</p>
+        <p>Per evitar-ho, li hem d'exigir dues coses alhora: "Mentre tinguis una perla sota teu <strong>i</strong> el teu davant estigui lliure, avança". D'aquesta manera, no xocarà mai.</p>
+
+        <div class="simulador"
+             data-map="K>,A,A,A,P,.|.,.,.,.,.,.|.,.,.,.,.,."
+             data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
+if front_is_clear():
+    move()
+while pearl_here() and front_is_clear():
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple 1"
+             data-height="300">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Exemple 2: L'operador "or"</h2>
+        <p>L'operador <code>or</code> serveix per reaccionar quan passa una cosa <strong>o</strong> en passa una altra. En aquest exemple, en Karel està patrullant el passadís. Li direm: "En cas que trepitgis una perla <strong>o bé</strong> si tens davant un obstacle, has d'enviar un senyal d'alerta, que serà girar sobre tu mateix."</p>
+        <div class="simulador"
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-code="while front_is_clear():
+    move()
+    
+    # Comprovem si ha trobat una perla, o bé si s'ha acabat el camí lliure
+    if pearl_here() or not front_is_clear():
+        # Fem una tombarella
+        for i in range(4):
+          turn_left()
+"
+             data-readonly="true"
+             data-label="Exemple 2"
+             data-title="La pirueta s'activarà en dues situacions completament diferents gràcies a l''or'."
+             data-height="380">
+        </div>
+      </section>
+
+
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici: El Cercador Intel·ligent</h2>
+
+        <div class="exercise-enunciat">
+          En Karel ha d'avançar pel passadís per buscar una perla amagada. Volem que camini mentre no hi hagi una perla sota seu <strong>i</strong> davant seu hi hagi camí lliure.
+          <br><br>
+          Un cop la iteració acabi (ja sigui perquè ha trobat la perla sota seu, o perquè té una roca davant), fes servir un <code>if</code> per agafar la perla (només si n'hi ha una, és clar!).
+        </div>
+
+        <p><strong>Pista:</strong> A la iteració <code>while</code> apareixen les instruccions <code>pearl_here()</code>, <code>front_is_clear()</code>. Però hauràs de pensar també si et convé fer servir <code>and</code>, <code>or</code>, <code>not</code></p>
+
+        <div class="simulador"
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-goal=".,.,.,K>,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="Busca la perla amb seguretat sense xocar amb la roca del final."
+             data-height="350">
+        </div>
+      </section>
+
+
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+<script>const CURRENT_CAPITOL = 9;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 8 — Mentre | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     (logo via injectCursLogo(), sense toggle de tema)
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL: sidebar + contingut
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"><!-- omplert per capitols.js --></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 8</span>
+        <h1>Mentre</h1>
+        <p class="chapter-lead">El <code>for</code> va molt bé quan saps exactament quantes vegades vols repetir una acció. Però, i si no ho saps? En aquest capítol aprendrem <code>while</code>, que és una repetició que continua <strong>mentre</strong> una condició sigui certa, i que acaba quan la condició ja no és certa.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — El problema del for
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Quan no saps quantes vegades has de repetir</h2>
+
+        <p>Imagina que en Karel ha d'avançar fins a topar amb una paret. El món pot tenir tres caselles o pot tenir deu. Amb <code>for</code> hauríes d'escriure el nombre exacte: <code>range(3)</code> o <code>range(10)</code>. Però si el programa no sap la mida del món, no pot triar el número correcte.</p>
+
+        <p>La pregunta correcta no és «quantes vegades?», sinó «<strong>fins quan</strong>?». I la resposta és: «mentre tingui el camí lliure davant meu, continua avançant».</p>
+
+        <p>Això és exactament el que expressa la funció <code>while</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — while cond():
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Repetir mentre es compleixi… </h2>
+
+        <p><code>while</code> comprova una condició i executa el bloc indentat de sota <strong>repetidament mentre la condició sigui certa</strong>. Cada vegada que acaba el bloc, torna a comprovar la condició. Quan la condició és falsa, la repetició s'atura i el programa continua.</p>
+        <p>Llegeix aquest exemple:</p>
+        <pre><code>while front_is_clear():
+    move()</code></pre>
+
+        <p>En Karel comprova si té la via lliure davant. Si és cert, avança. Torna a comprovar. Si és cert de nou, avança. I així fins que hi hagi un obstacle o la paret del món. En aquest cas, és a dir, quan no es compleix que té lliure davant seu, s'atura.</p>
+
+        <p>Compara l'efecte de les instruccions <code>for</code> i <code>while</code>:</p>
+
+        <pre><code># for: saps exactament quantes vegades
+for i in range(5):
+    move()
+
+# while: avances fins que el camí s'acabi
+while front_is_clear():
+    move()</code></pre>
+
+        <p>El <code>for</code> és com dir «fes-ho cinc vegades». El <code>while</code> és com dir «fes-ho fins que no puguis».</p>
+
+        <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
+
+        <div class="simulador"
+             data-map="K>,.,.,.,.,.|.,.,.,.,.,."
+             data-code="while front_is_clear():
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="En Karel avança fins a topar amb la paret dreta, sense saber d'entrada quantes caselles té el món."
+             data-height="280">
+        </div>
+
+        <p>En Karel ha avançat fins al final del passadís, sense que en el codi sapiguem quina és la llargada. Si el món hagués tingut vint caselles, aquest codi hauria funcionat igualment.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — while i condicions conegudes
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Qualsevol condició funciona amb <code>while</code></h2>
+
+        <p>Com en el cas de <code>if</code>, pots usar qualsevol de les condicions que ja coneixes dins d'un <code>while</code>:</p>
+
+        <ul>
+          <li><code>while front_is_clear():</code> — avança mentre el camí estigui lliure.</li>
+          <li><code>while pearl_here():</code> — continua mentre hi hagi perles a la casella.</li>
+          <li><code>while not bag_is_empty():</code> — continua mentre la motxilla tingui, com a mínim, una perla.</li>
+        </ul>
+
+        <p>En l'exemple de sota, en Karel té tres perles a la motxilla i les ha de deixar caure una per una mentre camina cap a l'Est:</p>
+
+        <div class="simulador"
+             data-map="K>,.,.,.,.,.|.,.,.,.,.,."
+             data-bag="3"
+             data-code="while not bag_is_empty():
+    drop()
+    if front_is_clear():
+        move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="310">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — while + if combinats
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>while</code> i <code>if</code> junts</h2>
+
+        <p><code>while</code> i <code>if</code> es combinen molt bé. El <code>while</code> controla fins quan continua la iteració; l'<code>if</code> de dins decideix el que es fa a cada passada.</p>
+
+        <p>Observa un exemple clàssic: en Karel recorre un corredor de llargada desconeguda i recull totes les perles que troba pel camí. No sap quantes perles hi ha ni en quines caselles estan:</p>
+
+        <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
+
+        <div class="simulador"
+             data-map="K>,.,A,A,.,A,.,.|.,.,.,.,.,.,.,.,."
+             data-code="while front_is_clear():
+    move()
+    if pearl_here():
+        grab()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="El while avança fins a la paret. L'if de dins comprova perla a cada casella. Cap dels dos necessita saber quantes caselles té el món."
+             data-height="310">
+        </div>
+
+        <p>El <code>while</code> assegura que en Karel avança fins a la paret, sigui on sigui. L'<code>if</code> de dins s'ocupa de les perles sense que el programa s'aturi si una casella és buida. Els dos junts fan quelcom que cap dels dos podria fer sol.</p>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel és a l'extrem esquerre d'un corredor de llargada desconeguda. Hi ha perles disperses per algunes caselles, però no saps en quines ni quantes en total. En Karel ha de recórrer tot el corredor d'un extrem a l'altre i recollir totes les perles que trobi pel camí. Després ha de donar mitja volta i deixar totes les perles, a mesura que va tornant, totes en caselles consecutives.
+          <br><br>
+          <strong>Pista:</strong> usa un <code>while front_is_clear():</code> com a iteració principal. Dins d'aquesta iteració, comprova amb <code>if pearl_here():</code> si cal recollir una perla i, si n'hi ha, la reculls amb <code>grab()</code>. Abans de tornar a començar la iteració, avances una casella fent <code>move()</code>. Ara hauràs arribat al final, quan surtis del <code>while</code>: fes mitja volta amb <code>turn_around()</code>. Llavors, ves tornant i a cada pas, si encara tens perles a la motxilla, fas un <code>drop()</code>. Per saber si tens perles, has de fer servir la pregunta <code>bag_is_full()</code>.
+        </div>
+
+        <div class="simulador"
+             data-map="K>,.,A,.,.,A,A,.,.,.,."
+             data-goal="K<,.,.,.,.,.,.,.,A,A,A"
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="En Karel ha de recórrer tot el corredor i recollir totes les perles que trobi. El codi ha de funcionar per a qualsevol llargada de corredor."
+             data-height="380">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ PREV / NEXT
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-7.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-9.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div><!-- .chapter-content-inner -->
+  </main>
+
+</div><!-- .curs-layout -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     Scripts
+     ══════════════════════════════════════════════════════ -->
+<script>const CURRENT_CAPITOL = 8;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

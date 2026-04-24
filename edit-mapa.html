@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor de mapes — Karel en Català</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       Estils exclusius de l'editor de mapes (edit-mapa.html)
+       Complementen style.css sense modificar-lo.
+       Usen les mateixes variables CSS (--bg, --surface, etc.)
+    ═══════════════════════════════════════════════════════ */
+
+    /* Pàgina editor: columna completa, sense overflow */
+    body.edit-page {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ── Layout principal: eines | mapa ─── */
+    .edit-layout {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Panell esquerre ─────────────────── */
+    .edit-tools {
+      width: 230px;
+      min-width: 200px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding-bottom: 12px;
+    }
+
+    /* ── Seccions del panell ─────────────── */
+    .tool-section {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-lbl {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* ── Pinzells ────────────────────────── */
+    .brush-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .brush-btn {
+      padding: 7px 4px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s, box-shadow .15s;
+      text-align: center;
+    }
+    .brush-btn:hover  {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
+    .brush-btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); font-weight: 700; }
+
+    /* Desfés / Refés */
+    .undo-row {
+      display: flex;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .undo-row .btn {
+      flex: 1;
+      justify-content: center;
+      font-size: 0.65rem;
+      padding: 7px 11px;
+    }
+    .undo-row .btn:not(:disabled):hover {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
+
+    /* ── Direcció de Karel ───────────────── */
+    .dir-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+    .dir-btn {
+      padding: 6px 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color .1s, background .1s;
+      text-align: center;
+    }
+    .dir-btn:hover  { border-color: var(--accent); color: var(--accent); }
+    .dir-btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+
+    /* ── Mida del mapa ───────────────────── */
+    .resize-table {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 6px 10px;
+      font-size: 0.7rem;
+      color: var(--text);
+    }
+    .resize-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rbtn {
+      width: 24px; height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .1s, color .1s;
+      flex-shrink: 0;
+    }
+    .rbtn:hover  { border-color: var(--accent); color: var(--accent); }
+    .rbtn:active { transform: scale(0.93); }
+    .rval {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.78rem;
+    }
+
+    /* ── Botons d'acció ──────────────────── */
+    .tool-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .tool-btns .btn:not(.p):hover {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 10px rgba(37,99,235,.4);
+    }
+    .tool-btns .btn.p:hover {
+      background: #1d4ed8 !important;
+      border-color: #1d4ed8 !important;
+      color: #fff !important;
+      box-shadow: 0 2px 10px rgba(37,99,235,.4);
+    }
+
+    /* ── Llegenda ────────────────────────── */
+    .tool-section.legend { flex: 1; }
+    .legend .li {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.63rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .lbox {
+      width: 14px; height: 14px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .lbox-karel { background: #3d0028; border-color: #E684CC; }
+    .lbox-wall  { background: #1a3a1a; border-color: #5a9a5a; }
+    .lbox-water { background: #001040; border-color: #4a90d9; }
+    .lbox-empty { background: var(--cell-empty); }
+
+    /* Mode clar: llegenda */
+    body.light .lbox-karel { background: #fff0f8; border-color: #E684CC; }
+    body.light .lbox-wall  { background: #e8f8e8; border-color: #3a7a3a; }
+    body.light .lbox-water { background: #dbeafe; border-color: #2563eb; }
+    body.light .lbox-empty { background: #ffffff;  border-color: #ccc; }
+
+    /* ── Àrea del mapa ───────────────────── */
+    .edit-world-wrap {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* La world-area en mode edició ocupa tot l'espai disponible */
+    .edit-world-wrap .world-area {
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ── Barra d'estat inferior ──────────── */
+    .status-bar.edit-status {
+      flex-shrink: 0;
+      display: flex;
+      gap: 20px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+    .status-bar.edit-status strong { color: var(--text); }
+
+    /* ── MODALS ──────────────────────────── */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      z-index: 900;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-bg.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 360px;
+      max-width: 95vw;
+      box-shadow: 0 16px 48px rgba(0,0,0,.6);
+      overflow: hidden;
+    }
+    .modal-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .modal-hd button {
+      background: none; border: none; color: var(--muted);
+      cursor: pointer; font-size: 1rem; line-height: 1;
+      padding: 2px 4px;
+    }
+    .modal-hd button:hover { color: var(--text); }
+
+    .modal-ft {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .blank-form { padding: 16px; }
+    .blank-form .hint {
+      font-size: 0.67rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .blank-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+    }
+    .blank-row label { color: var(--muted); white-space: nowrap; }
+    .blank-row input[type=number] {
+      width: 58px;
+      padding: 4px 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .blank-row input[type=number]:focus { outline: none; border-color: var(--accent); }
+
+    /* Mode clar: modal */
+    body.light .modal { background: #fff; border-color: #d0d0d0; box-shadow: 0 8px 30px rgba(0,0,0,.2); }
+    body.light .modal-bg { background: rgba(0,0,0,.4); }
+    body.light .blank-row input[type=number] { background: #f5f5f5; border-color: #d0d0d0; }
+
+    /* ── Mode clar: panell eines ─────────── */
+    body.light .edit-tools { background: #f8f9fa; border-right-color: #e0e0e0; }
+    body.light .tool-section { border-bottom-color: #e0e0e0; }
+    body.light .brush-btn { background: #fff; border-color: #d0d0d0; }
+    body.light .brush-btn:hover {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
+    body.light .dir-btn   { background: #fff; border-color: #d0d0d0; }
+    body.light .rbtn      { background: #fff; border-color: #d0d0d0; }
+    body.light .status-bar.edit-status { background: #f8f9fa; border-top-color: #e0e0e0; }
+
+    /* ── Responsive: mòbil ───────────────── */
+    @media (max-width: 660px) {
+      .edit-tools { width: 100%; min-width: unset; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--border); max-height: 220px; overflow-y: auto; }
+      .edit-layout { flex-direction: column; }
+      .tool-section { flex: 0 0 auto; border-bottom: none; border-right: 1px solid var(--border); padding: 8px 10px; }
+    }
+  </style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body class="edit-page light">
+
+<!-- ══ CAPÇALERA ══ -->
+<header class="topbar">
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" shape-rendering="crispEdges" width="18" height="18">
+        <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+        <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
+        <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+        <rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
+        <rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/>
+        <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
+        <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
+        <rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/>
+        <rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+        <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+        <rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+        <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
+      </svg>
+    </span>
+    <span>Editor</span>
+  </div>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
+    </nav>
+
+</header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+  <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="simulador.html" class="karel-nav-link">Simulador</a>
+  <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
+</div>
+
+
+<!-- ══ LAYOUT: eines | mapa ══ -->
+<div class="edit-layout">
+
+  <!-- ── Panell esquerre: eines d'edició ── -->
+  <div class="edit-tools">
+
+    <!-- Pinzell -->
+    <div class="tool-section">
+      <div class="tool-lbl">Pinzell</div>
+      <div class="brush-row">
+        <button class="brush-btn active" id="brush-dot" onclick="setBrush('.')">· buit</button>
+        <button class="brush-btn"        id="brush-P"   onclick="setBrush('P')">🪸 roca</button>
+        <button class="brush-btn"        id="brush-A"   onclick="setBrush('A')">🫧 perla</button>
+        <button class="brush-btn"        id="brush-K"   onclick="setBrush('K')">🪼 medusa</button>
+      </div>
+      <div class="undo-row">
+        <button class="btn" id="btn-undo" onclick="editUndo()" disabled title="Desfés (Ctrl+Z)">↩ Desfés</button>
+        <button class="btn" id="btn-redo" onclick="editRedo()" disabled title="Refés (Ctrl+Shift+Z)">↪ Refés</button>
+      </div>
+    </div>
+
+    <!-- Direcció inicial de Karel -->
+    <div class="tool-section" id="dir-section" style="display:none">
+      <div class="tool-lbl">Direcció inicial de Karel</div>
+      <div class="dir-grid">
+        <button class="dir-btn" id="dir-0" onclick="setKarelDir(0)">→</button>
+        <button class="dir-btn" id="dir-3" onclick="setKarelDir(3)">↑</button>
+        <button class="dir-btn" id="dir-2" onclick="setKarelDir(2)">←</button>
+        <button class="dir-btn" id="dir-1" onclick="setKarelDir(1)">↓</button>
+      </div>
+    </div>
+
+    <!-- Mida del mapa -->
+    <div class="tool-section">
+      <div class="tool-lbl">Mida del mapa</div>
+      <div class="resize-table">
+        <span>Files</span>
+        <div class="resize-ctrl">
+          <button class="rbtn" onclick="removeRow()">−</button>
+          <span class="rval" id="rval-rows">5</span>
+          <button class="rbtn" onclick="addRow()">+</button>
+        </div>
+        <span>Columnes</span>
+        <div class="resize-ctrl">
+          <button class="rbtn" onclick="removeCol()">−</button>
+          <span class="rval" id="rval-cols">6</span>
+          <button class="rbtn" onclick="addCol()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accions -->
+    <div class="tool-section">
+      <div class="tool-lbl">Mapa</div>
+      <div class="tool-btns">
+        <button class="btn full"   onclick="openBlankModal()">□ Mapa en blanc</button>
+        <button class="btn full"   onclick="triggerOpenCSV()">📂 Obre mapa CSV</button>
+        <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
+        <button class="btn full g" onclick="copyMapURL()">🔗 Copia URL del mapa</button>
+        <button class="btn full g" onclick="openInKarel()">▶ Obre a Karel</button>
+        <a class="btn full" href="simulador.html">← Torna a Karel</a>
+      </div>
+    </div>
+
+  </div><!-- fi .edit-tools -->
+
+
+  <!-- ── Àrea central: mapa editable ── -->
+  <div class="edit-world-wrap">
+    <div class="world-area" id="world-area">
+      <div id="world-grid"></div>
+    </div>
+  </div>
+</div><!-- fi .edit-layout -->
+
+
+<!-- ══ MODALS ══ -->
+
+<!-- Modal: Mapa en blanc -->
+<div class="modal-bg" id="modal-blank">
+  <div class="modal">
+    <div class="modal-hd">
+      <span>□ Mapa en blanc</span>
+      <button onclick="closeModal('modal-blank')">✕</button>
+    </div>
+    <div class="blank-form">
+      <p class="hint">Karel es col·locarà a la cantonada superior esquerra mirant a la dreta.</p>
+      <div class="blank-row">
+        <label>Files:</label>
+        <input type="number" id="blank-rows" value="5" min="1" max="20">
+        <label>Columnes:</label>
+        <input type="number" id="blank-cols" value="7" min="1" max="20">
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn"   onclick="closeModal('modal-blank')">Cancel·la</button>
+      <button class="btn p" onclick="applyBlank()">□ Crea mapa</button>
+    </div>
+  </div>
+</div>
+
+<!-- Input ocult per obrir fitxers CSV -->
+<input type="file" id="file-input" accept=".csv,.txt" style="display:none" onchange="handleFileOpen(event)">
+
+<!-- ══ MÒDULS JS ══ -->
+<script src="js/constants.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/world.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/ui.js"></script>
+
+<script>
+// ── 1. Stub (ha d'anar primer) ──────────────────────────────────────────────
+K.stopProgram = function() {};
+K.initTheme   = function() { document.body.classList.add('light'); };
+
+// ── 2. Variables locals de l'editor ─────────────────────────────────────────
+let editBrush    = '.';
+let karelEditDir = 0;
+let editDragging = false;
+
+// ── 3. Override K.updateStatus ───────────────────────────────────────────────
+const _baseUpdateStatus = K.updateStatus;
+K.updateStatus = function() {
+  _baseUpdateStatus();
+  updateSizeIndicators();
+};
+
+// ── 4a. updateSizeIndicators ─────────────────────────────────────────────────
+function updateSizeIndicators() {
+  const r = document.getElementById('rval-rows');
+  const c = document.getElementById('rval-cols');
+  if (r) r.textContent = K.state.world.rows;
+  if (c) c.textContent = K.state.world.cols;
+}
+
+// ── 4b. setBrush ─────────────────────────────────────────────────────────────
+function setBrush(b) {
+  editBrush = b;
+  const idMap = { '.': 'dot', P: 'P', A: 'A', K: 'K' };
+  ['dot','P','A','K'].forEach(id => document.getElementById('brush-'+id)?.classList.remove('active'));
+  document.getElementById('brush-' + idMap[b])?.classList.add('active');
+  const ds = document.getElementById('dir-section');
+  if (ds) ds.style.display = (b === 'K') ? '' : 'none';
+  updateDirButtons();
+}
+
+// ── 4c. setKarelDir / updateDirButtons ───────────────────────────────────────
+function setKarelDir(d) {
+  karelEditDir = d;
+  K.state.karelInit = { ...K.state.karelInit, dir: d };
+  K.state.karel     = { ...K.state.karelInit };
+  updateDirButtons();
+  K.renderWorld();
+  K.updateStatus();
+}
+
+function updateDirButtons() {
+  [0,1,2,3].forEach(d =>
+    document.getElementById('dir-'+d)?.classList.toggle('active', d === karelEditDir)
+  );
+}
+
+// ── 4d. applyBrushAt ─────────────────────────────────────────────────────────
+function applyBrushAt(col, row) {
+  const S = K.state;
+  if (col < 0 || col >= S.world.cols || row < 0 || row >= S.world.rows) return;
+  let changed = false;
+  if (editBrush === 'K') {
+    if (S.karelInit.x !== col || S.karelInit.y !== row) {
+      S.karelInit = { x: col, y: row, dir: karelEditDir, motxilla: 0 };
+      S.karel     = { ...S.karelInit };
+      changed = true;
+    }
+  } else {
+    if (S.karelInit.x === col && S.karelInit.y === row) return;
+    if (S.world.grid[row][col] !== editBrush) {
+      S.world.grid[row][col] = editBrush;
+      S.worldInit[row][col]  = editBrush;
+      changed = true;
+    }
+  }
+  if (changed) K.renderWorld();
+}
+
+// ── 4e. Grid resize ──────────────────────────────────────────────────────────
+function addRow() {
+  const S = K.state;
+  if (S.world.rows >= 20) return;
+  _pushUndo();
+  const nr = Array(S.world.cols).fill('.');
+  S.world.grid.push([...nr]);
+  S.worldInit.push([...nr]);
+  S.world.rows++;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function removeRow() {
+  const S = K.state;
+  if (S.world.rows <= 1) return;
+  _pushUndo();
+  if (S.karelInit.y >= S.world.rows - 1) {
+    S.karelInit = { ...S.karelInit, y: S.world.rows - 2 };
+    S.karel = { ...S.karelInit };
+  }
+  S.world.grid.pop();
+  S.worldInit.pop();
+  S.world.rows--;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function addCol() {
+  const S = K.state;
+  if (S.world.cols >= 20) return;
+  _pushUndo();
+  S.world.grid.forEach((r, i) => { r.push('.'); S.worldInit[i].push('.'); });
+  S.world.cols++;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function removeCol() {
+  const S = K.state;
+  if (S.world.cols <= 1) return;
+  _pushUndo();
+  if (S.karelInit.x >= S.world.cols - 1) {
+    S.karelInit = { ...S.karelInit, x: S.world.cols - 2 };
+    S.karel = { ...S.karelInit };
+  }
+  S.world.grid.forEach((r, i) => { r.pop(); S.worldInit[i].pop(); });
+  S.world.cols--;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+// ── 4f. Blank map modal ──────────────────────────────────────────────────────
+function openBlankModal() {
+  document.getElementById('modal-blank')?.classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('open');
+}
+function applyBlank() {
+  _pushUndo();
+  const rows = Math.max(1, Math.min(20, parseInt(document.getElementById('blank-rows').value) || 5));
+  const cols = Math.max(1, Math.min(20, parseInt(document.getElementById('blank-cols').value) || 7));
+  const grid = Array.from({ length: rows }, () => Array(cols).fill('.'));
+  grid[0][0] = '.';
+  const S = K.state;
+  S.world.grid  = grid;
+  S.worldInit   = grid.map(r => [...r]);
+  S.world.rows  = rows;
+  S.world.cols  = cols;
+  S.karelInit   = { x: 0, y: 0, dir: 0, motxilla: 0 };
+  S.karel       = { ...S.karelInit };
+  karelEditDir  = 0;
+  closeModal('modal-blank');
+  K.renderWorldFull();
+  K.updateStatus();
+  _updateUndoButtons();
+}
+
+// ── 4g. CSV I/O ──────────────────────────────────────────────────────────────
+function triggerOpenCSV() {
+  document.getElementById('file-input')?.click();
+}
+function handleFileOpen(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _pushUndo();
+    K.loadMapFromCSV(e.target.result.trim());
+    K.updateStatus();
+    _updateUndoButtons();
+  };
+  reader.readAsText(file);
+}
+function saveCSV() {
+  const csv  = K.worldToCSV();
+  const blob = new Blob([csv], { type: 'text/plain' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'mapa.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── 4h. URL actions ──────────────────────────────────────────────────────────
+function _mapToBase64() {
+  return btoa(unescape(encodeURIComponent(K.worldToCSV())));
+}
+function copyMapURL() {
+  const url = location.origin
+            + location.pathname.replace('edit-mapa.html', 'simulador.html')
+            + '?map=' + _mapToBase64();
+  navigator.clipboard.writeText(url).then(() => alert('URL copiada!'));
+}
+function openInKarel() {
+  window.location.href = 'simulador.html?map=' + _mapToBase64();
+}
+
+// ── 5. Undo / Redo ───────────────────────────────────────────────────────────
+const _undoStack    = [];
+const _redoStack    = [];
+const _UNDO_MAX     = 50;
+let   _dragSnapshot = null;
+
+function _takeSnapshot() {
+  const S = K.state;
+  return {
+    grid:     S.world.grid.map(r => [...r]),
+    gridInit: S.worldInit.map(r => [...r]),
+    karel:    { ...S.karelInit },
+    rows:     S.world.rows,
+    cols:     S.world.cols,
+  };
+}
+
+function _restoreSnapshot(snap) {
+  const S      = K.state;
+  S.world.grid = snap.grid.map(r => [...r]);
+  S.worldInit  = snap.gridInit.map(r => [...r]);
+  S.world.rows = snap.rows;
+  S.world.cols = snap.cols;
+  S.karelInit  = { ...snap.karel };
+  S.karel      = { ...S.karelInit };
+  karelEditDir = S.karelInit.dir;
+  K.renderWorldFull();
+  K.updateStatus();
+  _updateUndoButtons();
+}
+
+function _pushUndo() {
+  _undoStack.push(_takeSnapshot());
+  if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+  _redoStack.length = 0;
+  _updateUndoButtons();
+}
+
+function editUndo() {
+  if (!_undoStack.length) return;
+  _redoStack.push(_takeSnapshot());
+  _restoreSnapshot(_undoStack.pop());
+}
+
+function editRedo() {
+  if (!_redoStack.length) return;
+  _undoStack.push(_takeSnapshot());
+  _restoreSnapshot(_redoStack.pop());
+}
+
+function _updateUndoButtons() {
+  const u = document.getElementById('btn-undo');
+  const r = document.getElementById('btn-redo');
+  if (u) u.disabled = _undoStack.length === 0;
+  if (r) r.disabled = _redoStack.length === 0;
+}
+
+// ── 6. Inicialització ────────────────────────────────────────────────────────
+K.initTheme();
+K.applyCodeLang(K.state.codeLang);
+
+// Llegeix ?map=BASE64 si ve del simulador (o d'una URL compartida)
+(function() {
+  const params = new URLSearchParams(location.search);
+  const b64    = params.get('map');
+  if (b64) {
+    try {
+      const csv = decodeURIComponent(escape(atob(b64)));
+      K.loadMapFromCSV(csv);
+    } catch (e) {
+      console.warn('⚠ Paràmetre ?map no vàlid, es carrega el mapa per defecte.', e);
+      K.loadMapFromCSV(K.DEFAULT_CSV);
+    }
+  } else {
+    K.loadMapFromCSV(K.DEFAULT_CSV);
+  }
+})();
+setBrush('.');
+updateSizeIndicators();
+_updateUndoButtons();
+
+// ResizeObserver — manté l'escala del grid quan canvia la mida del panell
+const _worldArea = document.getElementById('world-area');
+if (_worldArea) {
+  let _rafId = null;
+  new ResizeObserver(() => {
+    if (K.state.world.rows <= 0) return;
+    if (_rafId) cancelAnimationFrame(_rafId);
+    _rafId = requestAnimationFrame(() => { _rafId = null; K.renderWorld(); });
+  }).observe(_worldArea);
+}
+
+// ── 7. Events de ratolí, tàctil i teclat ────────────────────────────────────
+document.getElementById('world-grid').addEventListener('mousedown', e => {
+  e.preventDefault();
+  editDragging  = true;
+  _dragSnapshot = _takeSnapshot();
+  const div = e.target.closest('.cell');
+  if (div) applyBrushAt(+div.dataset.col, +div.dataset.row);
+});
+document.getElementById('world-grid').addEventListener('mousemove', e => {
+  if (!editDragging) return;
+  const div = e.target.closest('.cell');
+  if (div) applyBrushAt(+div.dataset.col, +div.dataset.row);
+});
+document.addEventListener('mouseup', () => {
+  if (!editDragging) return;
+  editDragging = false;
+  if (_dragSnapshot) {
+    const before = JSON.stringify(_dragSnapshot);
+    const after  = JSON.stringify(_takeSnapshot());
+    if (before !== after) {
+      _undoStack.push(_dragSnapshot);
+      if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+      _redoStack.length = 0;
+      _updateUndoButtons();
+    }
+    _dragSnapshot = null;
+  }
+});
+
+document.getElementById('world-grid').addEventListener('touchstart', e => {
+  e.preventDefault();
+  _dragSnapshot = _takeSnapshot();
+  const touch = e.touches[0];
+  const el    = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.cell');
+  if (el) applyBrushAt(+el.dataset.col, +el.dataset.row);
+}, { passive: false });
+document.getElementById('world-grid').addEventListener('touchmove', e => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const el    = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.cell');
+  if (el) applyBrushAt(+el.dataset.col, +el.dataset.row);
+}, { passive: false });
+document.getElementById('world-grid').addEventListener('touchend', () => {
+  if (_dragSnapshot) {
+    const changed = JSON.stringify(_takeSnapshot()) !== JSON.stringify(_dragSnapshot);
+    if (changed) {
+      _undoStack.push(_dragSnapshot);
+      if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+      _redoStack.length = 0;
+      _updateUndoButtons();
+    }
+    _dragSnapshot = null;
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); editUndo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' &&  e.shiftKey) { e.preventDefault(); editRedo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'y')                 { e.preventDefault(); editRedo(); }
+});
+</script>
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.textContent = open ? '✕' : '☰';
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    }
+  });
+})();
+</script>
+<script>
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
+})();
+</script>
+<script src="./kofi.js"></script>
+<script src="./footer.js"></script>
+</body>
+</html>

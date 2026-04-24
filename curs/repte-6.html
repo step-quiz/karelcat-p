@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 6 — Construir torres | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link active">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link">Capítols</a>
+      <a href="repte-1.html" class="sgn-link sgn-active">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE B2 — CONSTRUIR TORRES
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 6 — Construir torres
+          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          El fons del mar té diverses bases marcades amb una perla al terra.
+          En Karel comença a la base de la columna més a l'esquerra, mirant
+          cap a l'Est.<br>
+          En Karel ha de <strong>construir una torre de perles per damunt de
+          cada base, des del terra fins al sostre</strong>. Com que algunes
+          bases ja podrien tenir perles de decoració, en Karel ha de
+          <em>deixar una perla només si la casella és buida</em>.<br>
+          Quan ha completat totes les columnes, ha de quedar a la base de
+          l'última torre mirant cap a l'Est.<br>
+          Escriu un programa que funcioni, sigui quina sigui l'alçada del món i el nombre de torres. El teu codi no pot dependre del nombre exacte de caselles.
+        </div>
+
+        <details class="consell-box">
+          <summary><strong>💡 Pista — pre/postcondicions de <code>omple_columna()</code></strong></summary>
+          <div class="consell-body">
+La funció <code>omple_columna()</code> ha de tenir aquesta estructura. Sempre assumeix que: <em>en Karel és a la base de la columna, mirant cap a l'Est</em> quan s'inicia, i al mateix temps, sempre l'ha de deixar en exactament la mateixa posició, un cop ha omplert la columna.
+</div>
+        </details>
+
+        <details class="consell-box">
+          <summary><strong>💡 Pista — el <code>while</code> imbricat i l'error de pal de paller</strong></summary>
+          <div class="consell-body">
+En la funció <code>omple_columna()</code> hi ha dues iteracions: una per
+pujar fins al sostre i una per tornar al terra. La iteració de pujada
+s'atura <em>abans</em> d'arribar a l'última casella, igual que al
+repte del passadís. Afegeix un <code>if not pearl_here(): drop()</code>
+fora del <code>while</code> per no perdre la casella del sostre.
+</div>
+        </details>
+
+        
+
+        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <div class="simulador"
+             data-maps='[".,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A", ".,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A", ".,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|K>,.,.,A,.,.,A,.,.,A"]'
+             data-goals='["A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,K>"]'
+             data-labels='["7 × 3 · 3 torres", "7 × 4 · 3 torres", "10 × 4 · 4 torres"]'
+             data-bag="99"
+             data-code="# ── omple_columna ──
+# Gira al Nord i puja fins al sostre, però deixa una perla a cada casella buida
+# Gira al Sud, avança fins al terra i, finalment, orienta en Karel cap a l'Est
+
+def omple_columna():
+
+
+# ── Programa principal ──
+"
+             data-title="Les tres proves treballen el mateix repte: omple cada columna marcada, de base fins al sostre."
+             data-height="400">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-5.html" class="btn-nav btn-nav--prev">← Repte 5</a>
+        <a href="repte-7.html" class="btn-nav btn-nav--next">Repte 7 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+def omple_columna():
+    turn_left()
+    while front_is_clear():
+        if not pearl_here():
+            drop()
+        move()
+    if not pearl_here():
+        drop()
+    turn_around()
+    while front_is_clear():
+        move()
+    turn_left()
+
+def avança_a_seguent():
+    move()
+    move()
+    move()
+
+omple_columna()
+while front_is_clear():
+    avança_a_seguent()
+    omple_columna()
+
+  Traça d'execució (Test A — 7×3, torres a cols 0, 3, 6):
+    Inici: (0,2) Est   [y=2 = fila inferior, y=0 = sostre]
+
+    omple_columna() iteració 1:
+      turn_left()  →  Nord
+      (0,2): pearl_here()=True (marca de base) → no drop; move → (0,1)
+      (0,1): pearl_here()=False → drop; move → (0,0)
+      front_is_clear() a (0,0) Nord = False (sostre) → surt del while
+      (0,0): pearl_here()=False → drop   [error de límit]
+      turn_around() → Sud
+      move → (0,1); move → (0,2); front_is_clear()=False → surt
+      turn_left()  →  Est ✓
+      En Karel a (0,2) Est.
+
+    front_is_clear() a (0,2) Est = True → entra al while principal
+    avança_a_seguent(): (0,2)→(1,2)→(2,2)→(3,2)
+    omple_columna() iteració 2: idem, omple columna 3. En Karel a (3,2) Est.
+
+    front_is_clear() a (3,2) Est = True → continua
+    avança_a_seguent(): (3,2)→(4,2)→(5,2)→(6,2)
+    omple_columna() iteració 3: idem, omple columna 6. En Karel a (6,2) Est.
+
+    front_is_clear() a (6,2) Est = False (paret del món) → surt ✓
+
+  Perquè funciona:
+    · front_is_clear() és agnòstic de la mida: funciona per a 3, 4, 5 files.
+    · La pre/postcondició de omple_columna() és sempre (base, Est):
+      la simetria permet encadenar N crides amb un sol while.
+    · if not pearl_here() evita sobreescriure perles ja existents.
+    · L'error de límit de la darrera casella (sostre) s'atén fora del while.
+    · turn_left() al final: Sud(1) → Est(0) en el sistema de dirs del motor.
+
+  Errors habituals de l'alumne:
+    · Acabar omple_columna() amb turn_right() en lloc de turn_left()
+      → en Karel queda mirant a l'Oest; avança_a_seguent() va cap enrere.
+    · Oblidar l'error de límit del sostre → la casella de dalt queda buida.
+    · Oblidar l'error de límit de la base → si la marca no té perla, queda buida.
+    · Usar turn_around() en lloc de turn_left() al final
+      → en Karel queda mirant al Nord; el while del programa principal
+         intenta pujar en lloc d'avançar al costat.
+    · Oblidar el `if not pearl_here(): drop()` dins el while de pujada
+      → si la casella de la base ja tenia perla, torna a deixar-n'hi una
+         de més (motxilla gasta 1 de més; en motors amb piles, s'apilen).
+
+  Clau pedagògica:
+    Stone Mason Karel és el repte clàssic de "pre/postcondicions estrictes".
+    La simetria precondició=postcondició permet encadenar omple_columna()
+    amb un while sense cap comptador. L'alumne descobreix que una funció
+    ben dissenyada (que deixa el món com el va trobar pel que fa a orientació)
+    es pot reutilitzar N vegades sense canvis.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 6;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

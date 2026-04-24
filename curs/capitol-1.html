@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 1 — Coneix en Karel | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     (logo via injectCursLogo(), sense toggle de tema)
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL: sidebar + contingut
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"><!-- omplert per capitols.js --></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 1</span>
+        <h1>Coneix en Karel</h1>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — El món d'en Karel
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>El món d'en Karel</h2>
+
+        <p>En Karel és una medusa programable que viu dins d'una quadrícula de caselles, com un tauler d'escacs submarí. En Karel ocupa sempre una sola casella i sempre mira en una de quatre direccions:<br> Nord (amunt), Sud (avall), Est (dreta) o Oest (esquerra).</p>
+
+        <p>La teva tasca és escriure instruccions. En Karel les llegirà i les executarà, una per una, de dalt a baix.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — move
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>La primera ordre: <code>move()</code></h2>
+
+        <p><code>move()</code> fa avançar en Karel una casella en la direcció i sentit on mira. Si davant seu hi ha un límit que impedeix avançar, el programa s'atura i mostra un error.</p>
+
+        En l'exemple següent, en Karel mira cap a l'Est i té tres ordres <code>move()</code>.       
+        <p>Prem ▶ Executa i observa com funciona. Pots modificar la velocitat d'execució amb el lliscador:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+move()
+"
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>En Karel ha avançat tres caselles cap a la dreta, perquè mirava cap a l'Est i tenia tres ordres <code>move()</code>. Si hagués trobat un impediment per avançar, el programa hauria retornat un error.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — turn_left
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Girar a l'esquerra: <code>turn_left()</code></h2>
+
+        <p><code>turn_left()</code> fa que en Karel giri 90° en sentit antihorari (cap a l'esquerra). Girar <em>no</em> és avançar: en Karel canvia de direcció però no es mou de casella.</p>
+
+        <p>Observa l'exemple: en Karel està mirant cap a l'Est (dreta). Quan faci un gir a l'esquerra, mirarà cap al Nord (amunt).</p>
+
+        <p>Fem que en Karel avanci dues caselles; després, li diem que giri a l'esquerra i, finalment, que avanci dues caselles més.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
+             data-code="move()
+move()
+turn_left()
+move()
+move()
+"
+             data-readonly="true"
+             data-height="310">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — turn_right
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Girar a la dreta: <code>turn_right()</code></h2>
+
+        <p><code>turn_right()</code> indica a en Karel que ha de girar 90° en sentit horari (cap a la dreta). El seu funcionament és molt similar a <code>turn_left()</code>.</p>
+
+        <p>En l'exemple següent, en Karel comença a l'extrem superior esquerre, i mirant cap a l'Est.</p> 
+        
+        <p>Avança dues caselles i gira a la dreta (per tant, mirarà al Sud). Finalment, avança dues caselles més:</p>
+
+        <div class="simulador"
+             data-map="K>,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+turn_right()
+move()
+move()
+"
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>Has après les tres instruccions bàsiques de moviment:</p>
+        <ul>
+          <li><code>move()</code> — avança una casella en la direcció i sentit actual.</li>
+          <li><code>turn_left()</code> — gira 90° cap a l'esquerra (sentit antihorari).</li>
+          <li><code>turn_right()</code> — gira 90° cap a la dreta (sentit horari).</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          <p>En Karel és a l'extrem inferior esquerre del seu món i està mirant cap a l'Est. Hi ha una perla a l'extrem oposat.<br>Escriu el codi per portar en Karel a la casella on és la perla.</p>
+          <p><strong>Important: </strong>Recorda que has d'escriure <code>move()</code>, és a dir, amb parèntesis, tal i com acabes de llegir. Si oblides els parèntesis, comets un error de sintaxi.</p>
+        </div>
+        <div class="simulador"
+             data-map=".,.,.,A|.,.,.,.|.,.,.,.|K>,.,.,."
+             data-goal=".,.,.,K^|.,.,.,.|.,.,.,.|.,.,.,."
+             data-code="
+
+"
+             data-label="Exercici"
+             data-title="Porta en Karel fins a la casella de la perla (cantonada superior dreta)."
+             data-height="340">
+        </div>
+      </section>
+
+      <section class="chapter-section">
+        <h2>Final del capítol</h2>
+
+        <p>Has arribat al final del capítol. Pots passar al següent si cliques al botó que veuràs a continuació, a sota.</p>
+      </section>
+
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ PREV / NEXT
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="index.html" class="btn-nav btn-nav--prev btn-nav--disabled"
+           aria-disabled="true">← Capítol anterior</a>
+        <a href="capitol-2.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div><!-- .chapter-content-inner -->
+  </main>
+
+</div><!-- .curs-layout -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     Scripts
+     ══════════════════════════════════════════════════════ -->
+<script>const CURRENT_CAPITOL = 1;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

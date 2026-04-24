@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="nav.css">
+  <style>
+    /* ── Barra d'accions del mapa (simulador) ── */
+    .map-toolbar {
+      display: flex;
+      gap: 5px;
+      padding: 5px 8px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .map-toolbar .btn {
+      font-size: 0.65rem;
+      padding: 4px 9px;
+      flex: 1;
+      min-width: 0;          /* permet encongir-se sense desbordar */
+      justify-content: center;
+      overflow: hidden;
+    }
+    .map-toolbar .btn:hover,
+    body.light .map-toolbar .btn:hover {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
+    /* Pantalles molt estretes (<340px): amaga el text, queda l'emoji */
+    @media (max-width: 340px) {
+      .map-toolbar .btn-lbl { display: none; }
+      .map-toolbar .btn { padding: 4px 6px; }
+    }
+    /* Mode embed: amaga la barra (no cal en iframes del curs) */
+    body.embed .map-toolbar { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Mode embed (B.4): aplicat immediatament per evitar flash -->
+<script>
+  (function() {
+    var p = new URLSearchParams(location.search);
+    if (p.get('embed') === '1') document.body.classList.add('embed');
+    if (p.get('multi') === '1') document.body.classList.add('multi');
+    // Aplica el tema immediatament (abans que res es pinti) per evitar el blink fosc→clar.
+    // Prioritat: paràmetre URL > localStorage > fosc per defecte.
+    var themeParm = p.get('theme');
+    var saved = '';
+    try { saved = localStorage.getItem('karel-theme') || ''; } catch(_) {}
+    if (themeParm === 'light' || (!themeParm && saved !== 'dark')) {
+      document.body.classList.add('light');
+    }
+  })();
+</script>
+
+<!-- ══════════════════════════════════════════════════════
+     FILA 1 — Identitat i informació
+     ══════════════════════════════════════════════════════ -->
+<header class="topbar">
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" shape-rendering="crispEdges" width="18" height="18">
+        <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+        <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
+        <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+        <rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
+        <rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/>
+        <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
+        <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
+        <rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/>
+        <rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+        <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+        <rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+        <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
+      </svg>
+    </span>
+    <span>Karel</span>
+  </div>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="simulador.html" class="karel-nav-link active">Simulador</a>
+      <a href="edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="topbar-actions">
+    <div id="state-badge" aria-live="polite">
+      <div id="state-dot"></div>
+      <span id="state-lbl">aturat</span>
+    </div>
+    <span class="toolbar-bag"><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong></span>
+  </div>
+
+  <button class="btn btn-glossari" id="btn-glossari" onclick="toggleGlossari()">📖 Glossari</button>
+  <button id="btn-theme"
+          class="btn btn-theme"
+          onclick="toggleTheme()"
+          aria-label="Canvia el tema">
+  </button>
+
+</header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+  <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="simulador.html" class="karel-nav-link active">Simulador</a>
+  <a href="edit-mapa.html" class="karel-nav-link">Editor</a>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     FILA 2 — Controls d'execució
+     ══════════════════════════════════════════════════════ -->
+<div class="toolbar">
+  <button class="btn p" id="btn-run" onclick="handleRunClick()">▶ Executa</button>
+  <button class="btn"   id="btn-reset" onclick="resetKarel()">↺ Reinicia</button>
+  <div class="speed-row">
+    <span id="lbl-speed">Velocitat:</span>
+    <input type="range" id="speed" min="1" max="6" step="1" value="2">
+    <span id="speed-lbl">Lent</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     ZONA PRINCIPAL — Editor + món
+     ══════════════════════════════════════════════════════ -->
+<div class="main">
+  <div class="code-col">
+    <div class="editor-wrap">
+      <div id="line-numbers"></div>
+      <div class="editor-inner">
+        <div  id="line-bg"        aria-hidden="true"></div>
+        <pre  id="code-highlight" aria-hidden="true"></pre>
+        <textarea id="code-editor" spellcheck="false" wrap="off"></textarea>
+      </div>
+    </div>
+    <div id="autocomplete" class="autocomplete-dropdown" role="listbox" aria-label="Autocompletat"></div>
+    <div id="log-wrap">
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <div class="map-col">
+    <div class="map-toolbar">
+      <button class="btn" onclick="triggerOpenMapCSV()" title="Obre un mapa CSV des del disc">📂 <span class="btn-lbl">Obre mapa</span></button>
+      <button class="btn" onclick="saveMapCSV()"        title="Desa el mapa actual com a fitxer CSV">💾 <span class="btn-lbl">Desa mapa</span></button>
+      <button class="btn" onclick="openMapInEditor()"   title="Obre el mapa actual a l'editor">✏️ <span class="btn-lbl">Edita mapa</span></button>
+    </div>
+    <div class="world-area" id="world-area">
+      <div id="world-grid"></div>
+    </div>
+  </div>
+
+  <!-- Input ocult per carregar CSV des del simulador -->
+  <input type="file" id="sim-file-input" accept=".csv,.txt" style="display:none" onchange="handleSimFileOpen(event)">
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     GLOSSARI — Modal de referència ràpida
+     ══════════════════════════════════════════════════════ -->
+<div class="glossari-overlay" id="glossari-overlay">
+  <div class="glossari-modal" id="glossari-modal">
+    <div class="glossari-header">
+      <span class="glossari-title">📖 Glossari</span>
+      <button class="glossari-close" id="glossari-close" aria-label="Tanca">✕</button>
+    </div>
+    <div class="glossari-body">
+
+      <div class="glossari-section">
+        <h3>Instruccions</h3>
+        <p class="glossari-hint">Sempre amb parèntesis <code>()</code> al final</p>
+        <div class="glossari-grid">
+          <code>move()</code><span>Avança una casella</span>
+          <code>turn_left()</code><span>Gira 90° a l'esquerra</span>
+          <code>turn_right()</code><span>Gira 90° a la dreta</span>
+          <code>turn_around()</code><span>Mitja volta (180°)</span>
+          <code>grab()</code><span>Agafa la perla de la casella</span>
+          <code>drop()</code><span>Deixa una perla a la casella</span>
+        </div>
+      </div>
+
+      <div class="glossari-section">
+        <h3>Condicions</h3>
+        <p class="glossari-hint">Sempre amb parèntesis <code>()</code> — s'usen dins de <code>if</code> i <code>while</code></p>
+        <div class="glossari-grid">
+          <code>front_is_clear()</code><span>El camí del davant és lliure</span>
+          <code>front_is_blocked()</code><span>Hi ha una roca al davant</span>
+          <code>left_is_clear()</code><span>L'esquerra és lliure</span>
+          <code>left_is_blocked()</code><span>Hi ha una roca a l'esquerra</span>
+          <code>right_is_clear()</code><span>La dreta és lliure</span>
+          <code>right_is_blocked()</code><span>Hi ha una roca a la dreta</span>
+          <code>pearl_here()</code><span>Hi ha una perla aquí</span>
+          <code>bag_is_empty()</code><span>La motxilla és buida</span>
+          <code>bag_is_full()</code><span>La motxilla té perles</span>
+        </div>
+      </div>
+
+      <div class="glossari-section">
+        <h3>Estructures</h3>
+        <p class="glossari-hint">Acaben amb dos punts <code>:</code> i el bloc interior va <strong>indentat</strong></p>
+        <pre class="glossari-example">if front_is_clear():
+    move()
+elif pearl_here():
+    grab()
+else:
+    turn_left()</pre>
+        <pre class="glossari-example">while front_is_clear():
+    move()</pre>
+        <pre class="glossari-example">for i in range(4):
+    move()</pre>
+        <pre class="glossari-example">def nom_funcio():
+    move()
+    turn_left()</pre>
+      </div>
+
+      <div class="glossari-section glossari-rules">
+        <h3>Recorda</h3>
+        <div class="glossari-rule">① Les instruccions i condicions porten <code>()</code> sempre</div>
+        <div class="glossari-rule">② Després de <code>if</code>, <code>while</code>, <code>for</code>, <code>def</code> cal posar <code>:</code></div>
+        <div class="glossari-rule">③ El codi dins d'un bloc s'ha d'indentar (4 espais)</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     Scripts — només els del nucli supervivent
+     ══════════════════════════════════════════════════════ -->
+<script src="js/constants.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/tokenizer.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/interpreter.js"></script>
+<script src="js/world.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/execution.js"></script>
+<script src="js/reptes.js"></script>
+<script>
+// Codi inicial per defecte del simulador lliure (sobreescriu K.DEFAULT_CODE de constants.js)
+K.DEFAULT_CODE =
+`if front_is_clear():
+    move()`;
+</script>
+<script src="js/main.js"></script>
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.textContent = open ? '✕' : '☰';
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    }
+  });
+})();
+</script>
+<script>
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
+})();
+</script>
+<script>
+// ── Accions del mapa al simulador ────────────────────────
+function _simMapToBase64() {
+  return btoa(unescape(encodeURIComponent(K.worldToCSV())));
+}
+
+function triggerOpenMapCSV() {
+  document.getElementById('sim-file-input')?.click();
+}
+
+function handleSimFileOpen(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    K.loadMapFromCSV(e.target.result.trim());
+  };
+  reader.readAsText(file);
+  // Reseta el valor perquè es pugui tornar a carregar el mateix fitxer
+  evt.target.value = '';
+}
+
+function saveMapCSV() {
+  const csv  = K.worldToCSV();
+  const blob = new Blob([csv], { type: 'text/plain' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'mapa.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function openMapInEditor() {
+  window.location.href = 'edit-mapa.html?map=' + _simMapToBase64();
+}
+</script>
+<script src="./kofi.js"></script>
+<script src="./footer.js"></script>
+<script src="./js/kbd-accessory.js"></script>
+<!-- Tour inicial: només la primera vegada que aquest dispositiu obre
+     el simulador directament (no en mode embed dins els capítols).
+     El propi initial-tour.html posa 'karel_tour_done_v1' i s'autodestrueix. -->
+<script>
+  (function () {
+    // No el disparem mai dins iframes del curs (?embed=1): allà el
+    // simulador és una peça incrustada, el tour no té sentit.
+    if (new URLSearchParams(location.search).get('embed') === '1') return;
+    if (localStorage.getItem('karel_tour_done_v1')) return;
+    const f = document.createElement('iframe');
+    f.id = 'tour-iframe';   // el tour s'autodestrueix buscant aquest id
+    f.src = 'presentacio-karel.html';
+    f.title = 'Tour inicial';
+    f.style.cssText =
+      'position:fixed;inset:0;width:100%;height:100%;' +
+      'border:0;background:transparent;z-index:10000;';
+    document.body.appendChild(f);
+  })();
+</script>
+</body>
+</html>

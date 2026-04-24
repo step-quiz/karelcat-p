@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 7 — Condicionals | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL: sidebar + contingut
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"><!-- omplert per capitols.js --></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 7</span>
+        <h1>Condicionals</h1>
+        <p class="chapter-lead">En aquest capítol ensenyem a en Karel a <strong>prendre decisions</strong>: fer una cosa només si es compleix una condició que li imposem, i una altra cosa diferent si no es compleix.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — En Karel ha de decidir
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>En Karel ha de decidir</h2>
+
+        <p>Imagina que el món pot tenir una perla en una casella, o bé no tenir-ne. I que no podem saber-ho, a priori. Si en Karel sempre fa <code>grab()</code> i resulta que no hi ha perla, el programa s'atura amb un error. Necessitem una manera de dir-li: «si hi ha una perla, agafa-la; si no n'hi ha, no facis res».</p>
+
+        <p>Això ho aconseguirem amb una instrucció que s'anomena <code>if</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — if cond():
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>És cert o és fals?</h2>
+
+        <p><code>if</code> comprova una condició i executa el bloc indentat de sota <strong>només si la condició és certa</strong>. Si la condició és falsa, el bloc se salta i en Karel continua amb la línia següent.</p>
+
+        <pre><code>if pearl_here():
+    grab()</code></pre>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXEMPLE 1 (view-only) — if front_is_clear():
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>En Karel avança si pot</h2>
+
+        <p>En l'exemple següent, en Karel intenta avançar cinc vegades. Però hi ha una roca que li bloca el pas. Sense cap comprovació, en Karel xocaria i el programa donaria un error. Gràcies a l'<code>if</code>, en Karel comprova primer si té la via lliure: si és així, avança; si no, simplement no fa res i el <code>for</code> continua amb la iteració següent.</p>
+
+        <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.|K>,.,.,P,.,.|.,.,.,.,.,."
+             data-code="for i in range(5):
+    if front_is_clear():
+        move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="El for intenta avançar cinc vegades. L'if comprova cada cop si hi ha obstacle: quan troba la roca, move() no s'executa i no hi ha cap error."
+             data-height="310">
+        </div>
+
+        <p>La instrucció <code>for</code> intenta avançar cinc vegades, però la condició <code>if front_is_clear()</code> actua com un guardià: si hi ha un obstacle davant, el bloc s'ignora i en Karel es queda quiet aquella iteració. El codi no dona cap error gràcies a la comprovació prèvia.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — else:
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>I si no es compleix la condició, fes… una altra cosa</h2>
+
+        <p>De vegades volem que en Karel faci una acció quan la condició és certa, però que faci <strong>una cosa diferent</strong> si la condició és falsa. Per això tenim la instrucció anomenada <code>else</code>.</p>
+
+        <pre><code>if front_is_clear():
+    move()
+else:
+    turn_left()</code></pre>
+
+        <p>En Karel comprova si té la via lliure davant seu. Si això es compleix, avança. Si no es compleix (per exemple, hi ha una roca o bé hi ha paret), llavors gira a l'esquerra.</p>
+
+        <p><strong>Regla d'or:</strong> el bloc de l'<code>if</code> i el bloc de l'<code>else</code> mai s'executen tots dos alhora. O s'executa l'un, o s'executa l'altre. I sempre n'hi haurà un d'ells que serà el que s'executarà.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXEMPLE 2 (view-only) — if/else amb obstacle
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>En Karel navega al voltant d'un obstacle</h2>
+
+        <p>En Karel es mou per una graella en la qual hi ha una roca que li bloca el pas. A cada pas del <code>for</code>, comprova si pot avançar: si pot, avança; si no pot, gira a l'esquerra i busca un camí alternatiu:</p>
+
+        <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,P,.|.,.,.,.,.,."
+             data-code="for i in range(5):
+    if front_is_clear():
+        move()
+    else:
+        turn_left()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="320">
+        </div>
+
+        <p>En Karel avança dues caselles, perquè la condició <code>front_is_clear</code> és certa. Llavors, com que troba una roca, la condició és falsa, i per tant salta al pas <code>else</code>, és a dir, gira en sentit antihorari. Tot seguit, amb les iteracions que queden, avança perquè la condició <code>front_is_clear</code> és certa. El programa no dona error perquè en Karel no ha xocat contra la roca: la instrucció <code>else</code> gestiona el cas inesperat de manera elegant.</p>
+        
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <p>Aquestes són totes les condicions que existeixen en el món d'en Karel:</p>
+        <ul>
+          <li><code>pearl_here()</code> — hi ha una perla a la casella actual?</li>
+          <li><code>front_is_clear()</code> — la casella del davant és lliure?</li>
+          <li><code>front_is_blocked()</code> — la casella del davant té un obstacle?</li>
+          <li><code>bag_is_empty()</code> — la motxilla no conté cap perla?</li>
+          <li><code>bag_is_full()</code> — la motxilla conté, com a mínim, una perla?</li>
+        </ul>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          El món d'en Karel conté una fila de cinc caselles: algunes tenen una perla i d'altres no. En Karel ha de recollir <strong>totes</strong> les perles que trobi, siguin on siguin. Escriu el codi perquè funcioni independentment de quines caselles tinguin perla.
+          <br><br>
+          <strong>Pista:</strong> usa un <code>for i in range(5):</code>. Dins del <code>for</code>, avança primer i llavors comprova amb <code>if pearl_here():</code> si has de recollir la perla.
+        </div>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.|K>,A,.,A,.,A|.,.,.,.,.,."
+             data-goal=".,.,.,.,.,.|.,.,.,.,.,K>|.,.,.,.,.,."
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="En Karel ha de recollir les tres perles disperses per la fila. Usa for i if per gestionar les caselles buides sense errors."
+             data-height="380">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ PREV / NEXT
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-6.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-8.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div><!-- .chapter-content-inner -->
+  </main>
+
+</div><!-- .curs-layout -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     Scripts
+     ══════════════════════════════════════════════════════ -->
+<script>const CURRENT_CAPITOL = 7;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

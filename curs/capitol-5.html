@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 5 — Funcions | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ════════════════════════════════════════════════════════
+     CAPÇALERA
+     ════════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+     ════════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 5</span>
+        <h1>Funcions</h1>
+        <p class="chapter-lead">Quan una mateixa seqüència d'instruccions apareix una i altra vegada, és el moment de donar-li un nom. En aquest capítol aprendrem <code>def nom():</code>, que ens permet inventar les nostres pròpies instruccions i que en Karel entendrà igual que <code>move()</code> o <code>grab()</code>.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 1
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Una seqüència d'instruccions que fem servir sovint</h2>
+
+        <p>Imagina que en Karel ha de pujar una escala de 3 graons. Per pujar un graó, el procés és sempre el mateix: gira a l'esquerra, avança, gira a la dreta, avança.</p>
+        
+        <p>Com que l'escala té 3 graons — i per cadascun hem dedicat 4 instruccions —, haurem d'escriure 12 instruccions. Si l'escala tingués 10 graons, hauríem d'escriure a mà 40 instruccions, però no té gaire sentit, perquè són repeticions de les 4 instruccions bàsiques.</p>
+
+        <p>Primer, observa com es puja <strong>un sol graó</strong>. Són 4 instruccions:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K>,P,P,P,."
+             data-code="turn_left()
+move()
+turn_right()
+move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="360">
+        </div>
+
+        <p>En Karel ha pujat un graó. Ara imagina que has de repetir-ho per cada graó d'una escala llarga.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — def nom():
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Escriure una instrucció nova: <code>def nom():</code></h2>
+
+        <p><code>def</code> (abreviació de <em>define</em>, «definir») permet crear una instrucció nova que en Karel reconeixerà igual que <code>move()</code> o <code>turn_left()</code>. La seva sintaxi és aquesta:</p>
+
+        <pre><code>def nom():
+    instrucció1()
+    instrucció2()
+    ...</code></pre>
+
+        <p>El nom que tries hauria de descriure clarament el que fa la funció. <code>puja_grao()</code> és molt millor que <code>cosa()</code> o <code>a()</code>.</p>
+
+        <p>Ara definim <code>puja_grao()</code> i pugem tres graons. Compara el codi d'aquí amb el que necessitaries sense <code>def</code>:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K>,P,P,P,."
+             data-code="def puja_grao():
+    turn_left()
+    move()
+    turn_right()
+    move()
+
+puja_grao()
+puja_grao()
+puja_grao()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="460">
+        </div>
+
+        <p>Amb 7 línies, aconseguim el mateix que amb 12 línies. A més de ser més breu, el codi és més llegible. De fet, quan llegim <code>puja_grao()</code>, sabem exactament el que fa, sense haver de desxifrar les quatre instruccions que conté.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 3 — Combinar funcions
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Les funcions es poden combinar</h2>
+
+        <p>Una funció pot cridar altres funcions al seu interior. Pots construir accions complexes a partir d'accions més simples, com en un joc de construccions.</p>
+
+        <p>Per exemple, si vols que en Karel faci «puja un graó i recull una perla», pots definir una nova funció:</p>
+
+        <pre><code>def puja_i_recull():
+    puja_grao()
+    grab()</code></pre>
+
+        <p>Això funciona sempre que <code>puja_grao()</code> ja estigui definit <strong>abans</strong> de ser cridat.</p>
+
+        <p>Regla important: les definicions <code>def</code> han d'anar <strong>sempre al principi del programa</strong>, abans del nostre programa principal.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel ha d'escalar una escala de quatre graons. A la casella de dalt de tot hi ha una perla. Defineix la funció <code>puja_grao()</code> i usa-la per arribar a la perla i recollir-la.
+        </div>
+
+        <p>Pista: defineix <code>puja_grao()</code> amb quatre instruccions. Llavors crida-la quatre vegades i afegeix un <code>grab()</code> al final.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,A,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|K>,P,P,P,P,."
+             data-goal=".,.,.,.,K>,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|.,P,P,P,P,."
+             data-code="# Defineix la funció puja_grao() aquí:
+
+
+# Crida-la quatre vegades i recull la perla:
+
+"
+             data-label="Exercici"
+             data-height="520">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-4.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-6.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = 5;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 6 — Descomposició | en Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ════════════════════════════════════════════════════════
+     CAPÇALERA
+     ════════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ════════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+     ════════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 6</span>
+        <h1>Descomposició</h1>
+        <p class="chapter-lead">Quan hem d'escriure un codi informàtic d'una situació complexa, la primera pregunta que ens hem de fer és <strong>«quines parts formen aquesta situació?»</strong> En aquest capítol aprendrem a dividir qualsevol missió en fases, escollint noms que siguin clars, de manera que el programa pugui comprendre-ho quasi com si estigués escrit en el nostre idioma i, d'altra banda, sigui comprensible per a nosaltres rellegir el codi que hem escrit.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 1 — Dividir per vèncer
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Dividir per vèncer</h2>
+
+        <p>Fins ara hem resolt situacions senzilles: pujar un graó, avançar cinc caselles, recollir una perla. Però, i si la missió d'en Karel té tres parts ben diferenciades?</p>
+
+        <p>Imagina que en Karel ha de: <strong>1)</strong> anar a buscar la primera perla, <strong>2)</strong> anar a buscar la segona perla, i <strong>3)</strong> tornar al punt de partida.</p>
+
+        <p>Si escrius totes les ordres seguides, obtens una llista sense categoritzar i que costa d'entendre. La solució és la <strong>descomposició</strong>: dividim la situació en parts, resolem cada part per separat i finalment agrupem totes les solucions. Cada part es converteix en una funció <code>def</code>.</p>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — El programa que s'explica sol
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Un programa que s'explica sol</h2>
+
+        <p>Llegeix el codi següent. Sense saber els detalls de cada funció, entens el que fa el programa?</p>
+
+        <pre><code>def recull_perla_est():
+    move()
+    move()
+    grab()
+
+def recull_perla_nord():
+    turn_left()
+    move()
+    move()
+    grab()
+
+def torna_al_inici():
+    turn_around()
+    move()
+    move()
+    turn_right()
+    move()
+    move()
+
+recull_perla_est()
+recull_perla_nord()
+torna_al_inici()</code></pre>
+
+        <p>En Karel recull, en primer lloc, la perla de l'Est; després, la del Nord; finalment, torna a la casella d'inici. Les tres últimes línies del codi expliquen el pla sencer.</p>
+        
+        <p>Si vols saber com es resol una de les tres situacions, llegeix la definició de la funció. Si vols entendre el pla general, llegeixes les tres últimes instruccions.</p>
+
+        <p>Nota: la instrucció <code>turn_around()</code> fa que en Karel giri 180°, és a dir, dona mitja volta però sense desplaçar-se.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           EXEMPLE 1 (view-only) — Missió en tres fases
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Missió en tres fases</h2>
+
+        <p>En Karel ha de fer 3 coses: recollir una perla, recollir-ne una altra i tornar al punt de partida.</p>
+
+        <p>Observa com el codi reflecteix exactament el pla de tres fases:</p>
+
+        <div class="simulador"
+             data-map=".,.,A,.,.|.,.,.,.,.|K>,.,A,.,.|.,.,.,.,.|.,.,.,.,."
+             data-code="def recull_perla_est():
+    move()
+    move()
+    grab()
+
+def recull_perla_nord():
+    turn_left()
+    move()
+    move()
+    grab()
+
+def torna_al_inici():
+    turn_around()
+    move()
+    move()
+    turn_right()
+    move()
+    move()
+
+recull_perla_est()
+recull_perla_nord()
+torna_al_inici()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="700">
+        </div>
+
+        <p>Les tres últimes línies del programa es llegeixen quasi com un pla escrit en llengua natural. Aquesta és la força de la descomposició: el codi explica <em>el que fa</em> sense que hagis d'anar línia per línia.</p>
+      </section>
+
+      <!-- ─────────────────────────────────────────────
+           EXEMPLE 2 (view-only) — Descomposició amb for
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Descomposició i repetició juntes</h2>
+
+        <p>La descomposició no exclou les iteracions <code>for</code>: pots combinar les dues tècniques. Una funció pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquella funció tantes vegades com calgui.</p>
+
+        <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és una funció independent, que internament usa <code>move()</code> i <code>drop()</code>:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
+             data-bag="2"
+             data-code="def deixa_perla_a_columna_2():
+    move()
+    move()
+    drop()
+
+def deixa_perla_a_columna_5():
+    move()
+    move()
+    move()
+    drop()
+
+# Fase 1
+deixa_perla_a_columna_2()
+
+# Fase 2 (en Karel ja és a columna 2, mira Est)
+deixa_perla_a_columna_5()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="Cada fase és independent. El programa principal és la llista de fases."
+             data-height="550">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel viu en un corredor horitzontal. Hi ha tres perles situades a les columnes 1, 3 i 5. Ha de recollir-les totes tres. Defineix una funció per a cada fase: <code>recull_primera()</code>, <code>recull_segona()</code> i <code>recull_tercera()</code>. A continuació, has de cridar les tres funcions, en ordre.
+        </div>
+
+        <p>Pista: pensa en com en Karel queda posicionat després de cada fase. <code>recull_primera()</code> el deixa a la columna 1 mirant Est; <code>recull_segona()</code> ha de partir des d'allà i arribar a la columna 3, etc.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.,.|K>,A,.,A,.,A,.|.,.,.,.,.,.,."
+             data-goal=".,.,.,.,.,.,.|.,.,.,.,.,.,K>|.,.,.,.,.,.,."
+             data-code="# Defineix les teves tres funcions aquí:
+
+
+# Crida les tres funcions en l'ordre adequat:
+
+
+"
+             data-label="Exercici"
+             data-height="500">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-5.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-7.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = 6;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

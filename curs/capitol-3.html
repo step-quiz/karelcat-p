@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 3 — Gestió d'errors en un codi | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 3</span>
+        <h1>Gestió d'errors en un codi</h1>
+        <p class="chapter-lead">Quan un programa no fa el que volem, diem que hi ha un error. Però no tots els errors són iguals. N'hi ha uns que apareixen <strong>abans</strong> que en Karel faci cap moviment, i n'hi ha que apareixen <strong>un cop s'ha iniciat</strong> el programa.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Dos moments, dos errors
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>On pot fallar un programa?</h2>
+
+        <p>Quan prems ▶ <strong>Executa</strong>, el sistema fa dues coses, i en aquest ordre:</p>
+
+        <ol>
+          <li>En primer lloc, llegeix el codi sencer, per entendre què ha de fer.</li>
+          <li>En segon lloc, executa les instruccions, una per una.</li>
+        </ol>
+
+        <p>Els errors poden ocorrer a la primera fase o a la segona. Els que apareixen a la primera fase s'anomenen <strong>errors de sintaxi</strong>. Els que apareixen a la segona, <strong>errors d'execució</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Error de sintaxi
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Error de sintaxi: el codi està mal escrit</h2>
+
+        <p>Un error de sintaxi vol dir que el codi té alguna paraula o símbol que el sistema no entén.</p>
+
+        <p>Exemples habituals d'errors de sintaxi:</p>
+        <ul>
+          <li>Oblidar els parèntesis: <code>move</code> en lloc de <code>move()</code>.</li>
+          <li>Escriure malament una ordre: <code>mov()</code> o <code>turnleft()</code> en lloc de <code>turn_left()</code>.</li>
+          <li>Oblidar els dos punts: <code>for i in range(3)</code> en lloc de <code>for i in range(3):</code>.</li>
+          <li>Indentar malament les línies d'un bloc.</li>
+        </ul>
+
+        <p>La característica clau és aquesta: <strong>aquest error es detecta abans que en Karel faci cap acció</strong>. El sistema llegeix el codi, troba que no l'entén, i s'atura immediatament. En Karel ni arriba a sortir de la seva casella.</p>
+
+        <p>En l'exemple següent, el codi té dues línies correctes i una tercera amb un error de sintaxi (falta els parèntesis a <code>move</code>). Executa'l i observa què passa:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+move
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="320">
+        </div>
+
+        <p>En Karel no s'ha mogut gens, tot i que les dues primeres línies eren correctes. Per què? Perquè el sistema llegeix el codi <em>sencer</em> abans d'executar-lo. Com que la tercera línia no s'entén, rebutja tot el programa sense executar-ne cap part.</p>
+
+        <p>Per corregir un error de sintaxi, llegeix el missatge d'error al log (la finestra inferior): t'indicarà en quina línia és el problema. Després revisa aquella línia amb atenció, busca el detall tipogràfic (un parèntesi, un caràcter oblidat, una paraula mal escrita) i corregeix-lo.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Error d'execució
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Error d'execució: en Karel fa una cosa no permesa</h2>
+
+        <p>Un error d'execució vol dir que el codi està ben escrit (el sistema l'entén), però a mig camí en Karel intenta fer una cosa que no és permesa amb les regles d'aquell món. El programa comença bé, es va executant, i en un moment concret s'atura amb un error.</p>
+
+        <p>Exemples típics d'errors d'execució:</p>
+        <ul>
+          <li>Intentar avançar quan tens una paret al davant (en Karel xoca).</li>
+          <li>Intentar avançar quan tens una roca al davant (en Karel xoca).</li>
+          <li>Fer <code>grab()</code> en una casella on no hi ha cap perla.</li>
+          <li>Fer <code>drop()</code> quan la motxilla no conté cap perla.</li>
+        </ul>
+
+        <p>La característica clau és aquesta: <strong>aquest error es detecta durant l'execució</strong>. En Karel comença a fer diverses accions, i s'atura just en el moment concret en què l'acció no és correcta.</p>
+
+        <p>En l'exemple següent, el codi té cinc ordres <code>move()</code>. Però el món només té cinc columnes i en Karel comença a la primera. Executa'l i observa que en Karel avança unes quantes caselles abans que el programa s'aturi:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|K>,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+move()
+move()
+move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="260">
+        </div>
+
+        <p>Veus la diferència? En el cas anterior (error de sintaxi) en Karel no es movia gens. Ara en Karel ha fet part del camí abans d'aturar-se. El codi estava ben escrit; el problema és que la <em>lògica</em> no encaixa amb el món.</p>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Comparativa
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comparativa dels dos tipus</h2>
+
+        <p>Aquesta taula resumeix la diferència:</p>
+
+        <table class="errors-compare">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Error de sintaxi</th>
+              <th>Error d'execució</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Quan es detecta</th>
+              <td>L'error s'assenyala immediatament i el programa no s'inicia.</td>
+              <td>L'error ocorre durant l'execució del codi, en l'instant on en Karel realitza una acció no permesa.</td>
+            </tr>
+            <tr>
+              <th>Què fa en Karel</th>
+              <td>En Karel no fa res, perquè no s'executa ni la primera línia de codi.</td>
+              <td>En Karel es mou i fa accions, fins al moment on hi ha una acció no permesa. Llavors, s'atura.</td>
+            </tr>
+            <tr>
+              <th>Com es corregeix</th>
+              <td>Els errors de sintaxi són senzills de resoldre: has de trobar una errada tipogràfica o de descuit (parèntesis, dos punts, nom mal escrit).</td>
+              <td>Els errors d'execució no sempre són immediats de resoldre: has de repensar la lògica del programa, o bé canviar l'ordre de les accions, o bé afegir o treure instruccions.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          El codi següent té un error. En Karel hauria d'avançar tres caselles i recollir la perla que hi ha al final però, tal i com està escrit, no funciona. Llegeix el missatge d'error, identifica de quin tipus és, i corregeix el codi.
+        </div>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|K>,.,.,A,.|.,.,.,.,."
+             data-goal=".,.,.,.,.|.,.,.,K>,.|.,.,.,.,."
+             data-code="move()
+move()
+move
+grab()
+"
+             data-label="Exercici"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-2.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-4.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = 3;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

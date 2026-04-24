@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curs de Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+</head>
+<body class="curs-light">
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     (logo centralitzat via injectCursLogo(), sense toggle de tema)
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <span class="curs-header-title">Curs de programació</span>
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+  <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+  <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-index-hero">
+  <h1>Aprèn a programar<br>amb en Karel</h1>
+  <p>
+    Deu capítols per descobrir la programació des de zero.
+    Llegeix, executa exemples i resol exercicis — tot des del navegador.
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LLISTA DE CAPÍTOLS
+     ══════════════════════════════════════════════════════ -->
+<ul class="capitols-list" id="capitols-list" aria-label="Llista de capítols">
+  <!-- Omplerta per capitols.js -->
+</ul>
+
+
+<!-- ══════════════════════════════════════════════════════
+     Scripts
+     ══════════════════════════════════════════════════════ -->
+<script src="capitols.js"></script>
+<script>
+  // Injecta el logo de la medusa al header (font única de veritat)
+  injectCursLogo();
+
+  // Genera la llista de capítols a partir de CAPITOLS_DATA.
+  //
+  // DISPONIBLES: conjunt de números de capítol que ja tenen arxiu HTML creat.
+  // Quan afegeixis un capítol-N.html nou, incorpora N a aquest set.
+  (function renderIndex() {
+    const list = document.getElementById('capitols-list');
+    if (!list) return;
+
+    const DISPONIBLES = new Set([1,2,4,5,6,7,8,9,10,'futur']);
+
+    let html = '';
+    for (const c of CAPITOLS_DATA) {
+      const disponible = DISPONIBLES.has(c.num);
+      const cardClass  = disponible ? 'capitol-card' : 'capitol-card capitol-card--pendent';
+      const href       = disponible ? c.arxiu : '#';
+      const numLabel   = (typeof c.num === 'number') ? c.num : '—';
+
+      html += `
+        <li class="${cardClass}">
+          <a href="${href}" ${!disponible ? 'aria-disabled="true" tabindex="-1"' : ''}>
+            <span class="capitol-card-num">${numLabel}</span>
+            <span class="capitol-card-info">
+              <span class="capitol-card-titol">${c.titol}</span>
+            </span>
+            <span class="capitol-card-arrow">${disponible ? '→' : '···'}</span>
+          </a>
+        </li>`;
+    }
+    list.innerHTML = html;
+  })();
+</script>
+
+<script>
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
+})();
+</script>
+
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+<script src="../footer.js"></script>
+</body>
+</html>

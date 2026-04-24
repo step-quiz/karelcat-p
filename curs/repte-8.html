@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 8 — El vigilant | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    .dificultat-badge { display:inline-flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-weight:700;letter-spacing:0.04em;padding:0.2rem 0.65rem;border-radius:999px;vertical-align:middle;margin-left:0.6rem; }
+    .dificultat-facil { background:#d1fae5;color:#065f46; }
+    .dificultat-intermedi { background:#fef3c7;color:#92400e; }
+    .dificultat-dificil { background:#fee2e2;color:#991b1b; }
+    .consell-box { background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1.2rem 0;font-size:0.93rem;color:#0c4a6e; }
+    .consell-box strong { display:block;margin-bottom:0.3rem;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:#0284c7; }
+  </style>
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link active">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link">Capítols</a>
+      <a href="repte-1.html" class="sgn-link sgn-active">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 8 — El vigilant
+          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
+        </h2>
+
+        <div class="exercise-enunciat">
+          En Karel és un vigilant que patrulla el perímetre d'una illa rectangular.
+          Comença a la cantonada inferior esquerra, mirant cap a l'Est. Ha de donar
+          una volta completa a l'illa i tornar al punt de partida, seguint la vora
+          exterior.<br>
+          Al llarg del perímetre, algunes caselles tenen una perla. En Karel les ha de
+          recollir <strong>totes</strong> durant la seva ronda.<br><br>
+          <strong>La teva tasca:</strong> escriu un programa que funcioni per a qualsevol mida
+          d'illa rectangular. El teu codi no pot dependre del nombre de caselles.
+        </div>
+
+        <details class="consell-box">
+          <summary><strong>💡 Pista — la regla del vigilant</strong></summary>
+          <div class="consell-body">
+Defineix una funció <code>pas_vigilant()</code> que faci exactament un pas de la ronda:
+primer, si hi ha perla, recull-la; després, si pots avançar, avança; si no pots
+avançar, vol dir que has arribat a una cantonada: llavors, gira a l'esquerra.
+</div>
+        </details>
+
+        <details class="consell-box">
+          <summary><strong>💡 Pista — detectar el punt de partida</strong></summary>
+          <div class="consell-body">
+Per fer tota la volta sencera, pots repetir 4 vegades el <code>pas_vigilant()</code>, i sempre funcionarà, perquè un rectangles té 4 costats.
+</div>
+        </details>
+
+        <div class="simulador"
+             data-maps='[".,A,.,.|.,.,.,A|K>,A,.,.", ".,.,A,.,.|.,.,.,.,A|K>,.,A,.,.", ".,A,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,A|K>,.,A,.,.,A"]'
+             data-goals='[".,.,.,.|.,.,.,.|K>,.,.,.", ".,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,.,.,." ]'
+             data-labels='["4×3", "5×3", "6×4"]'
+             data-bag="1"
+             data-code="# ── Funció pas_vigilant() ──
+def pas_vigilant():
+
+
+
+
+# ── Programa principal ──
+
+"
+             data-title="El mateix codi ha de funcionar per als tres mons rectangulars."
+             data-height="380">
+        </div>
+
+      </section>
+
+
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-7.html" class="btn-nav btn-nav--prev">← Repte 7</a>
+        <a href="repte-9.html" class="btn-nav btn-nav--next">Repte 9 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+
+def pas_vigilant():
+    if pearl_here():
+        grab()
+    if front_is_clear():
+        move()
+    else:
+        turn_right()
+
+drop()
+move()
+
+while not pearl_here():
+    pas_vigilant()
+
+grab()
+
+  Clau pedagògica: front_is_clear() + turn_right() és suficient per
+  seguir un perímetre rectangular. Les quatre cantonades es gestionen
+  amb el mateix else. L'ús de drop() com a marcador anticipa el repte 13.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 8;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

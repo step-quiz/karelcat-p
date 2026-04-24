@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futur — D'en Karel al Python | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Futur</span>
+        <h1>D'en Karel al Python</h1>
+        <p class="chapter-lead">Has completat els deu capítols del curs. Has après a pensar com un programador: descompondre problemes, escriure iteracions, prendre decisions i crear funcions. Ara ve la sorpresa: tot el que has escrit ja era Python de debò.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 1 — Glossari complet
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Glossari</h2>
+
+        <p>Aquest és el vocabulari complet d'en Karel.</p>
+
+        <h3>Accions: el que en Karel <em>fa</em></h3>
+        <pre><code>move()           # avança una casella en la direcció que mira
+turn_left()      # gira 90° a l'esquerra (no es mou)
+turn_right()     # gira 90° a la dreta (no es mou)
+turn_around()    # fa mitja volta (180°), no es mou
+grab()           # recull la perla de la casella actual
+drop()           # deixa una perla a la casella actual</code></pre>
+
+        <h3>Condicions: el que en Karel <em>pot preguntar</em></h3>
+        <pre><code>front_is_clear()      # el davant és lliure?
+front_is_blocked()    # el davant té obstacle?
+left_is_clear()       # l'esquerra és lliure?
+right_is_clear()      # la dreta és lliure?
+pearl_here()          # hi ha una perla en aquesta casella?
+bag_is_empty()        # la motxilla és buida?</code></pre>
+
+        <h3>Estructures: la <em>forma</em> del programa</h3>
+        <pre><code>for i in range(5):       # repetir un nombre exacte de vegades
+    move()
+
+while front_is_clear():  # repetir mentre es compleixi una condició
+    move()
+
+if pearl_here():         # decidir entre dues opcions
+    grab()
+else:
+    move()
+
+if right_is_clear():     # decidir entre tres o més opcions
+    turn_right()
+elif front_is_clear():
+    move()
+else:
+    turn_left()
+
+def anar_al_final():     # crear una instrucció pròpia
+    while front_is_clear():
+        move()</code></pre>
+
+        <h3>Operadors lògics: combinar condicions</h3>
+        <pre><code>if front_is_clear() and not pearl_here():
+    move()
+
+if pearl_here() or bag_is_empty():
+    grab()</code></pre>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — Precondició i postcondició
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Pensar abans d'escriure: precondició i postcondició</h2>
+
+        <p>Quan decideixes crear una funció pròpia fent servir <code>def</code>, li estàs ensenyant a en Karel una paraula nova. Aquí entren dues idees que les persones que programen <strong>en l'àmbit professional</strong> sempre tenen al cap:</p>
+
+        <ul>
+          <li>Precondició. Quina és la situació just <em>abans</em> que comenci la meva funció. On és en Karel? Cap a on mira? Què hi ha al voltant?</li>
+          <li>Postcondició. Quina situació deixo <em>després</em> que la funció s'hagi executat. On haurà acabat, en Karel? Cap a on estarà mirant? Ha canviat alguna condició del món, com per exemple el nombre de perles que hi ha?</li>
+        </ul>
+
+        <p>Mira aquest exemple. Volem una funció <code>girar_cantonada_dreta()</code> perquè en Karel giri a la dreta i avanci una casella:</p>
+
+        <pre><code>def girar_cantonada_dreta():
+    # Precondició:  en Karel té la dreta lliure
+    # Postcondició: en Karel ha girat 90° a la dreta i ha avançat 1 casella
+    turn_right()
+    move()</code></pre>
+
+        <p>Si crides aquesta funció amb una paret a la dreta, en Karel s'estavellarà. La culpa no és de la funció: és de qui l'ha cridat sense respectar la precondició. Per això abans d'usar-la sempre comprovaràs <code>if right_is_clear():</code>.</p>
+
+        <p>Aquest hàbit — escriure mentalment (o en un comentari) <em>què espero</em> i <em>què deixo</em> — és una de les diferències més grans que trobem quan es programa en l'àmbit professional. T'estalviarà hores de cercar errors i és, de debò, una de les bones pràctiques que més et farà créixer com a programadora o programador.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 3 — Tot és Python
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Tot el que has escrit és Python</h2>
+
+        <p>Potser no t'ho esperaves: el codi que has escrit durant tot el curs és <strong>Python real</strong>.</p>
+
+        <p><code>for</code>, <code>while</code>, <code>if</code>, <code>elif</code>, <code>else</code>, <code>def</code>, <code>and</code>, <code>or</code>, <code>not</code>… tot això és Python. No una versió simplificada. No un llenguatge de joguina. Python de debò.</p>
+
+        <p>La diferència és que en Karel, les úniques «accions» eren <code>move()</code>, <code>grab()</code>, <code>turn_left()</code>… En Python real, les accions són molt més variades: pots escriure text a la pantalla, llegir fitxers, fer càlculs matemàtics, crear pàgines web, entrenar intel·ligències artificials. Però l'estructura del codi — iteracions, condicions, funcions — és exactament la que ja coneixes.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 4 — Comparativa
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Compara: en Karel vs. Python</h2>
+
+        <p>Fixa't com l'estructura és idèntica. Només canvien les accions de dins:</p>
+
+        <pre><code># Karel                           # Python
+for i in range(5):                for i in range(5):
+    move()                            print("Hola!")
+
+if pearl_here():                  if edat >= 18:
+    grab()                            print("Major d'edat")
+else:                             else:
+    move()                            print("Menor d'edat")
+
+def puja_grao():                  def saluda(nom):
+    turn_left()                       print("Hola, " + nom)
+    move()
+    turn_right()
+    move()</code></pre>
+
+        <p>La columna de l'esquerra la coneixes bé. La de la dreta és Python per a un ordinador real. Fixa't: l'estructura és idèntica.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 5 — Què hi ha de nou
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Què hi ha de nou a Python?</h2>
+
+        <p>Python afegeix coses que en Karel no necessitava:</p>
+
+        <p><strong>Variables</strong> — en Karel, la motxilla era l'única manera de «recordar» un número. En Python, pots guardar qualsevol valor amb un nom:</p>
+
+        <pre><code>punts = 0
+punts = punts + 10</code></pre>
+
+        <p><strong>Entrada i sortida</strong> — en Karel, el resultat del programa era la posició final d'en Karel al món. En Python, pots demanar informació a l'usuari i mostrar-li resultats:</p>
+
+        <pre><code>nom = input("Com et dius? ")
+print("Hola, " + nom + "!")</code></pre>
+
+        <p><strong>Tipus de dades</strong> — en Karel, tot eren caselles i perles. En Python hi ha números (<code>42</code>, <code>3.14</code>), text (<code>"Hola"</code>), llistes (<code>[1, 2, 3]</code>), i molt més.</p>
+
+        <p>Però la manera de pensar — descompondre el problema, crear funcions amb noms clars, usar iteracions i condicions — és la mateixa. Això és el que has après amb en Karel: no un llenguatge, sinó <strong>una manera de pensar</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 6 — Les 5 idees
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Les idees que no canvien mai</h2>
+
+        <p>Sigui quin sigui el llenguatge de programació que aprenguis en el futur (JavaScript, C, Java, Rust, Go…), hi trobaràs les mateixes cinc idees:</p>
+
+        <ol>
+          <li><strong>Seqüència:</strong> les instruccions s'executen en ordre, de dalt a baix.</li>
+          <li><strong>Repetició:</strong> <code>for</code> i <code>while</code> existeixen a tots els llenguatges.</li>
+          <li><strong>Decisió:</strong> <code>if/else</code> existeix a tots els llenguatges.</li>
+          <li><strong>Abstracció:</strong> les funcions (<code>def</code>) permeten donar noms a blocs de codi reutilitzables.</li>
+          <li><strong>Descomposició:</strong> partir un problema en parts amb noms clars és la tècnica fonamental de l'enginyeria del software.</li>
+        </ol>
+
+        <p>Aquestes cinc idees les has practicat amb en Karel. Ara les portaràs amb tu.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 7 — Per on continuo
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Per on continuo?</h2>
+
+        <p>Ara ves als <strong>Reptes</strong>. Combina tot el que saps per resoldre els problemes que se't plantegen. Un últim consell: abans de teclejar línies de codi, agafa paper i llapis, i pensa bé la teva estratègia!</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-10.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="repte-1.html" class="btn-nav btn-nav--next">Reptes →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = "futur";</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../footer.js"></script>
+</body>
+</html>

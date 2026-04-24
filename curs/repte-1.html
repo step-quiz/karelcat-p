@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 1 — Recollir el tresor | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil    { background: #d1fae5; color: #065f46; }
+    .dificultat-intermedi{ background: #fef3c7; color: #92400e; }
+    .dificultat-dificil  { background: #fee2e2; color: #991b1b; }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
+    }
+  </style>
+  <link rel="stylesheet" href="../nav.css">
+<style>
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link active">Reptes</a>
+      <a href="../simulador.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+
+  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link">Capítols</a>
+      <a href="repte-1.html" class="sgn-link sgn-active">Reptes</a>
+      <a href="../simulador.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+        <p class="chapter-lead">
+          Aquí no aprendràs sintaxi nova. Ara toca combinar el que saps
+          per resoldre problemes per tu mateix/a. Pensa bé què vols fer
+          abans d'escriure cap línia de codi.
+        </p>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           INTRODUCCIÓ ALS REPTES
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section">
+        <h2>Com funcionen els reptes</h2>
+        <p>
+          Cada repte té un <strong>enunciat</strong> que descriu la situació i
+          el que has d'aconseguir. El simulador et mostra el món inicial. El teu
+          objectiu és escriure un codi que funcioni <em>en qualsevol dels mons
+          de test</em>, no només en el primer que veus.
+        </p>
+        <p>
+          Els reptes estan organitzats en tres nivells de dificultat:
+          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
+          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
+          <span class="dificultat-badge dificultat-dificil">★★★ Avançat</span>
+        </p>
+        <p>
+          Comença per aquest primer repte i avança al teu ritme. Si t'encalles,
+          rellegeix els capítols anteriors: la solució sempre usa eines que ja
+          coneixes.
+        </p>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE 1 — RECOLLIR EL TRESOR
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 1 — Recollir el tresor
+          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
+        </h2>
+
+        <div class="exercise-enunciat">
+          En Karel veu una perla davant seu, a tres caselles de
+          distància. Has d'escriure un programa perquè hi arribi
+          i la reculli.
+          <strong>La teva feina:</strong> en Karel ha d'avançar fins a la
+          casella on hi ha la perla i, un cop és a sobre d'ella, recollir-la.
+          <strong>Important:</strong> hi ha tres mons de test. En tots tres,
+          la perla és exactament a tres caselles de distància — l'únic que
+          canvia és el paisatge del voltant. El teu codi ha de funcionar
+          igualment en els tres mons.
+        </div>
+
+        
+
+        <!-- Simulador multi-món: un sol editor, tres mons de test -->
+        <div class="simulador"
+             data-maps='[".,.,.,.,.|K>,.,.,A,.|.,.,.,.,.", "P,P,P,P,P|K>,.,.,A,.|P,P,P,P,P", ".,P,.,P,.|K>,.,.,A,.|.,P,.,P,."]'
+             data-goals='[".,.,.,.,.|.,.,.,K>,.|.,.,.,.,.", "P,P,P,P,P|.,.,.,K>,.|P,P,P,P,P", ".,P,.,P,.|.,.,.,K>,.|.,P,.,P,."]'
+             data-labels='["Camp obert", "Corredor", "Amb obstacles"]'
+             data-code="# En Karel ha d'arribar a la perla i recollir-la.
+"
+             data-height="320">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-futur.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="repte-2.html" class="btn-nav btn-nav--next">Repte 2 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  ════════════════════════════════════════════════════════
+
+  move()
+  move()
+  move()
+  grab()
+
+  ════════════════════════════════════════════════════════
+-->
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  REPTE ANTERIOR ARXIVAT — «EL DIARI»
+  Versió original del Repte 1, retirada per excés de
+  dificultat com a primer repte. Es manté aquí per si es
+  vol recuperar com a repte intermedi en el futur.
+  ════════════════════════════════════════════════════════
+
+  ENUNCIAT:
+  En Karel té a prop una cova de roques. Cada matí entra a la cova,
+  recull la perla que hi ha al fons, i torna a casa.
+
+  La teva feina: escriu el programa perquè en Karel
+  (1) entri a la cova, (2) reculli la perla, i (3) torni al
+  punt de partida.
+
+  Restricció: has d'usar tres funcions amb noms clars:
+  entra_a_la_cova(), recull_la_perla() i torna_a_casa().
+  El programa principal ha de ser:
+      entra_a_la_cova()
+      recull_la_perla()
+      torna_a_casa()
+  La fondària de la cova és desconeguda; el codi ha de
+  funcionar per als tres mons de test.
+
+  MONS DE TEST (data-maps):
+  [
+    ".,P,P,P|K>,.,A,P|.,P,P,P",
+    ".,P,P,P,P|K>,.,.,A,P|.,P,P,P,P",
+    ".,P,P,P,P,P|K>,.,.,.,A,P|.,P,P,P,P,P"
+  ]
+
+  GOALS (data-goals):
+  [
+    ".,P,P,P|K>,.,.,P|.,P,P,P",
+    ".,P,P,P,P|K>,.,.,.,P|.,P,P,P,P",
+    ".,P,P,P,P,P|K>,.,.,.,.,P|.,P,P,P,P,P"
+  ]
+
+  LABELS: ["Cova curta", "Cova estàndard", "Cova llarga"]
+
+  SCAFFOLD DE CODI INICIAL:
+      def entra_a_la_cova():
+          # El teu codi aquí
+
+      def recull_la_perla():
+          # El teu codi aquí
+
+      def torna_a_casa():
+          # El teu codi aquí
+
+      # ── Programa principal ──
+      entra_a_la_cova()
+      recull_la_perla()
+      torna_a_casa()
+
+  SOLUCIÓ DE REFERÈNCIA:
+      def entra_a_la_cova():
+          while front_is_clear():
+              move()
+
+      def recull_la_perla():
+          grab()
+
+      def torna_a_casa():
+          turn_around()
+          while front_is_clear():
+              move()
+          turn_around()
+
+      entra_a_la_cova()
+      recull_la_perla()
+      torna_a_casa()
+
+  ════════════════════════════════════════════════════════
+-->
+
+
+<script>const CURRENT_REPTE = 1;</script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
+<script src="../kofi.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>
