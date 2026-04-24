@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ca">
-<head>
+<html lang="ca"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 10 — Codi net | Karel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
 <style>
@@ -149,7 +148,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 10</span>
         <h1>Codi net</h1>
-        <p class="chapter-lead">Que un programa funcioni no vol dir que estigui ben escrit. En aquest capítol veuràs per què val la pena escriure codi net, amb exemples concrets i situacions que reconeixeràs.</p>
+        <p class="chapter-lead">En aquest capítol expliquem com pots escriure "codi net"</p>
       </header>
 
 
@@ -158,9 +157,9 @@
            SECCIÓ 1 — El problema del copia-enganxa
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2>El problema del copia-enganxa</h2>
+        <h2 class="">No sempre és bona idea fer... copia-enganxa</h2>
 
-        <p>En Karel ha de recórrer un corredor recollint totes les perles que troba. Aquí tens dues solucions que fan exactament el mateix. Llegeix-les i fixa't en les diferències:</p>
+        <p class="">Aquí tens dos programes que fan exactament el mateix. Fixa't en les diferències:</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -196,30 +195,23 @@ while front_is_clear():
           </div>
         </div>
 
-        <p>El codi brut té un problema molt concret: si el corredor canvia de mida, has d'afegir o treure línies a mà. Si vols canviar la lògica —per exemple, <em>deixar</em> una perla en lloc de recollir-la— has de fer el canvi en sis llocs alhora. I és molt fàcil oblidar-ne un.</p>
+        <p class="">El "codi brut" és molt llarg! I, a més, si vols canviar alguna cosa, és complicat i et pots equivocar en alguna línia.</p>
 
-        <p>La versió neta diu literalment el que fa: «mentre puguis avançar, avança i recull». Funciona per a qualsevol mida de corredor sense tocar res. Comprova-ho: el codi és idèntic en els tres mons però s'adapta als corredors de 5, 7 i 10 caselles:</p>
+        <p class="">El "codi net" és molt més senzill, i es llegeix millor. És molt fàcil fer algun canvi o millora.</p>
 
-        <div class="simulador"
-             data-maps='["K>,A,.,A,.", "K>,.,A,.,A,.,A", "K>,A,.,.,A,.,A,.,.,A"]'
-             data-goals='[".,.,.,.,K>", ".,.,.,.,.,.,K>", ".,.,.,.,.,.,.,.,.,K>"]'
-             data-code="def avançar_i_recollir():
+        <div class="simulador" data-maps="[&quot;K&gt;,A,.,A,.&quot;, &quot;K&gt;,.,A,.,A,.,A&quot;, &quot;K&gt;,A,.,.,A,.,A,.,.,A&quot;]" data-goals="[&quot;.,.,.,.,K&gt;&quot;, &quot;.,.,.,.,.,.,K&gt;&quot;, &quot;.,.,.,.,.,.,.,.,.,K&gt;&quot;]" data-code="def avançar_i_recollir():
     move()
     if pearl_here():
         grab()
 
 while front_is_clear():
     avançar_i_recollir()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-title="El codi és exactament el mateix als tres mons. Canvia de món amb els botons de sota el simulador."
-             data-height="400">
+" data-readonly="true" data-label="Exemple" data-title="El codi és exactament el mateix als tres mons. Canvia de món amb els botons de sota el simulador." data-height="400">
         </div>
 
-        <p>Aquesta és la primera regla del codi net: <strong>no dupliquis codi innecessàriament</strong>. Quan veus el mateix bloc repetit dues o tres vegades, és el moment de crear una funció i usar un bucle.</p>
+        <p class=""><br></p>
 
-        <p>Aquesta idea té un nom en el món de la programació: <strong>DRY</strong>, que significa <em>Don't Repeat Yourself</em> («no et repeteixis»). El seu contrari —el codi que acabes de veure repetit sis vegades— es diu <strong>WET</strong> (<em>Write Everything Twice</em>). Quan escrius codi net, escrius codi DRY.</p>
+        <p class=""><br></p>
       </section>
 
 
@@ -228,9 +220,9 @@ while front_is_clear():
            SECCIÓ 2 — Els noms importen
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2>Els noms importen</h2>
+        <h2 class="">Els noms que posem, els hem de pensar bé</h2>
 
-        <p>El nom que li poses a una funció és la primera cosa que llegirà qualsevol persona que vegi el teu codi, inclòs tu mateix l'endemà. Aquí tens dues versions d'un programa que fan el mateix: en Karel recorre un corredor i recull cada perla que troba:</p>
+        <p class="">Aquí tens dos programes que fan el mateix: en Karel recorre un corredor i recull cada perla que troba. Fixa't en la diferència... la veus?</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -255,27 +247,21 @@ while front_is_clear():
           </div>
         </div>
 
-        <p>Amb <code>p()</code> no pots saber què fa la funció sense llegir el seu interior. Amb <code>recollir_si_hi_ha_perla()</code>, el codi principal es llegeix com una frase: «mentre puguis avançar, avança i recull si hi ha perla». No cal ni anar a mirar la definició.</p>
+        <p class="">El títol&nbsp;<code>p()</code>&nbsp;, no vol dir res!<br>En canvi, el títol&nbsp;<code>recollir_si_hi_ha_perla()</code>&nbsp;ens explica molt bé què volem fer.</p>
 
-        <p>Observa-ho en acció. El codi de la dreta —la versió neta— és el que s'executa:</p>
+        <p class=""><br></p>
 
-        <div class="simulador"
-             data-map="K>,A,.,A,.,.,A,."
-             data-code="def recollir_si_hi_ha_perla():
+        <div class="simulador" data-map="K&gt;,A,.,A,.,.,A,." data-code="def recollir_si_hi_ha_perla():
     if pearl_here():
         grab()
 
 while front_is_clear():
     move()
     recollir_si_hi_ha_perla()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-title="recollir_si_hi_ha_perla() explica exactament el que fa: comprova si hi ha una perla i, si n'hi ha, la recull."
-             data-height="290">
+" data-readonly="true" data-label="Exemple" data-title="recollir_si_hi_ha_perla() explica exactament el que fa: comprova si hi ha una perla i, si n'hi ha, la recull." data-height="290">
         </div>
 
-        <p>La segona regla: <strong>posa noms que expliquen el que fa la funció</strong>. <code>recollir_si_hi_ha_perla()</code> és molt millor que <code>p()</code>. <code>avançar_fins_a_paret()</code> és molt millor que <code>f()</code>. El nom és la documentació més bàsica que pots donar al teu codi.</p>
+        <p class=""><br></p>
       </section>
 
 
@@ -284,11 +270,11 @@ while front_is_clear():
            SECCIÓ 3 — Una funció, una idea
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2>Una funció, una idea</h2>
+        <h2 class=""><br></h2>
 
-        <p>Cada funció hauria de fer <em>una sola cosa</em> i tenir un nom que la descrigui exactament. Si quan expliques el que fa una funció necessites dir «fa X <strong>i també</strong> fa Y», és senyal que potser hauries de partir-la en dues.</p>
+        <p class=""><br></p>
 
-        <p>Aquí en Karel ha d'avançar fins al final d'un corredor i deixar-hi una perla:</p>
+        <p class=""><br></p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -312,25 +298,18 @@ drop()</code></pre>
           </div>
         </div>
 
-        <p>La versió neta té un avantatge clar: <code>avançar_fins_a_paret()</code> és tan genèrica que la pots reutilitzar en qualsevol repte futur, en qualsevol direcció, sense importar el que vulguis fer en arribar. La versió bruta lliga el moviment amb l'acció de deixar una perla, de manera que la funció només serveix per a aquest cas concret i no pot aprofitar-se en cap altre context.</p>
+        <p class=""><br></p>
 
-        <div class="simulador"
-             data-map="K>,.,.,.,.,.,.,."
-             data-bag="1"
-             data-code="def avançar_fins_a_paret():
+        <div class="simulador" data-map="K&gt;,.,.,.,.,.,.,." data-bag="1" data-code="def avançar_fins_a_paret():
     while front_is_clear():
         move()
 
 avançar_fins_a_paret()
 drop()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-title="avançar_fins_a_paret() no sap —ni li importa— el que es farà en arribar. Això la fa reutilitzable en qualsevol situació."
-             data-height="290">
+" data-readonly="true" data-label="Exemple" data-title="avançar_fins_a_paret() no sap —ni li importa— el que es farà en arribar. Això la fa reutilitzable en qualsevol situació." data-height="290">
         </div>
 
-        <p>La tercera regla: <strong>cada funció, una idea</strong>. Funcions petites i enfocades en una sola tasca són fàcils d'entendre, fàcils de modificar i molt fàcils de reutilitzar en altres programes.</p>
+        <p class=""><br></p>
       </section>
 
 
@@ -339,9 +318,9 @@ drop()
            SECCIÓ 4 — Codi net avui, temps guanyat demà
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2>Codi net avui, temps guanyat demà</h2>
+        <h2 class=""><br></h2>
 
-        <p>El codi net no és qüestió d'estètica. Té efectes molt concrets i pràctics que notes des del primer dia:</p>
+        <p class=""><br></p>
 
         <div class="beneficis-grid">
 
@@ -349,8 +328,8 @@ drop()
             <h3>⏱ A curt termini</h3>
             <ul>
               <li><strong>Trobes errors més de pressa.</strong> Amb <code>avançar_i_recollir()</code> saps exactament on mirar. Amb <code>f()</code> i <code>bb()</code> has de llegir funció per funció fins a entendre qui fa què.</li>
-              <li><strong>Modifiques en un sol lloc.</strong> Vols que en Karel deixi dues perles en lloc d'una? Canvies la definició de la funció i el canvi s'aplica arreu. Amb codi repetit, has de buscar i modificar cada còpia.</li>
-              <li><strong>Rellegeixes el teu codi l'endemà.</strong> <code>while front_is_clear(): avançar_i_recollir()</code> s'entén d'un cop d'ull. Sis blocs iguals copiats t'obliguen a reubicar-te de zero.</li>
+              <li class=""><strong>Modifiques en un sol lloc.</strong> Vols que en Karel deixi dues perles en lloc d'una? Canvies la definició de la funció i el canvi s'aplica arreu. Amb codi repetit, hauries de buscar i modificar cada còpia.</li>
+              <li class=""><strong>Rellegeixes el teu codi l'endemà.</strong> <code>while front_is_clear(): avançar_i_recollir()</code> s'entén d'un cop d'ull.</li>
             </ul>
           </div>
 
@@ -374,11 +353,11 @@ drop()
 
         </div>
 
-        <p>En resum, tres regles simples:</p>
+        <p class="">En resum, tres regles simples:</p>
         <ul>
-          <li><strong>No dupliquis codi innecessàriament.</strong> Si veus el mateix bloc repetit dues o tres vegades, crea una funció i usa un bucle.</li>
-          <li><strong>Posa noms que expliquen.</strong> <code>avançar_i_recollir()</code> sempre és millor que <code>fer_cosa()</code>.</li>
-          <li><strong>Cada funció, una idea.</strong> Si quan expliques una funció uses la paraula «i també», considera partir-la en dues.</li>
+          <li class=""><strong>No dupliquis codi.</strong></li>
+          <li class=""><strong>Posa noms que expliquin bé el que fas.</strong> <code>avançar_i_recollir()</code> sempre és millor que <code>fer_cosa()</code>.</li>
+          <li class=""><strong>Cada funció, una idea.</strong> Quan escrius una funció, ha de ser per aconseguir un sol objectiu, i no per fer tres coses alhora.</li>
         </ul>
       </section>
 
@@ -387,9 +366,7 @@ drop()
       <!-- ═══════════════════════════════════════════════════
            EXERCICI 1 — Fàcil
            ═══════════════════════════════════════════════════ -->
-      <section class="chapter-section chapter-exercise">
-        <span class="ex-dificultat ex-facil">EXERCICI 1 — Fàcil</span>
-        <h2>Elimina la repetició</h2>
+      <section class="chapter-section chapter-exercise"><br><h2 class="">Exercici. Netegem el codi</h2>
 
         <div class="exercise-enunciat">
           El codi de sota funciona, però és brut: copia el mateix bloc set vegades. La teva tasca és reescriure'l de manera neta usant una funció i un <code>while</code>. El resultat ha de ser el mateix: en Karel ha de recórrer tot el corredor i recollir totes les perles.
@@ -421,15 +398,7 @@ if pearl_here():
 
         <p><strong>Pista:</strong> crea una funció <code>avançar_i_recollir()</code> que faci el <code>move()</code> i el <code>if pearl_here(): grab()</code>. Després usa un <code>while front_is_clear():</code> per cridar-la tantes vegades com calgui, sigui quin sigui el corredor.</p>
 
-        <div class="simulador"
-             data-map="K>,A,.,.,A,.,A,."
-             data-goal=".,.,.,.,.,.,.,K>"
-             data-code="# Escriu aquí la versió NETA del codi brut de dalt:
-
-"
-             data-label="Exercici"
-             data-title="El corredor té 8 caselles. En Karel ha d'arribar fins al final i recollir totes les perles del camí."
-             data-height="360">
+        <div class="simulador" data-map="K&gt;,A,.,.,A,.,A,." data-goal=".,.,.,.,.,.,.,K&gt;" data-code="" data-label="Exercici" data-title="El corredor té 8 caselles. En Karel ha d'arribar fins al final i recollir totes les perles del camí." data-height="360">
         </div>
       </section>
 
@@ -467,15 +436,7 @@ g()</code></pre>
 
         <p><strong>Pista:</strong> canvia els noms de <code>f</code> i <code>g</code> per noms que descriguin el que fan. Afegeix una funció <code>avançar_fins_a_paret()</code> que usi <code>while front_is_clear(): move()</code> en lloc dels tres <code>move()</code> explícits. Recorda que <code>turn_right()</code> existeix com a instrucció directa si vols simplificar el gir.</p>
 
-        <div class="simulador"
-             data-map="K>,.,.,.|P,P,P,A"
-             data-goal=".,.,.,.|P,P,P,Kv"
-             data-code="# Escriu aquí la versió NETA del codi brut de dalt:
-
-"
-             data-label="Exercici"
-             data-title="En Karel ha d'arribar a la cantonada inferior dreta i recollir la perla."
-             data-height="340">
+        <div class="simulador" data-map="K&gt;,.,.,.|P,P,P,A" data-goal=".,.,.,.|P,P,P,Kv" data-code="" data-label="Exercici" data-title="En Karel ha d'arribar a la cantonada inferior dreta i recollir la perla." data-height="340">
         </div>
       </section>
 
@@ -543,16 +504,7 @@ ff()</code></pre>
           <li>Les funcions <code>aa</code> i <code>bb</code> gairebé no calen si defineixes bé les funcions compostes.</li>
         </ul>
 
-        <div class="simulador"
-             data-map="K>,A,.,A,.,A,.,."
-             data-goal="K<,.,.,.,A,A,A,."
-             data-code="# Escriu aquí la versió NETA del codi brut de dalt.
-# Hauria de quedar llegible en menys de 15 línies.
-
-"
-             data-label="Exercici"
-             data-title="En Karel ha de recollir les 3 perles anant cap a la dreta, girar i tornar deixant-les mentre camina cap a l'esquerra."
-             data-height="400">
+        <div class="simulador" data-map="K&gt;,A,.,A,.,A,.,." data-goal="K&lt;,.,.,.,A,A,A,." data-code="" data-label="Exercici" data-title="En Karel ha de recollir les 3 perles anant cap a la dreta, girar i tornar deixant-les mentre camina cap a l'esquerra." data-height="400">
         </div>
       </section>
 
@@ -593,5 +545,6 @@ function karelClearProgress() {
 </script>
 <script src="../kofi.js"></script>
 <script src="../footer.js"></script>
-</body>
-</html>
+
+
+</body></html>
