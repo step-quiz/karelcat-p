@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ca">
-<head>
+<html lang="ca"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 4 — Repeteix | Karel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
 <style>
@@ -78,7 +77,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 4</span>
         <h1>Repeteix</h1>
-        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és poc recomanable, perquè és tediós i propens a errors. En aquest capítol descobrirem <code>for i in range(N):</code>, que és una instrucció que diu a en Karel: «fes això N vegades», i només escrivim una línia de codi.</p>
+
       </header>
 
 
@@ -88,9 +87,7 @@
       <section class="chapter-section">
         <h2>Repetir pot ser molt avorrit</h2>
 
-        <p>Fins ara hem escrit una ordre per línia. Tot bé, però ara imagina que en Karel ha d'avançar dotze caselles: hauries d'escriure <code>move()</code> dotze vegades.</p>
-
-        <p>Les màquines no s'avorreixen, tampoc quan repeteixen. Existeix una sintaxi per expressar la repetició de forma clara i concisa.</p>
+        <p class="">Imagina que en Karel ha d'avançar cinc caselles.<br>Hauries d'escriure <code>move()</code> cinc vegades!</p>
       </section>
 
 
@@ -98,9 +95,9 @@
            SECCIÓ 2 — for i in range(N)
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Repetir N vegades: <code>for i in range(N):</code></h2>
+        <h2 class="">Repetir</h2>
 
-        <p><code>for i in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong>. «Indentar» vol dir desplaçar espais cap a la dreta. Normalment, deixaràs dos espais, o bé quatre espais.</p>
+        <p class="">Si escrius <code>for i in range(N):</code>, en Karel repetirà les ordres de sota <strong>N</strong> vegades.</p>
 
         <p>Compara les dues maneres de fer el mateix:</p>
 
@@ -111,17 +108,11 @@ move()
 move()
 move()</code></pre>
 
-        <p>El resultat és exactament el mateix. A més a més, si ara volem augmentar el nombre de passos a 8, només cal canviar un nombre: <code>for i in range(8):</code>.</p>
 
-        <div class="simulador"
-             data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
-             data-code="for i in range(5):
+
+        <div class="simulador" data-map=".,.,.,.,.,.|K&gt;,.,.,.,.,.|.,.,.,.,.,." data-code="for i in range(5):
     move()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-title="Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit range(15)."
-             data-height="340">
+" data-readonly="true" data-label="Exemple" data-title="Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit range(15)." data-height="340">
         </div>
       </section>
 
@@ -132,46 +123,27 @@ move()</code></pre>
       <section class="chapter-section">
         <h2>La indentació</h2>
 
-        <p>La indentació (els espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part de la iteració i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
+        <p class="">És MOLT IMPORTANT deixar espais.<br>Fixa't bé</p>
 
         <pre><code>for i in range(3):
     move()      # ← es repeteix 3 vegades
     turn_left() # ← també es repeteix 3 vegades
 move()          # ← s'executa UNA SOLA VEGADA, després de la iteració</code></pre>
 
-        <p>Si la indentació no és consistent, el programa no funcionarà com esperes.</p>
+        <p class=""><br></p>
 
-        <p>Observa aquest exemple.</p>
-
-        <div class="simulador"
-             data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,"
-             data-code="for i in range(3):
+        <div class="simulador" data-map=".,.,.,.|.,.,.,.|.,.,.,.|K&gt;,.,.," data-code="for i in range(3):
     move()
 turn_left()
 for i in range(3):
     move()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-height="240">
+" data-readonly="true" data-label="Exemple" data-height="240">
         </div>
 
-        <p>Hi ha dues repeticions <code>for</code>, on hem afegit al mig la instrucció <code>turn_left()</code>. En Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord.</p> 
-        
-        <p>La instrucció <code>turn_left()</code> queda <strong>fora</strong> de qualsevol de les dues repeticions, perquè no està indentada.</p>
+
       </section>
 
-     <section class="chapter-section">
-        <h2>La sintaxi</h2>
 
-        <p>Abans que facis l'exercici, recorda les convencions de sintaxi
-        <ul>
-          <li>Recorda escriure parèntesis quan toca, per exemple: <code>turn_left()</code>.</li>
-          <li>Quan facis servir la instrucció <code>for</code>, has d'acabar la línia amb <code>:</code>.</li>
-          <li>Tot allò que realment vols que es repeteixi ha d'anar indentat, fent servir espais.</li>
-        </ul>
-        </p>
-      </section>
 
       <!-- ─────────────────────────────────────────
            EXERCICI
@@ -180,17 +152,12 @@ for i in range(3):
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel és a l'extrem inferior esquerre i la perla és a l'extrem superior dret. El món té 4 files i 5 columnes. Porta en Karel fins a la casella on és la perla. No cal que la recullis. Has de fer servir <code>for</code> i <code>turn_left()</code>.
+          <p class="">La perla és a dalt, a la dreta. En Karel ha d'arribar fins on és la perla.</p>
         </div>
 
-        <div class="simulador"
-             data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
-             data-goal=".,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,."
-             data-code="# Escriu el teu codi aquí:
+        <div class="simulador" data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K&gt;,.,.,.,." data-goal=".,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,." data-code="# Escriu el teu codi aquí:
 
-"
-             data-label="Exercici"
-             data-height="340">
+" data-label="Exercici" data-height="340">
         </div>
       </section>
 
@@ -230,5 +197,6 @@ function karelClearProgress() {
 </script>
 <script src="../kofi.js"></script>
 <script src="../footer.js"></script>
-</body>
-</html>
+
+
+</body></html>
