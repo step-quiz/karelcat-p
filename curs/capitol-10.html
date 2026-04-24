@@ -157,9 +157,9 @@
            SECCIÓ 1 — El problema del copia-enganxa
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2 class="">No sempre és bona idea fer... copia-enganxa</h2>
+        <h2>No sempre és bona idea fer... copia-enganxa</h2>
 
-        <p class="">Aquí tens dos programes que fan exactament el mateix. Fixa't en les diferències:</p>
+        <p>Aquí tens dos programes que fan exactament el mateix. Fixa't en les diferències:</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -195,9 +195,9 @@ while front_is_clear():
           </div>
         </div>
 
-        <p class="">El "codi brut" és molt llarg! I, a més, si vols canviar alguna cosa, és complicat i et pots equivocar en alguna línia.</p>
+        <p>El "codi brut" és molt llarg! I, a més, si vols canviar alguna cosa, és complicat i et pots equivocar en alguna línia.</p>
 
-        <p class="">El "codi net" és molt més senzill, i es llegeix millor. És molt fàcil fer algun canvi o millora.</p>
+        <p>El "codi net" és molt més senzill, i es llegeix millor. És molt fàcil fer algun canvi o millora.</p>
 
         <div class="simulador" data-maps="[&quot;K&gt;,A,.,A,.&quot;, &quot;K&gt;,.,A,.,A,.,A&quot;, &quot;K&gt;,A,.,.,A,.,A,.,.,A&quot;]" data-goals="[&quot;.,.,.,.,K&gt;&quot;, &quot;.,.,.,.,.,.,K&gt;&quot;, &quot;.,.,.,.,.,.,.,.,.,K&gt;&quot;]" data-code="def avançar_i_recollir():
     move()
@@ -209,9 +209,7 @@ while front_is_clear():
 " data-readonly="true" data-label="Exemple" data-title="El codi és exactament el mateix als tres mons. Canvia de món amb els botons de sota el simulador." data-height="400">
         </div>
 
-        <p class=""><br></p>
 
-        <p class=""><br></p>
       </section>
 
 
@@ -220,9 +218,9 @@ while front_is_clear():
            SECCIÓ 2 — Els noms importen
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2 class="">Els noms que posem, els hem de pensar bé</h2>
+        <h2>Els noms que posem, els hem de pensar bé</h2>
 
-        <p class="">Aquí tens dos programes que fan el mateix: en Karel recorre un corredor i recull cada perla que troba. Fixa't en la diferència... la veus?</p>
+        <p>Aquí tens dos programes que fan el mateix: en Karel recorre un corredor i recull cada perla que troba. Fixa't en la diferència... la veus?</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -247,9 +245,8 @@ while front_is_clear():
           </div>
         </div>
 
-        <p class="">El títol&nbsp;<code>p()</code>&nbsp;, no vol dir res!<br>En canvi, el títol&nbsp;<code>recollir_si_hi_ha_perla()</code>&nbsp;ens explica molt bé què volem fer.</p>
+        <p>El títol&nbsp;<code>p()</code>&nbsp;, no vol dir res!<br>En canvi, el títol&nbsp;<code>recollir_si_hi_ha_perla()</code>&nbsp;ens explica molt bé què volem fer.</p>
 
-        <p class=""><br></p>
 
         <div class="simulador" data-map="K&gt;,A,.,A,.,.,A,." data-code="def recollir_si_hi_ha_perla():
     if pearl_here():
@@ -261,7 +258,6 @@ while front_is_clear():
 " data-readonly="true" data-label="Exemple" data-title="recollir_si_hi_ha_perla() explica exactament el que fa: comprova si hi ha una perla i, si n'hi ha, la recull." data-height="290">
         </div>
 
-        <p class=""><br></p>
       </section>
 
 
@@ -270,11 +266,8 @@ while front_is_clear():
            SECCIÓ 3 — Una funció, una idea
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2 class=""><br></h2>
 
-        <p class=""><br></p>
 
-        <p class=""><br></p>
 
         <div class="code-compare">
           <div class="code-compare-block">
@@ -298,7 +291,6 @@ drop()</code></pre>
           </div>
         </div>
 
-        <p class=""><br></p>
 
         <div class="simulador" data-map="K&gt;,.,.,.,.,.,.,." data-bag="1" data-code="def avançar_fins_a_paret():
     while front_is_clear():
@@ -309,7 +301,6 @@ drop()
 " data-readonly="true" data-label="Exemple" data-title="avançar_fins_a_paret() no sap —ni li importa— el que es farà en arribar. Això la fa reutilitzable en qualsevol situació." data-height="290">
         </div>
 
-        <p class=""><br></p>
       </section>
 
 
@@ -318,9 +309,7 @@ drop()
            SECCIÓ 4 — Codi net avui, temps guanyat demà
            ═══════════════════════════════════════════════════ -->
       <section class="chapter-section">
-        <h2 class=""><br></h2>
 
-        <p class=""><br></p>
 
         <div class="beneficis-grid">
 
@@ -328,8 +317,8 @@ drop()
             <h3>⏱ A curt termini</h3>
             <ul>
               <li><strong>Trobes errors més de pressa.</strong> Amb <code>avançar_i_recollir()</code> saps exactament on mirar. Amb <code>f()</code> i <code>bb()</code> has de llegir funció per funció fins a entendre qui fa què.</li>
-              <li class=""><strong>Modifiques en un sol lloc.</strong> Vols que en Karel deixi dues perles en lloc d'una? Canvies la definició de la funció i el canvi s'aplica arreu. Amb codi repetit, hauries de buscar i modificar cada còpia.</li>
-              <li class=""><strong>Rellegeixes el teu codi l'endemà.</strong> <code>while front_is_clear(): avançar_i_recollir()</code> s'entén d'un cop d'ull.</li>
+              <li><strong>Modifiques en un sol lloc.</strong> Vols que en Karel deixi dues perles en lloc d'una? Canvies la definició de la funció i el canvi s'aplica arreu. Amb codi repetit, hauries de buscar i modificar cada còpia.</li>
+              <li><strong>Rellegeixes el teu codi l'endemà.</strong> <code>while front_is_clear(): avançar_i_recollir()</code> s'entén d'un cop d'ull.</li>
             </ul>
           </div>
 
@@ -353,11 +342,11 @@ drop()
 
         </div>
 
-        <p class="">En resum, tres regles simples:</p>
+        <p>En resum, tres regles simples:</p>
         <ul>
-          <li class=""><strong>No dupliquis codi.</strong></li>
-          <li class=""><strong>Posa noms que expliquin bé el que fas.</strong> <code>avançar_i_recollir()</code> sempre és millor que <code>fer_cosa()</code>.</li>
-          <li class=""><strong>Cada funció, una idea.</strong> Quan escrius una funció, ha de ser per aconseguir un sol objectiu, i no per fer tres coses alhora.</li>
+          <li><strong>No dupliquis codi.</strong></li>
+          <li><strong>Posa noms que expliquin bé el que fas.</strong> <code>avançar_i_recollir()</code> sempre és millor que <code>fer_cosa()</code>.</li>
+          <li><strong>Cada funció, una idea.</strong> Quan escrius una funció, ha de ser per aconseguir un sol objectiu, i no per fer tres coses alhora.</li>
         </ul>
       </section>
 
@@ -366,7 +355,8 @@ drop()
       <!-- ═══════════════════════════════════════════════════
            EXERCICI 1 — Fàcil
            ═══════════════════════════════════════════════════ -->
-      <section class="chapter-section chapter-exercise"><br><h2 class="">Exercici. Netegem el codi</h2>
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici. Netegem el codi</h2>
 
         <div class="exercise-enunciat">
           El codi de sota funciona, però és brut: copia el mateix bloc set vegades. La teva tasca és reescriure'l de manera neta usant una funció i un <code>while</code>. El resultat ha de ser el mateix: en Karel ha de recórrer tot el corredor i recollir totes les perles.

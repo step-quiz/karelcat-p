@@ -65,21 +65,21 @@
 
 
       <section class="chapter-section">
-        <h2 class="">Comprovem més d'una cosa alhora</h2>
-        <p class="">De vegades necessitem que en Karel comprovi dues coses alhora, abans de fer una cosa.</p>
-       <p class="">Tenim aquestes possibilitats, per combinar:</p>
+        <h2>Comprovem més d'una cosa alhora</h2>
+        <p>De vegades necessitem que en Karel comprovi dues coses alhora, abans de fer una cosa.</p>
+       <p>Tenim aquestes possibilitats, per combinar:</p>
         <ul>
-          <li class=""><strong><code>and</code></strong>: es compleix només si <em>totes dues</em> condicions es compleixen alhora.</li>
-          <li class=""><strong><code>or</code></strong>: es compleix si <em>almenys una</em> de les condicions és certa.</li>
-          <li class=""><strong><code>not</code></strong>: serveix per comprovar el contrari.</li>
+          <li><strong><code>and</code></strong>: es compleix només si <em>totes dues</em> condicions es compleixen alhora.</li>
+          <li><strong><code>or</code></strong>: es compleix si <em>almenys una</em> de les condicions és certa.</li>
+          <li><strong><code>not</code></strong>: serveix per comprovar el contrari.</li>
         </ul>
       </section>
 
 
       <section class="chapter-section">
-        <h2 class="">Exemple 1</h2>
-        <p class="">Volem que en Karel avanci <strong>només sobre una catifa de perles</strong>. S'ha d'aturar quan les perles s'acabin.<br>Si fem servir <code>while pearl_here(): move()</code>, en Karel avançarà molt bé, però... i si la catifa arriba JUSTAMENT on hi ha una roca? En Karel xocarà!</p>
-        <p class="">Per evitar-ho, li demanem de comprovi dues coses alhora: "Mentre tinguis una perla sota teu <strong>i també</strong>&nbsp;el teu davant estigui lliure, llavors ja pots avançar". D'aquesta manera, en Karel no xocarà mai.</p>
+        <h2>Exemple 1</h2>
+        <p>Volem que en Karel avanci <strong>només sobre una catifa de perles</strong>. S'ha d'aturar quan les perles s'acabin.<br>Si fem servir <code>while pearl_here(): move()</code>, en Karel avançarà molt bé, però... i si la catifa arriba JUSTAMENT on hi ha una roca? En Karel xocarà!</p>
+        <p>Per evitar-ho, li demanem de comprovi dues coses alhora: "Mentre tinguis una perla sota teu <strong>i també</strong>&nbsp;el teu davant estigui lliure, llavors ja pots avançar". D'aquesta manera, en Karel no xocarà mai.</p>
 
         <div class="simulador" data-map="K&gt;,A,A,A,P,.|.,.,.,.,.,.|.,.,.,.,.,." data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
 if front_is_clear():
@@ -92,8 +92,8 @@ while pearl_here() and front_is_clear():
 
 
       <section class="chapter-section">
-        <h2 class="">Exemple 2</h2>
-        <p class="">En aquest altre exemple, en Karel està caminant per un passadís.<br>Li direm: "En cas que trepitgis una perla <strong>o bé</strong> si tens davant un obstacle, has de fer una tombarella, o sigui, que has de girar sobre tu mateix."</p>
+        <h2>Exemple 2</h2>
+        <p>En aquest altre exemple, en Karel està caminant per un passadís.<br>Li direm: "En cas que trepitgis una perla <strong>o bé</strong> si tens davant un obstacle, has de fer una tombarella, o sigui, que has de girar sobre tu mateix."</p>
         <div class="simulador" data-map="K&gt;,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,." data-code="while front_is_clear():
     move()
     
@@ -108,7 +108,7 @@ while pearl_here() and front_is_clear():
 
 
       <section class="chapter-section chapter-exercise">
-        <h2 class="">Exercici</h2>
+        <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
           En Karel ha d'avançar pel passadís per buscar una perla amagada. Volem que camini mentre no hi hagi una perla sota seu <strong>i</strong> davant seu hi hagi camí lliure.

@@ -86,7 +86,7 @@
       <section class="chapter-section">
         <h2>En Karel ha de decidir</h2>
 
-        <p class="">Imagina que el món pot tenir una perla en una casella, o bé no tenir-ne. I resulta que no podem saber-ho!<br>Si en Karel sempre fes&nbsp;<code>grab()</code>&nbsp;, tenim un problema: quan no hi ha perla, el programa s'atura amb un error.<br>Necessitem una manera de dir-li: «Mira Karel, si hi ha una perla, agafa-la; però si no hi ha cap perla, no facis res».</p>
+        <p>Imagina que el món pot tenir una perla en una casella, o bé no tenir-ne. I resulta que no podem saber-ho!<br>Si en Karel sempre fes&nbsp;<code>grab()</code>&nbsp;, tenim un problema: quan no hi ha perla, el programa s'atura amb un error.<br>Necessitem una manera de dir-li: «Mira Karel, si hi ha una perla, agafa-la; però si no hi ha cap perla, no facis res».</p>
 
         <p>Això ho aconseguirem amb una instrucció que s'anomena <code>if</code>.</p>
       </section>
@@ -98,7 +98,7 @@
       <section class="chapter-section">
         <h2>És cert o és fals?</h2>
 
-        <p class=""><code>if</code> comprova una condició i segueix unes instruccions <strong>només si la condició és certa</strong>. Per exemple, llegeix aquest programa.</p>
+        <p><code>if</code> comprova una condició i segueix unes instruccions <strong>només si la condició és certa</strong>. Per exemple, llegeix aquest programa.</p>
 
         <pre><code>if pearl_here():
     grab()</code></pre>
@@ -111,9 +111,9 @@
       <section class="chapter-section">
         <h2>En Karel avança si pot</h2>
 
-        <p class="">En l'exemple següent, en Karel intentarà fer 5 passes endavant.<br>Atenció! Hi ha una roca que li bloca el pas. Si no fem cap comprovació, en Karel xocarà.<br>Farem servir la instrucció&nbsp;<code>if</code>: en Karel comprova primer si té la via lliure, i llavors avança.</p>
+        <p>En l'exemple següent, en Karel intentarà fer 5 passes endavant.<br>Atenció! Hi ha una roca que li bloca el pas. Si no fem cap comprovació, en Karel xocarà.<br>Farem servir la instrucció&nbsp;<code>if</code>: en Karel comprova primer si té la via lliure, i llavors avança.</p>
 
-        <p class="">Prem ▶ <strong>Executa</strong></p>
+        <p>Prem ▶ <strong>Executa</strong></p>
 
         <div class="simulador" data-map=".,.,.,.,.,.|K&gt;,.,.,P,.,.|.,.,.,.,.,." data-code="for i in range(5):
     if front_is_clear():
@@ -121,7 +121,6 @@
 " data-readonly="true" data-label="Exemple" data-title="El for intenta avançar cinc vegades. L'if comprova cada cop si hi ha obstacle: quan troba la roca, move() no s'executa i no hi ha cap error." data-height="310">
         </div>
 
-        <p class=""><br></p>
       </section>
 
 
@@ -129,18 +128,17 @@
            SECCIÓ 3 — else:
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2 class="">I si no es compleix la condició, fes una altra cosa</h2>
+        <h2>I si no es compleix la condició, fes una altra cosa</h2>
 
-        <p class="">De vegades volem que en Karel faci <strong>una cosa diferent</strong>&nbsp;quan no es compleix la condició. Fixa't en l'exemple.</p>
+        <p>De vegades volem que en Karel faci <strong>una cosa diferent</strong>&nbsp;quan no es compleix la condició. Fixa't en l'exemple.</p>
 
         <pre><code>if front_is_clear():
     move()
 else:
     turn_left()</code></pre>
 
-        <p class="">En Karel comprova si té la via lliure davant seu.<br>&nbsp;- Si això es compleix, avança.<br>&nbsp;- Si això no es compleix, llavors gira a l'esquerra (per exemple, hi ha una roca o bé hi ha paret).</p>
+        <p>En Karel comprova si té la via lliure davant seu.<br>&nbsp;- Si això es compleix, avança.<br>&nbsp;- Si això no es compleix, llavors gira a l'esquerra (per exemple, hi ha una roca o bé hi ha paret).</p>
 
-        <p class=""><br></p>
       </section>
 
 
@@ -150,9 +148,9 @@ else:
       <section class="chapter-section">
         <h2>En Karel navega al voltant d'un obstacle</h2>
 
-        <p class="">En Karel es mou per una graella en la qual hi ha una roca que li bloca el pas.<br>Va comprovant si pot avançar o no pot<br>- si pot avançar, doncs endavant!<br>- si no pot avançar, llavors gira cap a l'esquerra i busca un camí alternatiu.</p>
+        <p>En Karel es mou per una graella en la qual hi ha una roca que li bloca el pas.<br>Va comprovant si pot avançar o no pot<br>- si pot avançar, doncs endavant!<br>- si no pot avançar, llavors gira cap a l'esquerra i busca un camí alternatiu.</p>
 
-        <p class="">Prem ▶ <strong>Executa</strong></p>
+        <p>Prem ▶ <strong>Executa</strong></p>
 
         <div class="simulador" data-map=".,.,.,.,.,.|.,.,.,.,.,.|K&gt;,.,.,P,.|.,.,.,.,.,." data-code="for i in range(5):
     if front_is_clear():
@@ -162,7 +160,6 @@ else:
 " data-readonly="true" data-label="Exemple" data-height="320">
         </div>
 
-        <p class=""><br></p>
         
       <section class="chapter-section">
         <h2>Resum</h2>
