@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ca">
-<head>
+<html lang="ca"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 5 — Funcions | Karel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
 <style>
@@ -77,7 +76,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 5</span>
         <h1>Funcions</h1>
-        <p class="chapter-lead">Quan una mateixa seqüència d'instruccions apareix una i altra vegada, és el moment de donar-li un nom. En aquest capítol aprendrem <code>def nom():</code>, que ens permet inventar les nostres pròpies instruccions i que en Karel entendrà igual que <code>move()</code> o <code>grab()</code>.</p>
+
       </header>
 
 
@@ -85,27 +84,18 @@
            SECCIÓ 1
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Una seqüència d'instruccions que fem servir sovint</h2>
+        <h2 class="">Una recepta de cuina que fas servir sovint</h2>
 
-        <p>Imagina que en Karel ha de pujar una escala de 3 graons. Per pujar un graó, el procés és sempre el mateix: gira a l'esquerra, avança, gira a la dreta, avança.</p>
-        
-        <p>Com que l'escala té 3 graons — i per cadascun hem dedicat 4 instruccions —, haurem d'escriure 12 instruccions. Si l'escala tingués 10 graons, hauríem d'escriure a mà 40 instruccions, però no té gaire sentit, perquè són repeticions de les 4 instruccions bàsiques.</p>
+        <p class="">Et posem una exemple: volem que en Karel pugi una escala.<br>Haurà de pujar un graó, després un altre, després un altre...<br><br>Per pujar un graó, sempre fa el mateix:<br>1) gira a l'esquerra<br>2) avança<br>3) gira a la dreta<br>4) avança</p>
 
-        <p>Primer, observa com es puja <strong>un sol graó</strong>. Són 4 instruccions:</p>
-
-        <div class="simulador"
-             data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K>,P,P,P,."
-             data-code="turn_left()
+        <div class="simulador" data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K&gt;,P,P,P,." data-code="turn_left()
 move()
 turn_right()
 move()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-height="360">
+" data-readonly="true" data-label="Exemple" data-height="360">
         </div>
 
-        <p>En Karel ha pujat un graó. Ara imagina que has de repetir-ho per cada graó d'una escala llarga.</p>
+
       </section>
 
 
@@ -115,20 +105,16 @@ move()
       <section class="chapter-section">
         <h2>Escriure una instrucció nova: <code>def nom():</code></h2>
 
-        <p><code>def</code> (abreviació de <em>define</em>, «definir») permet crear una instrucció nova que en Karel reconeixerà igual que <code>move()</code> o <code>turn_left()</code>. La seva sintaxi és aquesta:</p>
+        <p class="">Si escrius <code>def nom():</code>, pots crear una instrucció nova. És com si t'has inventat una recepta de cuina i la vols escriure<br></p>
 
         <pre><code>def nom():
     instrucció1()
     instrucció2()
     ...</code></pre>
 
-        <p>El nom que tries hauria de descriure clarament el que fa la funció. <code>puja_grao()</code> és molt millor que <code>cosa()</code> o <code>a()</code>.</p>
 
-        <p>Ara definim <code>puja_grao()</code> i pugem tres graons. Compara el codi d'aquí amb el que necessitaries sense <code>def</code>:</p>
 
-        <div class="simulador"
-             data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K>,P,P,P,."
-             data-code="def puja_grao():
+        <div class="simulador" data-map=".,.,.,.,.|.,.,.,P,.|.,.,P,P,.|K&gt;,P,P,P,." data-code="def puja_grao():
     turn_left()
     move()
     turn_right()
@@ -137,13 +123,10 @@ move()
 puja_grao()
 puja_grao()
 puja_grao()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-height="460">
+" data-readonly="true" data-label="Exemple" data-height="460">
         </div>
 
-        <p>Amb 7 línies, aconseguim el mateix que amb 12 línies. A més de ser més breu, el codi és més llegible. De fet, quan llegim <code>puja_grao()</code>, sabem exactament el que fa, sense haver de desxifrar les quatre instruccions que conté.</p>
+
       </section>
 
 
@@ -151,19 +134,15 @@ puja_grao()
            SECCIÓ 3 — Combinar funcions
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Les funcions es poden combinar</h2>
+        <h2 class=""><br></h2>
 
-        <p>Una funció pot cridar altres funcions al seu interior. Pots construir accions complexes a partir d'accions més simples, com en un joc de construccions.</p>
-
-        <p>Per exemple, si vols que en Karel faci «puja un graó i recull una perla», pots definir una nova funció:</p>
+        <p class=""><br></p>
 
         <pre><code>def puja_i_recull():
     puja_grao()
     grab()</code></pre>
 
-        <p>Això funciona sempre que <code>puja_grao()</code> ja estigui definit <strong>abans</strong> de ser cridat.</p>
-
-        <p>Regla important: les definicions <code>def</code> han d'anar <strong>sempre al principi del programa</strong>, abans del nostre programa principal.</p>
+        <p class=""></p>
       </section>
 
 
@@ -174,24 +153,11 @@ puja_grao()
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha d'escalar una escala de quatre graons. A la casella de dalt de tot hi ha una perla. Defineix la funció <code>puja_grao()</code> i usa-la per arribar a la perla i recollir-la.
+          <p class="">En Karel ha d'escalar una escala, que té 4 graons.<br>Ha d'arribar fins a dalt de tot, on hi ha una perla.&nbsp;<br>Com li podem dir a en Karel que pugui l'escala?</p>
+
+        <div class="simulador" data-map=".,.,.,.,A,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|K&gt;,P,P,P,P,." data-goal=".,.,.,.,K&gt;,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|.,P,P,P,P,." data-code="" data-label="Exercici" data-height="520">
         </div>
-
-        <p>Pista: defineix <code>puja_grao()</code> amb quatre instruccions. Llavors crida-la quatre vegades i afegeix un <code>grab()</code> al final.</p>
-
-        <div class="simulador"
-             data-map=".,.,.,.,A,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|K>,P,P,P,P,."
-             data-goal=".,.,.,.,K>,.|.,.,.,.,P,.|.,.,.,P,P,.|.,.,P,P,P,.|.,P,P,P,P,."
-             data-code="# Defineix la funció puja_grao() aquí:
-
-
-# Crida-la quatre vegades i recull la perla:
-
-"
-             data-label="Exercici"
-             data-height="520">
-        </div>
-      </section>
+      </div></section>
 
 
       <!-- ─────────────────────────────────────────────
@@ -229,5 +195,6 @@ function karelClearProgress() {
 </script>
 <script src="../kofi.js"></script>
 <script src="../footer.js"></script>
-</body>
-</html>
+
+
+</body></html>
