@@ -6,91 +6,6 @@
   <title>Repte 3 — L'escala diagonal | Karelcat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -154,35 +69,18 @@
            ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 3 — L'escala diagonal
-          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
-        </h2>
+        <h2>Repte 3 — L'escala diagonal</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel és a la cantonada inferior esquerra d'un món quadrat.
-          Ha de pujar per l'escala diagonal i, a més, ha de deixar una perla a cada graó. S'ha d'aturar a la cantonada superior dreta.<br>Fixa't que <strong>no cal saber quants graons té el món</strong>. En Karel s'atura sol quan arriba a la paret.
-          <strong>La teva feina:</strong> escriu un programa perquè en Karel
-          deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br>
-          <strong>Restricció important:</strong> usa una funció
-          <code>puja_grao()</code> que mogui en Karel <em>un sol graó</em> i
-          fes servir una iteració <code>while front_is_clear():</code>.
+          En Karel és a la cantonada inferior esquerra. Ha de pujar per l'escala fins a la cantonada superior dreta deixant una perla a cada graó. Has de fer servir la funció <code>puja_grao()</code> i <code>while front_is_clear()</code>.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista </strong></summary>
-          <div class="consell-body">Pensa com s'ho fa en Karel per pujar un sol graó: avança una casella cap a l'Est,
-          gira cap al Nord, avança una casella, gira cap a l'Est i torna a avançar una casella.
-          Això és exactament el que ha de fer la funció <code>puja_grao()</code></div>
-        </details>
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món (5×5, 4 graons) -->
         <div class="simulador"
              data-bag="99"
-             data-maps='[".,.,.|.,.,.|K>,.,.",".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,."]'
-             data-goals='[".,.,K>|.,A,.|A,.,.",".,.,.,.,K>|.,.,.,A,.|.,.,A,.,.|.,A,.,.,.|A,.,.,.,.", ".,.,.,.,.,.,.,K>|.,.,.,.,.,.,A,.|.,.,.,.,.,A,.,.|.,.,.,.,A,.,.,.|.,.,.,A,.,.,.,.|.,.,A,.,.,.,.,.|.,A,.,.,.,.,.,.|A,.,.,.,.,.,.,."]'
-             data-labels='["3×3 (2 graons)", "5×5 (4 graons)", "8×8 (7 graons)"]'
+             data-map=".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
+             data-goal=".,.,.,.,K>|.,.,.,A,.|.,.,A,.,.|.,A,.,.,.|A,.,.,.,."
              data-code="# Aquesta funció fa que en Karel pugi un graó
 def puja_grao():
 
@@ -190,7 +88,6 @@ def puja_grao():
 # Programa principal
 
 "
-             data-title="Prova el teu codi als tres mons. El mateix codi ha de funcionar als tres sense canviar res!"
              data-height="440">
         </div>
 
