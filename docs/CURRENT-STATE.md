@@ -1,8 +1,10 @@
 # karelcat_primaria — Estat actual del projecte
 
-> **Spin-off de karelcat.** Aquest projecte evolucionarà de manera independent
-> de karelcat. En la versió inicial, el contingut pedagògic és idèntic al de
-> karelcat; l'única diferència és que els reptes avançats (10–13) no s'inclouen.
+> **Spin-off de karelcat.** Aquest projecte evoluciona de manera independent
+> de karelcat. Respecte de karelcat: els reptes avançats (10–13) no s'inclouen,
+> el capítol 10 ("Codi net") s'ha retirat per ser conceptualment lluny de la
+> franja d'edat de primària, i el llenguatge i els enunciats dels capítols
+> s'han adaptat al perfil d'alumne.
 >
 > **Font única de veritat.** Aquest document descriu l'estat real del projecte
 > en el moment de l'última actualització. Qualsevol sessió de treball que
@@ -30,26 +32,28 @@ funcions d'en Karel).
 
 ## 2. Estat del curs — completat al 100 %
 
-### 2.1 Capítols (10/10 escrits)
+### 2.1 Capítols (9 + epíleg, escrits)
 
 | # | Fitxer | Títol | Conceptes nous |
 |---|--------|-------|----------------|
-| 1 | `curs/capitol-1.html` | Coneix en Karel | `move()`, `turn_left()`, `turn_right()`. Món, graella, direccions. |
-| 2 | `curs/capitol-2.html` | Agafa i deixa | `grab()`, `drop()`, motxilla, `pearl_here()`. Errors. |
-| 3 | `curs/capitol-3.html` | Repeteix | `for _ in range(N):`, indentació, blocs. |
-| 4 | `curs/capitol-4.html` | Procediments | `def nom():`. Crear ordres noves. |
-| 5 | `curs/capitol-5.html` | Descomposició | Cap sintaxi nova. Mètode top-down. Pre/postcondicions. |
-| 6 | `curs/capitol-6.html` | Condicionals | `if cond():` / `else:`. |
-| 7 | `curs/capitol-7.html` | Mentre | `while cond():`. Error de límit. |
-| 8 | `curs/capitol-8.html` | Combinant condicions | `not`, `and`, `or`. |
-| 9 | `curs/capitol-9.html` | Resum | `turn_around()`, `left_is_clear()`, `right_is_clear()`, `elif`, `break`, `True`/`False`. |
-| 10 | `curs/capitol-10.html` | D'en Karel al Python | Epíleg. Pont al món real. Cap simulador. |
+| 1 | `curs/capitol-1.html` | Coneix en Karel | `move()`, `turn_left()`, `turn_right()`. Món, graella, direccions (esquerra/dreta/amunt/avall). |
+| 2 | `curs/capitol-2.html` | Recollir i deixar | `grab()`, `drop()`, motxilla, `pearl_here()`. Errors. |
+| 3 | `curs/capitol-3.html` | Gestió d'errors en un codi | Llegir missatges d'error i corregir el codi. |
+| 4 | `curs/capitol-4.html` | Repeteix | `for _ in range(N):`, indentació, blocs. |
+| 5 | `curs/capitol-5.html` | Funcions | `def nom():`. Crear ordres noves. Metàfora de la recepta. |
+| 6 | `curs/capitol-6.html` | Descomposició | Cap sintaxi nova. Dividir una missió en fases. |
+| 7 | `curs/capitol-7.html` | Condicionals | `if cond():` / `else:`. |
+| 8 | `curs/capitol-8.html` | Mentre | `while cond():`. Error de límit. |
+| 9 | `curs/capitol-9.html` | Combinant condicions | `not`, `and`, `or`. |
+| futur | `curs/capitol-futur.html` | D'en Karel al Python | Epíleg. Pont al món real. Cap simulador. |
 
-Tots els capítols estan llistats a `DISPONIBLES` a `curs/index.html`.
+Diferència respecte de karelcat: el capítol 10 ("Codi net": DRY, responsabilitat única, nomenclatura) s'ha retirat per ser conceptualment lluny de la franja d'edat de primària.
+
+Tots els capítols disponibles estan llistats a `DISPONIBLES` a `curs/index.html`.
 
 ### 2.2 Reptes (9/9 implementats)
 
-Els reptes formen part del capítol 10. Cada repte és un fitxer HTML independent.
+Els reptes són la part final del curs. Cada repte és un fitxer HTML independent.
 
 | # | Fitxer | Títol | Grup | Dificultat |
 |---|--------|-------|------|------------|
@@ -224,11 +228,12 @@ js/reptes.js        — K.REPTES[N]: 5 reptes predefinits per al simulador lliur
                       (accessibles via ?repte=N a index.html). Independents dels
                       reptes del curs (repte-N.html).
 
-curs/index.html     — Índex del curs (10 capítols, estil Stanford).
+curs/index.html     — Índex del curs (estil Stanford).
 curs/capitol.html   — Plantilla HTML reutilitzable per a capítols (comentada).
-curs/capitol-1..10  — Els 10 capítols del curs. Tots implementats. ✅
-curs/repte-1..13    — Els 13 reptes del capítol 10. Tots implementats. ✅
-curs/capitols.js    — CAPITOLS_DATA (10) + REPTES_DATA (13) + renderSidebar() +
+curs/capitol-1..9   — Els 9 capítols del curs. Tots implementats. ✅
+curs/capitol-futur  — Epíleg: pont al Python real. ✅
+curs/repte-1..9     — Els 9 reptes del curs. Tots implementats. ✅
+curs/capitols.js    — CAPITOLS_DATA + REPTES_DATA + renderSidebar() +
                       renderSimuladors() + toggle mòbil.
 curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/AI_INSTRUCTIONS.md — Instruccions tècniques per a IA sobre el format de mapes.
@@ -432,7 +437,7 @@ Quan `embed=1` és present, **no es guarda res a localStorage** (`useLocalStorag
 | E.5 | Selector d'idioma | UI per triar `codeLang` i `uiLang` (ara fixats a `state.js`). |
 | E.6 | Editor de mapes | Recuperar l'editor visual (eliminat a la neteja). `edit-mapa.html` ja existeix com a eina separada. |
 | E.7 | Càrrega CSV extern | Recuperar `?mapa=CSV` a la URL o input file. |
-| E.8 | Reptes predefinits al curs | Exposar els 13 reptes del curs via `?repte=N` a `index.html` (additiu a `reptes.js`). |
+| E.8 | Reptes predefinits al curs | Exposar els 9 reptes del curs via `?repte=N` a `index.html` (additiu a `reptes.js`). |
 
 ---
 
@@ -489,4 +494,10 @@ Abans de fer qualsevol canvi:
 
 ---
 
-*Última actualització: fork inicial de karelcat → karelcat_primaria. S'han eliminat els reptes 10–13 (avançats) i s'han actualitzat les referències. Cap altre canvi respecte de karelcat en aquesta versió inicial.*
+*Última actualització: adaptació a primària. Respecte de karelcat: s'han
+eliminat els reptes 10–13 (avançats), s'ha retirat el capítol 10 ("Codi net")
+per inadequació a la franja d'edat, s'han harmonitzat els títols dels capítols
+2 ("Recollir i deixar") i 5 ("Funcions") i del capítol futur, i s'ha adaptat
+el llenguatge i els enunciats dels capítols al perfil d'alumne (eliminació de
+direccions Nord/Sud/Est/Oest, eliminació de pistes, simplificació de capçaleres
+i correccions lingüístiques puntuals).*
