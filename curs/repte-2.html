@@ -6,91 +6,6 @@
   <title>Repte 2 — El passadís | Karelcat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -154,43 +69,21 @@
            ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 2 — El passadís
-          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
-        </h2>
+        <h2>Repte 2 — El passadís</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel es troba al principi d'un passadís. Hi ha perles
-          escampades per terra — algunes caselles en tenen, d'altres no — però
-          no sap fins on arriba el passadís.
-          <strong>La teva feina:</strong> escriu un programa perquè en Karel
-          reculli <em>totes</em> les perles del passadís i s'aturi a l'extrem dret.
-          <strong>Restricció important:</strong> la longitud del passadís és
-          desconeguda (entre 7 i 12 caselles en els diferents mons de test).
-          El teu codi ha de funcionar per a qualsevol longitud, no només
-          per al món que veus ara mateix.
+          En Karel és al principi d'un passadís. Hi ha algunes perles per terra. Recull-les totes i atura't al final.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista de l'error de límit</strong></summary>
-          <div class="consell-body">Si escrius <code>while front_is_clear(): move()</code>, en Karel
-          s'atura just <em>abans</em> de l'última casella. Pot quedar-hi una perla
-          que mai no recull. Pensa: quan acaba el <code>while</code>, on és en
-          Karel exactament? Queda alguna casella sense comprovar?</div>
-        </details>
-
-        <!-- Simulador — món inicial (test A: 8 caselles) -->
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món -->
         <div class="simulador"
-             data-maps='["K>,A,.,A,A,.,A,.", "K>,.,A,.,A,.,.,A,.", "K>,A,A,.,.,A,.,A,.,.,A,."]'
-             data-goals='[".,.,.,.,.,.,.,K>", ".,.,.,.,.,.,.,.,K>", ".,.,.,.,.,.,.,.,.,.,.,K>"]'
-             data-labels='["8 caselles", "9 caselles", "12 caselles"]'
+             data-map="K>,A,.,A,A,.,A,."
+             data-goal=".,.,.,.,.,.,.,K>"
              data-code="# En Karel ha de recollir totes les perles del passadís
 # i arribar a l'extrem dret.
 "
              data-label="Repte 2 — El passadís"
-             data-title="Prova el teu codi als tres mons. El mateix algorisme ha de funcionar per a qualsevol longitud."
              data-height="320">
         </div>
 
