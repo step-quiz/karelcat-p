@@ -32,15 +32,15 @@ function injectCursLogo() {
 
 const CAPITOLS_DATA = [
   { num: 1,  titol: 'Coneix en Karel',           arxiu: 'capitol-1.html'  },
-  { num: 2,  titol: 'Agafa i deixa',             arxiu: 'capitol-2.html'  },
+  { num: 2,  titol: 'Recollir i deixar',         arxiu: 'capitol-2.html'  },
   { num: 3,  titol: "Gestió d'errors en un codi", arxiu: 'capitol-3.html' },
   { num: 4,  titol: 'Repeteix',                  arxiu: 'capitol-4.html'  },
-  { num: 5,  titol: 'Procediments',              arxiu: 'capitol-5.html'  },
+  { num: 5,  titol: 'Funcions',                  arxiu: 'capitol-5.html'  },
   { num: 6,  titol: 'Descomposició',             arxiu: 'capitol-6.html'  },
   { num: 7,  titol: 'Condicionals',              arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Mentre',                    arxiu: 'capitol-8.html'  },
   { num: 9,  titol: 'Combinant condicions',      arxiu: 'capitol-9.html'  },
-  { num: 'futur', titol: 'Resum',  arxiu: 'capitol-futur.html' },
+  { num: 'futur', titol: "D'en Karel al Python",  arxiu: 'capitol-futur.html' },
 ];
 
 
