@@ -183,8 +183,6 @@ while front_is_clear():
 
         <div class="exercise-enunciat">
           En Karel és a l'extrem esquerre d'un corredor de llargada desconeguda. Hi ha perles disperses per algunes caselles, però no saps en quines ni quantes en total. En Karel ha de recórrer tot el corredor d'un extrem a l'altre i recollir totes les perles que trobi pel camí. Després ha de donar mitja volta i deixar totes les perles, a mesura que va tornant, totes en caselles consecutives.
-          <br><br>
-          <strong>Pista:</strong> usa un <code>while front_is_clear():</code> com a iteració principal. Dins d'aquesta iteració, comprova amb <code>if pearl_here():</code> si cal recollir una perla i, si n'hi ha, la reculls amb <code>grab()</code>. Abans de tornar a començar la iteració, avances una casella fent <code>move()</code>. Ara hauràs arribat al final, quan surtis del <code>while</code>: fes mitja volta amb <code>turn_around()</code>. Llavors, ves tornant i a cada pas, si encara tens perles a la motxilla, fas un <code>drop()</code>. Per saber si tens perles, has de fer servir la pregunta <code>bag_is_full()</code>.
         </div>
 
         <div class="simulador" data-map="K&gt;,.,A,.,.,A,A,.,.,.,." data-goal="K&lt;,.,.,.,.,.,.,.,A,A,A" data-code="" data-label="Exercici" data-title="En Karel ha de recórrer tot el corredor i recollir totes les perles que trobi. El codi ha de funcionar per a qualsevol llargada de corredor." data-height="380">

@@ -104,12 +104,12 @@
 
         <p>Llegeix el programa següent.<br>Entens el que fa cada funció? Fixa't quins noms hem escollit.</p>
 
-        <pre><code>def recull_perla_est():
+        <pre><code>def recull_primera_perla():
     move()
     move()
     grab()
 
-def recull_perla_nord():
+def recull_segona_perla():
     turn_left()
     move()
     move()
@@ -123,8 +123,8 @@ def torna_al_inici():
     move()
     move()
 
-recull_perla_est()
-recull_perla_nord()
+recull_primera_perla()
+recull_segona_perla()
 torna_al_inici()</code></pre>
 
         <p>Nota: <code>turn_around()</code> fa que en Karel doni la volta, sense moure's de la casella.</p>
@@ -138,12 +138,12 @@ torna_al_inici()</code></pre>
 
 
 
-        <div class="simulador" data-map=".,.,A,.,.|.,.,.,.,.|K&gt;,.,A,.,.|.,.,.,.,.|.,.,.,.,." data-code="def recull_perla_est():
+        <div class="simulador" data-map=".,.,A,.,.|.,.,.,.,.|K&gt;,.,A,.,.|.,.,.,.,.|.,.,.,.,." data-code="def recull_primera_perla():
     move()
     move()
     grab()
 
-def recull_perla_nord():
+def recull_segona_perla():
     turn_left()
     move()
     move()
@@ -157,8 +157,8 @@ def torna_al_inici():
     move()
     move()
 
-recull_perla_est()
-recull_perla_nord()
+recull_primera_perla()
+recull_segona_perla()
 torna_al_inici()
 " data-readonly="true" data-label="Exemple" data-height="700">
         </div>
@@ -186,7 +186,7 @@ def deixa_perla_a_columna_5():
 # Fase 1
 deixa_perla_a_columna_2()
 
-# Fase 2 (en Karel ja és a columna 2, mira Est)
+# Fase 2 (en Karel ja és a columna 2)
 deixa_perla_a_columna_5()
 " data-readonly="true" data-label="Exemple" data-title="Cada fase és independent. El programa principal és la llista de fases." data-height="550">
         </div>
