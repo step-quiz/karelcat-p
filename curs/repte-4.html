@@ -3,94 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 4 — Distribuir les perles | Karelcat</title>
+  <title>Repte 4 — Distribuir les perles | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -149,48 +64,23 @@
       </header>
 
 
-      <!-- ══════════════════════════════════════════
-           REPTE A4 — DISTRIBUIR LES PERLES
-           ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 4 — Distribuir les perles
-          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
-        </h2>
+        <h2>Repte 4 — Distribuir les perles</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel té un grapat de perles a la motxilla i és al principi
-          d'un passadís. La seva missió és que deixi exactament una perla
-          a cada casella mentre avança, fins que la motxilla quedi buida de perles.<br>
-          <strong>Restricció important:</strong> la longitud del passadís és
-          desconeguda. El teu codi <em>no pot</em> dependre del nombre de
-          caselles; ha de funcionar per a qualsevol longitud i mentre
-          hi hagi perles a la motxilla.
+          En Karel té perles a la motxilla. Ha de deixar-ne una a cada casella mentre avança, fins que la motxilla quedi buida.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista de la condició de parada</strong></summary>
-          <div class="consell-body">
-En aquest repte la condició <strong>no ha de ser</strong> <code>while front_is_clear():</code>, perquè el passadís sempre
-té una casella de marge al final.<br>La condició que realment indica
-que en Karel ha acabat la feina és una altra: quan la motxilla estigui buida, perquè vol dir que ja ha distribuït totes les perles possibles.
-Recorda que <code>bag_is_empty()</code> retorna <code>True</code>
-quan no queden perles a la motxilla.
-</div>
-        </details>
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món (3 perles, 4 caselles) -->
         <div class="simulador"
-             data-maps='["K>,.,.,.", "K>,.,.,.,.,.", "K>,.,.,.,.,.,.,." ]'
-             data-goals='["A,A,A,K>", "A,A,A,A,A,K>", "A,A,A,A,A,A,A,K>"]'
-             data-labels='["3 perles (4 caselles)", "5 perles (6 caselles)", "7 perles (8 caselles)"]'
-             data-bags='[3, 5, 7]'
+             data-map="K>,.,.,."
+             data-goal="A,A,A,K>"
+             data-bag="3"
              data-code="# En Karel té perles a la motxilla.
 # Ha de deixar-ne una a cada casella, fins que quedi cap perla a la motxilla.
 "
-             data-title="El mateix codi ha de funcionar per als tres passadissos. La motxilla és la condició de parada."
              data-height="280">
         </div>
 

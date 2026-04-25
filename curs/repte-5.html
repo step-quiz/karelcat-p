@@ -3,94 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 5 — El serpentí | Karelcat</title>
+  <title>Repte 5 — El serpentí | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -149,55 +64,23 @@
       </header>
 
 
-      <!-- ══════════════════════════════════════════
-           REPTE B1 — EL SERPENTÍ
-           ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 5 — El serpentí
-          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
-        </h2>
+        <h2>Repte 5 — El serpentí</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          El fons marí té dues files de caselles (la de baix i la de dalt) i un
-          nombre de perles escampades per les dues files. En Karel comença a la
-          cantonada inferior esquerra i mirant cap a l'Est.<br>
-          La seva missió és <strong>recollir totes les perles fent un recorregut
-          específic</strong> — primer la fila inferior d'Est a Oest (d'esquerra
-          a dreta), i després la fila superior, d'Oest a Est (de dreta a esquerra).<br>
-          L'amplada és <em>desconeguda</em>: el teu codi no pot dependre del nombre de caselles.
+          El fons marí té dues files amb perles. En Karel és a la cantonada inferior esquerra. Ha de recollir totes les perles fent un recorregut: primer la fila de baix d'esquerra a dreta, després la fila de dalt de dreta a esquerra.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista — el gir entre files</strong></summary>
-          <div class="consell-body">
-Quan en Karel arriba a l'extrem dret de la fila inferior, ha de pujar
-a la fila de dalt i orientar-se cap a l'Oest. Dissenya el gir amb cura.
-</div>
-        </details>
-
-        <details class="consell-box">
-          <summary><strong>💡 Pista — l'error de límit</strong></summary>
-          <div class="consell-body">
-Quan <code>while front_is_clear()</code> deixi de ser cert, en
-Karel és a l'última posició, però encara no sap si allà hi ha una perla, o bé no n'hi ha.<br><br>
-Afegeix un <code>if pearl_here(): grab()</code> fora del <code>while</code>
-per no perdre cap possible perla situada a l'extrem.
-</div>
-        </details>
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món (6 caselles) -->
         <div class="simulador"
-             data-maps='[".,.,A,.|K>,A,.,A", "A,.,.,A,.,.|K>,.,A,.,A,.", ".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."]'
-             data-goals='["K<,.,.,.|.,.,.,.", "K<,.,.,.,.,.|.,.,.,.,.,.", "K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."]'
-             data-labels='["4 caselles d'\''amplada", "6 caselles d'\''amplada", "8 caselles d'\''amplada"]'
-             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
-# Gir: puja a la fila superior i orienta't cap a l'Oest
-# Fase 2: recull les perles de la fila superior cap a l'Oest
+             data-map="A,.,.,A,.,.|K>,.,A,.,A,."
+             data-goal="K<,.,.,.,.,.|.,.,.,.,.,."
+             data-code="# Fase 1: recull les perles de la fila de baix avançant cap a la dreta
+# Gir: puja a la fila de dalt i orienta't cap a l'esquerra
+# Fase 2: recull les perles de la fila de dalt avançant cap a l'esquerra
 "
-             data-title="El mateix codi ha de funcionar per als tres mons. L'amplada és desconeguda."
              data-height="360">
         </div>
 

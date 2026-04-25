@@ -3,94 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 6 — Construir torres | Karelcat</title>
+  <title>Repte 6 — Construir torres | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -149,66 +64,29 @@
       </header>
 
 
-      <!-- ══════════════════════════════════════════
-           REPTE B2 — CONSTRUIR TORRES
-           ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 6 — Construir torres
-          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
-        </h2>
+        <h2>Repte 6 — Construir torres</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          El fons del mar té diverses bases marcades amb una perla al terra.
-          En Karel comença a la base de la columna més a l'esquerra, mirant
-          cap a l'Est.<br>
-          En Karel ha de <strong>construir una torre de perles per damunt de
-          cada base, des del terra fins al sostre</strong>. Com que algunes
-          bases ja podrien tenir perles de decoració, en Karel ha de
-          <em>deixar una perla només si la casella és buida</em>.<br>
-          Quan ha completat totes les columnes, ha de quedar a la base de
-          l'última torre mirant cap a l'Est.<br>
-          Escriu un programa que funcioni, sigui quina sigui l'alçada del món i el nombre de torres. El teu codi no pot dependre del nombre exacte de caselles.
+          En Karel és a la cantonada inferior esquerra. A cada columna marcada amb una perla a terra ha de construir una torre de perles, de baix a dalt. Has de fer servir una funció <code>omple_columna()</code>.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista — pre/postcondicions de <code>omple_columna()</code></strong></summary>
-          <div class="consell-body">
-La funció <code>omple_columna()</code> ha de tenir aquesta estructura. Sempre assumeix que: <em>en Karel és a la base de la columna, mirant cap a l'Est</em> quan s'inicia, i al mateix temps, sempre l'ha de deixar en exactament la mateixa posició, un cop ha omplert la columna.
-</div>
-        </details>
-
-        <details class="consell-box">
-          <summary><strong>💡 Pista — el <code>while</code> imbricat i l'error de pal de paller</strong></summary>
-          <div class="consell-body">
-En la funció <code>omple_columna()</code> hi ha dues iteracions: una per
-pujar fins al sostre i una per tornar al terra. La iteració de pujada
-s'atura <em>abans</em> d'arribar a l'última casella, igual que al
-repte del passadís. Afegeix un <code>if not pearl_here(): drop()</code>
-fora del <code>while</code> per no perdre la casella del sostre.
-</div>
-        </details>
-
-        
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món (7×3, 3 torres) -->
         <div class="simulador"
-             data-maps='[".,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A", ".,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A", ".,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|K>,.,.,A,.,.,A,.,.,A"]'
-             data-goals='["A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,K>"]'
-             data-labels='["7 × 3 · 3 torres", "7 × 4 · 3 torres", "10 × 4 · 4 torres"]'
+             data-map=".,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A"
+             data-goal="A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>"
              data-bag="99"
-             data-code="# ── omple_columna ──
-# Gira al Nord i puja fins al sostre, però deixa una perla a cada casella buida
-# Gira al Sud, avança fins al terra i, finalment, orienta en Karel cap a l'Est
+             data-code="# La funció omple_columna() ha de:
+# - omplir de perles una columna, de baix fins a dalt
+# - i tornar a deixar en Karel a la base, mirant a la dreta
 
 def omple_columna():
 
 
-# ── Programa principal ──
+# Programa principal
 "
-             data-title="Les tres proves treballen el mateix repte: omple cada columna marcada, de base fins al sostre."
              data-height="400">
         </div>
 

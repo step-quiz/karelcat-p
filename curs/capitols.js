@@ -28,26 +28,27 @@ function injectCursLogo() {
 }
 
 
-// ── Dades dels capítols del curs ─────────────────────────
+// ── Dades dels 10 capítols del curs ──────────────────────
 
 const CAPITOLS_DATA = [
   { num: 1,  titol: 'Coneix en Karel',           arxiu: 'capitol-1.html'  },
-  { num: 2,  titol: 'Recollir i deixar',         arxiu: 'capitol-2.html'  },
+  { num: 2,  titol: 'Agafa i deixa',             arxiu: 'capitol-2.html'  },
   { num: 3,  titol: "Gestió d'errors en un codi", arxiu: 'capitol-3.html' },
   { num: 4,  titol: 'Repeteix',                  arxiu: 'capitol-4.html'  },
-  { num: 5,  titol: 'Funcions',                  arxiu: 'capitol-5.html'  },
+  { num: 5,  titol: 'Procediments',              arxiu: 'capitol-5.html'  },
   { num: 6,  titol: 'Descomposició',             arxiu: 'capitol-6.html'  },
   { num: 7,  titol: 'Condicionals',              arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Mentre',                    arxiu: 'capitol-8.html'  },
   { num: 9,  titol: 'Combinant condicions',      arxiu: 'capitol-9.html'  },
-  { num: 'futur', titol: "D'en Karel al Python",  arxiu: 'capitol-futur.html' },
+  { num: 10, titol: 'Escriure codi net',         arxiu: 'capitol-10.html' },
+  { num: 'futur', titol: 'Resum',  arxiu: 'capitol-futur.html' },
 ];
 
 
 // ── B.2 — Genera i munta la barra lateral ────────────────
 
 const REPTES_DATA = [
-  { num: 1,  titol: 'Recollir el tresor',  arxiu: 'repte-1.html' },
+  { num: 1,  titol: 'Recollir la perla',   arxiu: 'repte-1.html' },
   { num: 2,  titol: 'El passadís',         arxiu: 'repte-2.html' },
   { num: 3,  titol: "L'escala diagonal",   arxiu: 'repte-3.html' },
   { num: 4,  titol: 'Distribuir les perles',arxiu: 'repte-4.html' },

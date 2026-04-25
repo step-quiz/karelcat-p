@@ -3,94 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 7 — L'escala doble | Karelcat</title>
+  <title>Repte 7 — L'escala doble | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
-  <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box > summary {
-      padding: 0.9rem 1.1rem;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    .consell-box > summary::-webkit-details-marker { display: none; }
-    .consell-box > summary::before {
-      content: "▶";
-      font-size: 0.65rem;
-      color: #0284c7;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .consell-box[open] > summary::before {
-      transform: rotate(90deg);
-    }
-    .consell-box > summary strong {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-    .consell-box > .consell-body {
-      padding: 0 1.1rem 0.9rem 1.1rem;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
-  </style>
   <link rel="stylesheet" href="../nav.css">
 <style>
   /* ── Títol centrat al header ── */
@@ -149,85 +64,33 @@
       </header>
 
 
-      <!-- ══════════════════════════════════════════
-           REPTE B3 — L'ESCALA DOBLE
-           ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
-        <h2>
-          Repte 7 — L'escala doble
-          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
-        </h2>
+        <h2>Repte 7 — L'escala doble</h2>
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          Al fons del mar hi ha una muntanya: uns quants graons que pugen per l'esquerra i els mateixos que baixen per la dreta. Com si fos una piràmide, al capdamunt de la qual hi ha una perla.<br>
-          En Karel comença al peu de l'escala esquerra, mirant cap a l'Est.
-          La seva missió és <strong>pujar fins al cim, recollir la perla i
-          baixar l'escala per l'altra banda i deixar la perla al peu de la piràmide</strong>.<br>
-          <strong>Atenció:</strong> el teu programa ha de funcionar sigui quin sigui el nombre de graons.
+          En Karel és al peu d'una piràmide. Ha de pujar fins al cim, recollir la perla, baixar per l'altra banda i deixar la perla al peu.
         </div>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista — la simetria entre <code>puja_grao()</code> i <code>baixa_grao()</code></strong></summary>
-          <div class="consell-body">
-<code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.<br>
-<code>baixa_grao()</code> és exactament l'operació inversa: gira a la dreta,
-avança, gira a l'esquerra, avança.<br>
-</div>
-        </details>
-
-        <details class="consell-box">
-          <summary><strong>💡 Pista — com saber quan has arribat a la cima?</strong></summary>
-          <div class="consell-body">
-El cim de la muntanya és l'única casella del món que té una perla. Pots usar
-<code>while not pearl_here():</code> per pujar graó a graó fins
-que trobis la perla. D'aquesta manera el programa funciona per a
-qualsevol alçada de muntanya sense necessitat de comptar graons.
-</div>
-        </details>
-
-        <details class="consell-box">
-          <summary><strong>💡 Pista — com saber quan has arribat al peu de l'altra banda?</strong></summary>
-          <div class="consell-body">
-Quan en Karel és al peu del darrer graó de la dreta, la paret del
-món li bloqueja el camí cap a l'Est. En aquest cas, <code>front_is_clear()</code> retorna <code>False</code>.<br>Pots usar <code>while front_is_clear():</code> per baixar graó a graó fins que arribes al peu. I només llavors és quan en Karel ha de deixar la perla.
-</div>
-        </details>
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
+        <!-- Simulador d'un sol món (9×5 amb 4 graons) -->
         <div class="simulador"
-             data-maps='[".,.,A,.,.|.,.,P,.,.|K>,P,P,P,.",".,.,.,A,.,.,.|.,.,.,P,.,.,.|.,.,P,P,P,.,.|K>,P,P,P,P,P,.",".,.,.,.,A,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|K>,P,P,P,P,P,P,P,."]'
-             data-goals='[".,.,.,.,.|.,.,P,.,.|.,P,P,P,K>",".,.,.,.,.,.,.|.,.,.,P,.,.,.|.,.,P,P,P,.,.|.,P,P,P,P,P,K>",".,.,.,.,.,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|.,P,P,P,P,P,P,P,K>"]'
-             data-labels='["5 × 3 · 2 graons","7 × 4 · 3 graons","9 × 5 · 4 graons"]'
-             data-code="# ── funció puja_grao ──
-# Puja un nivell (post-condició: Karel mira cap a l'Est)
-
+             data-map=".,.,.,.,A,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|K>,P,P,P,P,P,P,P,."
+             data-goal=".,.,.,.,.,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|.,P,P,P,P,P,P,P,K>"
+             data-code="# Aquesta funció fa que en Karel pugi un graó
 def puja_grao():
 
 
 
-# ── funció baixa_grao ──
-# Baixa un nivell (post-condició: Karel mira cap a l'Est)
-
+# Aquesta funció fa que en Karel baixi un graó
 def baixa_grao():
 
 
 
-# ── Programa principal ──
-# Puja fins a la cima (on hi ha la perla)
-
-
-
-# Recull la perla de la cima
-
-
-
-# Baixa fins al peu de l'altra banda i deixa-hi la perla
-
-
+# Programa principal
+# Pujar fins a la cima (on hi ha la perla), recollir la perla,
+# baixar fins al peu de l'altra banda, i deixar-hi la perla.
 "
-             data-title="Les tres proves treballen el mateix repte: puja_grao() i baixa_grao() s'apliquen automàticament al món actiu."
              data-height="400">
         </div>
 
