@@ -2,11 +2,11 @@
 
 Spin-off de [karelcat](https://github.com/...) adreçat a alumnes de Primària (9 anys aproximadament). L'alumne controla **en Karel**, una medusa programable que viu en una graella submarina.
 
-Aquest projecte evolucionarà de manera independent de karelcat. En la versió inicial, el contingut pedagògic és idèntic al de karelcat, amb l'única diferència que els reptes avançats (10–13) no s'inclouen.
+Aquest projecte evoluciona de manera independent de karelcat. Respecte de karelcat, els reptes avançats (10–13) no s'inclouen, el capítol 10 ("Codi net") s'ha retirat per ser conceptualment lluny d'aquesta franja d'edat, i el llenguatge i els enunciats dels capítols s'han adaptat al perfil d'alumne.
 
 ## Què és
 
-Un curs de 10 capítols i 9 reptes, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i navegació cap als reptes finals. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
+Un curs de 9 capítols + un epíleg ("D'en Karel al Python") i 9 reptes, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i navegació cap als reptes finals. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
 
 ## Estat actual
 
@@ -16,15 +16,16 @@ Un curs de 10 capítols i 9 reptes, accessible des del navegador sense instal·l
 | Sintaxi Python-compatible | ✅ Implementada |
 | Infraestructura del curs (sidebar, iframes, deep links) | ✅ Completa |
 | Capítol 1 — Coneix en Karel | ✅ Escrit |
-| Capítol 2 — Agafa i deixa | ✅ Escrit |
-| Capítol 3 — Repeteix | ✅ Escrit |
-| Capítol 4 — Procediments | ✅ Escrit |
-| Capítol 5 — Descomposició | ✅ Escrit |
-| Capítol 6 — Condicionals | ✅ Escrit |
-| Capítol 7 — Mentre | ✅ Escrit |
-| Capítol 8 — Combinant condicions | ✅ Escrit |
-| Capítol 9 — Resum | ✅ Escrit |
-| Capítol 10 — Del Karel al Python | ✅ Escrit |
+| Capítol 2 — Recollir i deixar | ✅ Escrit |
+| Capítol 3 — Gestió d'errors en un codi | ✅ Escrit |
+| Capítol 4 — Repeteix | ✅ Escrit |
+| Capítol 5 — Funcions | ✅ Escrit |
+| Capítol 6 — Descomposició | ✅ Escrit |
+| Capítol 7 — Condicionals | ✅ Escrit |
+| Capítol 8 — Mentre | ✅ Escrit |
+| Capítol 9 — Combinant condicions | ✅ Escrit |
+| Capítol futur — D'en Karel al Python | ✅ Escrit |
+| Capítol 10 — Codi net (de karelcat) | ⛔ Retirat a primària |
 | Reptes 1–9 (fàcils + intermedis) | ✅ Tots implementats |
 | Reptes 10–13 (avançats) | ⛔ No inclosos a primària |
 
@@ -70,10 +71,11 @@ edit-mapa.html      — Editor visual de mapes (eina auxiliar)
 js/                 — Motor: constants, i18n, state, tokenizer, parser,
                       interpreter, execution, world, renderer, editor, ui, main, reptes
 curs/
-  index.html        — Índex del curs (10 capítols)
+  index.html        — Índex del curs
   capitol.html      — Plantilla reutilitzable per a capítols
-  capitol-1..10     — Els 10 capítols del curs
-  repte-1..13       — Els 13 reptes del capítol 10
+  capitol-1..9      — Els 9 capítols del curs
+  capitol-futur     — Epíleg: pont al Python real
+  repte-1..9        — Els 9 reptes del curs
   capitols.js       — Dades + renderSidebar() + renderSimuladors()
   curs.css          — Estils del curs
   BRIEFING-REPTES.md — Detall de cada repte (mapes, solucions, notes)
