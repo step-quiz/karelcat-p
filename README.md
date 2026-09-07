@@ -92,3 +92,12 @@ del projecte, els contractes entre mòduls, els principis de disseny i les tasqu
 Les tasques pendents actuals són millores visuals (D.1–D.4) i funcionalitat futura
 opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.
 El contingut pedagògic del curs és complet.
+
+<!-- atribucio-centre:inici -->
+
+---
+
+Material desenvolupat per **David Arso Civil** per al Departament de Matemàtiques de l'INS Miquel Tarradell.
+Contingut sota CC BY-NC-SA 4.0, codi sota llicència MIT. Vegeu [`LLICENCIA.md`](LLICENCIA.md).
+
+<!-- atribucio-centre:final -->
