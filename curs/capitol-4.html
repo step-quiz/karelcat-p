@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 4 — Repeteix | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -46,7 +49,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -131,7 +134,7 @@ move()</code></pre>
 move()          # ← s'executa UNA SOLA VEGADA, després de la iteració</code></pre>
 
 
-        <div class="simulador" data-map=".,.,.,.|.,.,.,.|.,.,.,.|K&gt;,.,.," data-code="for i in range(3):
+        <div class="simulador" data-map=".,.,.,.|.,.,.,.|.,.,.,.|K&gt;,.,.,." data-code="for i in range(3):
     move()
 turn_left()
 for i in range(3):
@@ -154,7 +157,8 @@ for i in range(3):
           <p>La perla és a dalt, a la dreta. En Karel ha d'arribar fins on és la perla. No cal que la reculli. Has de fer servir <code>for</code> i <code>turn_left()</code>.</p>
         </div>
 
-        <div class="simulador" data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K&gt;,.,.,.,." data-goal=".,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,." data-code="# Escriu el teu codi aquí:
+        <div class="simulador" data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K&gt;,.,.,.,." data-goal=".,.,.,.,K^A|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.
+.,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,." data-code="# Escriu el teu codi aquí:
 
 " data-label="Exercici" data-height="340">
         </div>
@@ -176,6 +180,27 @@ for i in range(3):
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+for i in range(4):
+    move()
+turn_left()
+for i in range(3):
+    move()
+</solucio>
+
+<solucio-incorrecta motiu="gira cap al costat equivocat">
+for i in range(4):
+    move()
+turn_right()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 4;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -186,15 +211,6 @@ for i in range(3):
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

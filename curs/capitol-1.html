@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 1 — Coneix en Karel | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -46,7 +49,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -171,7 +174,7 @@ move()
         <div class="exercise-enunciat">
           <p>La medusa Karel és a un extrem, i hi ha una perla a l'extrem oposat.<br>Quines ordres creus que calen per...portar en Karel a la casella on és la perla?</p>
         </div>
-        <div class="simulador" data-map=".,.,.,A|.,.,.,.|.,.,.,.|K&gt;,.,.,." data-goal=".,.,.,K^|.,.,.,.|.,.,.,.|.,.,.,." data-code="
+        <div class="simulador" data-map=".,.,.,A|.,.,.,.|.,.,.,.|K&gt;,.,.,." data-goal=".,.,.,K^A|.,.,.,.|.,.,.,.|.,.,.,." data-code="
 
 " data-label="Exercici" data-title="Porta en Karel fins a la casella de la perla (cantonada superior dreta)." data-height="340">
         </div>
@@ -202,6 +205,31 @@ move()
 <!-- ══════════════════════════════════════════════════════
      Scripts
      ══════════════════════════════════════════════════════ -->
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+move()
+move()
+move()
+turn_left()
+move()
+move()
+move()
+</solucio>
+
+<solucio-incorrecta motiu="gira cap al costat equivocat">
+move()
+move()
+move()
+turn_right()
+move()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 1;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -212,15 +240,6 @@ move()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

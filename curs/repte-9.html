@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repte 9 — Les files alternes | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -38,7 +41,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -75,7 +78,7 @@
         <!-- Simulador d'un sol món (6×5, 3 files amb perles) -->
         <div class="simulador"
              data-map=".,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,.,.,."
-             data-goal="A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,K>"
+             data-goal="A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A"
              data-bag="99"
              data-code="def omple_fila():
 
@@ -142,6 +145,47 @@ while left_is_clear():
   ════════════════════════════════════════════════════════
 -->
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+def omple_fila():
+    drop()
+    while front_is_clear():
+        move()
+        drop()
+
+omple_fila()
+turn_left()
+move()
+move()
+turn_left()
+omple_fila()
+turn_right()
+move()
+move()
+turn_right()
+omple_fila()
+</solucio>
+
+<solucio-incorrecta motiu="omple totes les files, també les que han de quedar buides">
+def omple_fila():
+    drop()
+    while front_is_clear():
+        move()
+        drop()
+
+omple_fila()
+turn_left()
+move()
+turn_left()
+omple_fila()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_REPTE = 9;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -152,15 +196,6 @@ while left_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 </body>
 </html>

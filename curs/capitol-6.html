@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 6 — Descomposició | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -45,7 +48,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -203,7 +206,7 @@ deixa_perla_a_columna_5()
           <p>Hi ha tres perles. En Karel les ha de recollir totes tres.<br>Pots dividir la missió en tres parts? Això vol dir que hauràs d'escriure tres funcions.</p>
       </div>
 
-        <div class="simulador" data-map=".,.,.,.,.,.,.|K&gt;,A,.,A,.,A,.|.,.,.,.,.,.,." data-goal=".,.,.,.,.,.,.|.,.,.,.,.,.,K&gt;|.,.,.,.,.,.,." data-code="" data-label="Exercici" data-height="500">
+        <div class="simulador" data-map=".,.,.,.,.,.,.|K&gt;,A,.,A,.,A,.|.,.,.,.,.,.,." data-goal=".,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,." data-code="" data-label="Exercici" data-height="500">
         </div>
       </section>
 
@@ -223,6 +226,47 @@ deixa_perla_a_columna_5()
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+def recull_primera():
+    move()
+    grab()
+
+def recull_segona():
+    move()
+    move()
+    grab()
+
+def recull_tercera():
+    move()
+    move()
+    grab()
+
+recull_primera()
+recull_segona()
+recull_tercera()
+</solucio>
+
+<solucio-incorrecta motiu="s'oblida de cridar l'última funció">
+def recull_primera():
+    move()
+    grab()
+
+def recull_segona():
+    move()
+    move()
+    grab()
+
+recull_primera()
+recull_segona()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 6;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -233,15 +277,6 @@ deixa_perla_a_columna_5()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

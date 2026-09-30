@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repte 2 — El passadís | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -38,7 +41,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -123,6 +126,27 @@ if pearl_here():
   ════════════════════════════════════════════════════════
 -->
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+</solucio>
+
+<solucio-incorrecta motiu="camina fins al final però no recull cap perla">
+while front_is_clear():
+    move()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_REPTE = 2;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -133,15 +157,6 @@ if pearl_here():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 </body>
 </html>

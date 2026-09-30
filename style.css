@@ -16,7 +16,7 @@
   --cell-size:  44px;
   --topbar-h:   46px;
   /* Editor typography — shared between all three editor layers */
-  --ed-font-size:   0.8rem;
+  --ed-font-size:   0.875rem;
   --ed-line-height: 1.75;
   --ed-pad-top:     12px;
   --ed-pad-x:       14px;
@@ -79,10 +79,7 @@ body {
 }
 body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.3)); }
 body.light .logo   { color: var(--text); }
-#state-badge,
-.toolbar-bag { visibility: hidden; }
-body.light #state-badge,
-body.light .toolbar-bag { visibility: hidden; }
+#state-badge { visibility: hidden; }
 
 .logo {
   font-size: 0.9rem;
@@ -106,7 +103,7 @@ body.light .toolbar-bag { visibility: hidden; }
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.5px;
   color: var(--muted);
   white-space: nowrap;
@@ -137,20 +134,24 @@ body.light .toolbar-bag { visibility: hidden; }
   flex-wrap: wrap;
 }
 
+/* Motxilla: a la barra d'eines, sempre visible (també dins dels iframes del curs) */
 .toolbar-bag {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: var(--muted);
   white-space: nowrap;
-  margin-left: 3.5%;
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
-.toolbar-bag strong { color: var(--text); }
+.toolbar-bag strong { color: var(--text); font-size: 0.9rem; }
 
 .speed-row {
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   flex: 0 0 30vw;
   max-width: 30vw;
   min-width: 120px;
@@ -397,33 +398,12 @@ body.light .lbg-row.active {
   max-height: 50%;
   border-top: 1px solid var(--border);
 }
-#log-resize {
-  height: 5px;
-  background: var(--border);
-  cursor: ns-resize;
-  flex-shrink: 0;
-  position: relative;
-  transition: background 0.15s;
-}
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
-  width: 28px; height: 2px;
-  border-radius: 1px;
-  background: var(--muted);
-  opacity: 0.5;
-}
-#log-resize:hover,
-#log-resize.dragging { background: var(--accent); }
-#log-resize:hover::after,
-#log-resize.dragging::after { background: #000; opacity: 0.5; }
 #log {
   flex: 1;
   overflow-y: auto;
   background: #080808;
   padding: 6px 12px;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   line-height: 1.65;
 }
 #log p     { margin: 0; white-space: pre-wrap; }
@@ -513,7 +493,7 @@ body.light .lbg-row.active {
   border: 1px solid var(--border);
   border-radius: 3px;
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   background: var(--surface);
@@ -534,8 +514,9 @@ body.light .lbg-row.active {
 .btn.r { background: var(--error); color: #000; border-color: var(--error); }
 .btn.r:hover { background: #ff6b6b; border-color: #ff6b6b; }
 .btn:disabled { opacity: 0.4; cursor: default; }
+.btn[hidden] { display: none; }
 .btn:disabled:hover { border-color: var(--border); color: var(--text); }
-.btn.full { width: 100%; padding: 8px 12px; font-size: 0.7rem; }
+.btn.full { width: 100%; padding: 8px 12px; font-size: 0.8rem; }
 
 
 /* ── MODE CLAR — overrides d'elements hardcodejats ── */
@@ -555,6 +536,14 @@ body.light .c-ka { background: var(--cell-empty) !important; }
 /* Medusa: MATEIX color rosat que en mode fosc */
 body.light .karel-entity { color: #E684CC; filter: drop-shadow(0 0 4px rgba(230,132,204,.5)); }
 body.light .karel-outline { display: inline; }
+/* Perla: sobre una casella blanca, els tons de mode fosc queden massa pàl·lids
+   i la brillantor blanca es confon amb el fons. En mode clar s'enfosqueixen
+   la vora, el cos i l'ombra (la brillantor #FFFFFF es manté). Les classes
+   pl-* són a K.KAREL_ASSETS.PEARL (js/constants.js). */
+body.light .pl-o { fill: #5E6B7A; }   /* vora   (fosc: #7E8A96) */
+body.light .pl-b { fill: #D2DBE7; }   /* cos    (fosc: #E8ECF2) */
+body.light .pl-s { fill: #AFBDCF; }   /* ombra  (fosc: #C8D4E4) */
+body.light .pl-d { fill: #9AA9BC; }   /* base   (fosc: #B8C4D0) */
 
 /* ── Stanford-like World Grid (light mode) ─────────────── */
 body.light .world-area { background: #ffffff; }
@@ -673,7 +662,7 @@ body.light .ac-item[data-kind="kw"]   { color: #0000ff; }
   .code-col { min-height: 60vh; min-height: 60svh; border-right: none; }
   .world-area { min-height: 40vw; }
   .toolbar { flex-wrap: wrap; gap: 4px; }
-  .toolbar .btn { padding: 4px 8px; font-size: 0.62rem; }
+  .toolbar .btn { padding: 4px 8px; font-size: 0.72rem; }
   .speed-row input[type=range] { width: 140px; }
   /* En mòbil + embed, els capítols (un sol món) tenen més espai a la
      toolbar que els reptes (que porten tabs Món 1/2/3). Mantenim el
@@ -715,6 +704,14 @@ body.embed .code-col {
 body.embed .world-area {
   overflow-x: auto;
   overflow-y: hidden;
+  min-height: 0;
+}
+/* Dins d'un iframe estret (< 820 px) NO s'aplica el disseny de mòbil
+   (html/body amb alçada automàtica): el simulador ha d'omplir l'iframe
+   exactament, amb l'editor i el món un al costat de l'altre. */
+html.embed, html.embed body {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* En embed, el toolbar pot ser lleugerament més compacte */
@@ -722,18 +719,18 @@ body.embed .toolbar {
   padding: 4px 10px;
   min-height: 36px;
 }
-body.embed .toolbar .btn { padding: 4px 10px; font-size: 0.68rem; }
+body.embed .toolbar .btn { padding: 4px 10px; font-size: 0.76rem; }
 body.embed .toolbar .speed-row { gap: 6px; }
 body.embed #speed-lbl { display: none; }
 
-/* Log més petit en embed */
-body.embed #log-wrap { max-height: 80px; }
+/* Log més petit en embed (hi caben ~4 línies: prou per a les diferències amb l'objectiu) */
+body.embed #log-wrap { max-height: 100px; }
 
 /* En embed, cancel·lem el 16px mòbil (pensat per evitar l'auto-zoom d'iOS
    al textarea de la pàgina gran) i tornem a la mida compacta per defecte.
    Dins dels iframes del curs els exemples són majoritàriament readonly,
    així que no hi ha focus del textarea que dispari el zoom. */
-body.embed { --ed-font-size: 0.8rem; }
+body.embed { --ed-font-size: 0.875rem; }
 
 /* ════════════════════════════════════════════════════════
    GLOSSARI — Modal de referència ràpida
@@ -741,7 +738,7 @@ body.embed { --ed-font-size: 0.8rem; }
 
 .btn-glossari {
   margin-left: auto;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   color: var(--muted);
   border-color: var(--border);
   white-space: nowrap;
@@ -784,7 +781,7 @@ body.embed { --ed-font-size: 0.8rem; }
 
 .glossari-title {
   font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.5px;
@@ -815,7 +812,7 @@ body.embed { --ed-font-size: 0.8rem; }
 
 .glossari-section h3 {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -825,7 +822,7 @@ body.embed { --ed-font-size: 0.8rem; }
 
 .glossari-hint {
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: var(--muted);
   margin: 0 0 8px;
   line-height: 1.5;
@@ -841,7 +838,7 @@ body.embed { --ed-font-size: 0.8rem; }
   grid-template-columns: auto 1fr;
   gap: 3px 14px;
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   line-height: 1.7;
 }
 .glossari-grid code {
@@ -853,7 +850,7 @@ body.embed { --ed-font-size: 0.8rem; }
 /* Code examples */
 .glossari-example {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   line-height: 1.6;
   color: var(--text);
   background: var(--bg);
@@ -867,7 +864,7 @@ body.embed { --ed-font-size: 0.8rem; }
 /* Rules */
 .glossari-rules .glossari-rule {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   color: var(--text);
   line-height: 1.8;
 }
@@ -899,44 +896,47 @@ body.embed { --ed-font-size: 0.8rem; }
     touch-action: pan-y;
     padding: 14px 16px 24px;
   }
-  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
-  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+  .glossari-grid { font-size: 0.74rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.72rem; padding: 6px 10px; }
 }
 
 
 /* ════════════════════════════════════════════════════════
-   BARRA D'ACCESSOS DIRECTES (sobre el teclat nadiu, mòbil)
+   BARRA DE TECLES TÀCTIL (js/kbd-accessory.js)
+   Sota l'editor, només en pantalles tàctils. Es desplaça en horitzontal.
    ════════════════════════════════════════════════════════ */
-.kbd-accessory {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 9999;
+.kbd-bar {
   display: flex;
-  gap: 4px;
-  padding: 4px 6px;
-  background: #e4e6eb;
-  border-top: 1px solid #c8ccd2;
-  box-sizing: border-box;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.08);
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
-.kbd-accessory--hidden { display: none; }
-
-.kbd-accessory__btn {
-  flex: 1 1 0;
-  min-width: 0;
-  height: 38px;
-  font-family: var(--mono, 'Space Mono', monospace);
-  font-size: 18px;
-  font-weight: 600;
-  color: #222;
-  background: #fff;
-  border: 1px solid #c8ccd2;
+.kbd-bar::-webkit-scrollbar { display: none; }
+.kbd-bar__btn {
+  flex: 0 0 auto;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 0;
   cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0,0,0,0.06);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
 }
-.kbd-accessory__btn:active { background: #f0f0f3; }
+.kbd-bar__btn--word { font-size: 14px; font-weight: 400; }
+.kbd-bar__btn:active { background: var(--accent-dim); border-color: var(--accent); }
+.kbd-bar__sep { flex: 0 0 1px; align-self: stretch; margin: 4px 2px; background: var(--border); }
 
 /* ── Mode readonly: fons gris + toast "No editable" ── */
 body.is-readonly .code-col {
@@ -959,7 +959,7 @@ body.is-readonly #line-numbers {
   padding: 4px 12px;
   border-radius: 4px;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   background: var(--border);
   color: var(--muted);
   opacity: 0;
@@ -970,12 +970,62 @@ body.is-readonly #line-numbers {
   opacity: 1;
 }
 
-/* Quan el teclat nadiu està obert, limitem l'alçada del textarea perquè
-   el navegador no hagi de fer un scrollIntoView agressiu que amaga el
-   mapa. ~30dvh és prou per a unes línies de codi; la resta es fa scroll
-   dins el propi textarea. */
+/* ════════════════════════════════════════════════════════
+   PANTALLES TÀCTILS (tauletes, Chromebooks en mode tauleta)
+   Botons d'almenys 40 px d'alt i lletra de l'editor més gran.
+   Ha d'anar al final del fitxer per guanyar les regles anteriors.
+   ════════════════════════════════════════════════════════ */
 @media (pointer: coarse) {
-  body.kbd-open #code-editor {
-    max-height: 30dvh;
-  }
+  :root, body.embed { --ed-font-size: 15px; }
+  .btn, .mon-btn, .glossari-close { touch-action: manipulation; }
+  .toolbar .btn,
+  body.embed .toolbar .btn,
+  .map-toolbar .btn { min-height: 40px; padding: 6px 12px; font-size: 0.82rem; }
+  .toolbar { gap: 6px; }
+  .speed-row input[type=range] { min-height: 32px; }
+  #btn-theme, .btn-glossari, .karel-nav-toggle { min-height: 40px; min-width: 40px; }
+  .glossari-close { width: 40px; height: 40px; }
+  #log { font-size: 0.85rem; }
+  .ac-item { padding: 10px 14px; }
 }
+
+/* ════════════════════════════════════════════════════════
+   OBJECTIU (renderer.js): botó «🎯 Objectiu», capa transparent i diferències
+   ════════════════════════════════════════════════════════ */
+.goal-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  background: var(--surface);
+}
+.goal-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.cell .ghost {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.4;
+}
+.cell .ghost-pearl { inset: 18%; }
+.cell .ghost-pearl svg { width: 100%; height: 100%; }
+.cell .ghost-karel { inset: 0; opacity: 0.32; }
+.cell .ghost-karel .karel-entity { animation: none; filter: none; }
+/* Perla que hi és però que a l'objectiu no hi ha de ser */
+.cell .ghost-x {
+  top: 1px;
+  right: 3px;
+  opacity: 0.85;
+  color: var(--error);
+  font-weight: 700;
+  font-size: max(11px, calc(var(--cell-size, 36px) * 0.3));
+  line-height: 1;
+}
+/* Casella diferent de l'objectiu després d'un intent fallit */
+.cell.cell-diff {
+  box-shadow: inset 0 0 0 3px var(--error);
+  background: var(--error-dim);
+}
+body.light .cell.cell-diff { background: #fee2e2 !important; }

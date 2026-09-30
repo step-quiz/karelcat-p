@@ -4,26 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ══════════════════════════════════════════════════════
-       Primera visita en aquest dispositiu → presentació
-       (s'executa ABANS de res perquè no es vegi cap flash
-        d'index.html si hem de redirigir)
-       ══════════════════════════════════════════════════════ -->
-  <script>
-    (function () {
-      try {
-        if (!localStorage.getItem('karel_visited')) {
-          localStorage.setItem('karel_visited', '1');
-          location.replace('presentacio-karel.html');
-        }
-      } catch (e) {
-        /* localStorage bloquejat (p.ex. mode privat): continuem normal */
-      }
-    })();
-  </script>
-
   <title>Karel — aprèn a programar</title>
-  <meta name="description" content="Karel: un robot, un món de quadres, i el primer pas per aprendre a programar.">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="description" content="Karel: una medusa programable, un món de caselles i el primer pas per aprendre a programar en Python.">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -203,6 +188,31 @@
       font-size: clamp(0.88rem, 1.2vw, 1rem);
       max-width: 30rem;
     }
+    /* Enllaç a la presentació (la primera vegada es destaca) */
+    .intro-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.1rem;
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: border-color .2s ease, background .2s ease, color .2s ease;
+    }
+    .intro-link:hover { border-color: var(--accent); color: var(--accent); }
+    .intro-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .intro-link.is-new {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .intro-link.is-new:hover { color: #fff; filter: brightness(1.08); }
 
     /* ── GRID DE TARGETES ─────────────────────────── */
     .grid {
@@ -306,7 +316,7 @@
     <section class="hero" aria-label="Karel: aprèn a programar">
 
       <!-- Mini món animat (top-left) -->
-      <div class="hero-world" role="img" aria-label="Animació: en Karel recorre un món 3×3, recull una perla i torna al punt de partida.">
+      <div class="hero-world" role="img" aria-label="Animació: en Karel recorre un món 3×3, recull una perla, torna al punt de partida i hi deixa la perla.">
         <div class="mini-world" id="miniWorld"></div>
       </div>
 
@@ -331,7 +341,8 @@
           <span>Karel</span>
         </div>
         <h1>Aprèn a programar</h1>
-        <p>Comença des de zero i finalitza sabent com és el codi Python professional.</p>
+        <p>Dona instruccions a en Karel. Aprèn a programar amb Python.</p>
+        <a href="presentacio-karel.html" class="intro-link" id="intro-link">▶ És el primer cop? Mira la presentació</a>
       </div>
 
     </section>
@@ -342,25 +353,25 @@
       <a href="curs/capitol-1.html" class="card">
         <span class="card-eyebrow">Curs · 10 capítols</span>
         <span class="card-title">Aprendre des de zero</span>
-        <span class="card-desc">Un curs per aprendre programació, que es pot fer sense tenir experiència prèvia, en 10 capítols.</span>
+        <span class="card-desc">Aprèn a programar pas a pas, en 10 capítols.</span>
       </a>
 
       <a href="curs/repte-1.html" class="card">
-        <span class="card-eyebrow">Reptes · 13 exercicis</span>
+        <span class="card-eyebrow">Reptes · 9 exercicis</span>
         <span class="card-title">Posar-ho a prova</span>
-        <span class="card-desc">Tens reptes per practicar allò que has après al curs.</span>
+        <span class="card-desc">Practica el que has après al curs.</span>
       </a>
 
       <a href="simulador.html" class="card">
         <span class="card-eyebrow">Simulador</span>
         <span class="card-title">Provar codi lliurement</span>
-        <span class="card-desc">Tens un entorn complet on poder escriure codi, executar-lo i corregir els errors que hi pugui haver, sense cap restricció.</span>
+        <span class="card-desc">Escriu el teu codi, prova'l i corregeix els errors.</span>
       </a>
 
       <a href="edit-mapa.html" class="card">
         <span class="card-eyebrow">Editor</span>
         <span class="card-title">Crear mons propis</span>
-        <span class="card-desc">Dissenya el teu propi món, amb roques, perles i en Karel on tu vulguis. A continuació, el pots provar en el simulador.</span>
+        <span class="card-desc">Fes el teu món: posa roques, perles i en Karel on tu vulguis. Després, prova'l al simulador.</span>
       </a>
 
     </nav>
@@ -368,6 +379,11 @@
   </main>
 
   <script>
+    // Si en aquest dispositiu encara no s'ha vist la presentació, l'enllaç es destaca
+    try {
+      if (!localStorage.getItem('karel_tour_done_v1')) document.getElementById('intro-link').classList.add('is-new');
+    } catch (e) { /* localStorage bloquejat: l'enllaç es veu igualment */ }
+
     // ── SVG assets (idèntics als de js/constants.js) ──────────────────────────
     const SVG_MEDUSA = `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="karel-entity" fill="currentColor" shape-rendering="crispEdges"><g class="karel-outline" fill="#6B0D4F"><rect x="5" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/></g><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="6" y="3" width="1" height="1" fill="var(--bg)"/><rect x="7" y="3" width="1" height="1" fill="var(--bg)"/><rect x="8" y="3" width="1" height="1" fill="var(--bg)"/><rect x="9" y="3" width="1" height="1" fill="var(--bg)"/></svg>`;
 
@@ -382,33 +398,34 @@
 
     const ROCKS = new Set(['0,1']); // files×columnes amb roca (no canvien)
 
-    // Seqüència d'estats: {kr=fila karel, kc=col karel, kd=direcció, pearl=visible}
+    // Seqüència d'estats: {kr=fila karel, kc=col karel, kd=direcció, p=[fila,col] de la perla o null}
     // Karel fa un recorregut en L: est per la fila 2, nord per la col 2,
-    // recull la perla, torna, i la deixa de nou.
+    // recull la perla (grab), torna a casa i la deixa on és ell (drop).
+    // Després el món es reinicia: la perla torna a aparèixer a dalt.
     const STEPS = [
-      { kr:2, kc:0, kd:'right',  pearl:true,  onPearl:false }, // 0  inici
-      { kr:2, kc:1, kd:'right',  pearl:true,  onPearl:false }, // 1  → est
-      { kr:2, kc:2, kd:'right',  pearl:true,  onPearl:false }, // 2  → est
-      { kr:2, kc:2, kd:'top',    pearl:true,  onPearl:false }, // 3  gira nord
-      { kr:1, kc:2, kd:'top',    pearl:true,  onPearl:false }, // 4  ↑ nord
-      { kr:0, kc:2, kd:'top',    pearl:true,  onPearl:true  }, // 5  ↑ arriba: medusa + perla
-      { kr:0, kc:2, kd:'top',    pearl:false, onPearl:false }, // 6  GRAB: perla desapareix
-      { kr:0, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 7  gira sud
-      { kr:1, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 8  ↓ sud
-      { kr:2, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 9  ↓ sud
-      { kr:2, kc:2, kd:'left',   pearl:false, onPearl:false }, // 10 gira oest
-      { kr:2, kc:1, kd:'left',   pearl:false, onPearl:false }, // 11 ← oest
-      { kr:2, kc:0, kd:'left',   pearl:false, onPearl:false }, // 12 ← oest
-      { kr:2, kc:0, kd:'right',  pearl:true,  onPearl:false }, // 13 DEIXA perla + gira est → loop
+      { kr:2, kc:0, kd:'right',  p:[0,2] }, // 0  inici
+      { kr:2, kc:1, kd:'right',  p:[0,2] }, // 1  → est
+      { kr:2, kc:2, kd:'right',  p:[0,2] }, // 2  → est
+      { kr:2, kc:2, kd:'top',    p:[0,2] }, // 3  gira nord
+      { kr:1, kc:2, kd:'top',    p:[0,2] }, // 4  ↑ nord
+      { kr:0, kc:2, kd:'top',    p:[0,2] }, // 5  ↑ arriba: medusa damunt la perla
+      { kr:0, kc:2, kd:'top',    p:null  }, // 6  grab(): la perla va a la motxilla
+      { kr:0, kc:2, kd:'bottom', p:null  }, // 7  gira sud
+      { kr:1, kc:2, kd:'bottom', p:null  }, // 8  ↓ sud
+      { kr:2, kc:2, kd:'bottom', p:null  }, // 9  ↓ sud
+      { kr:2, kc:2, kd:'left',   p:null  }, // 10 gira oest
+      { kr:2, kc:1, kd:'left',   p:null  }, // 11 ← oest
+      { kr:2, kc:0, kd:'left',   p:null  }, // 12 ← oest
+      { kr:2, kc:0, kd:'left',   p:[2,0] }, // 13 drop(): la perla queda a la casella d'en Karel
+      { kr:2, kc:0, kd:'right',  p:[2,0] }, // 14 gira est → el món es reinicia
     ];
 
-    // Pearl home position
-    const PEARL_ROW = 0, PEARL_COL = 2;
+    const samePos = (a, b) => !!a && !!b && a[0] === b[0] && a[1] === b[1];
 
     function renderWorld(stepIdx) {
       const s     = STEPS[stepIdx];
       const prevS = STEPS[(stepIdx - 1 + STEPS.length) % STEPS.length];
-      const pearlJustReturned = s.pearl && !prevS.pearl;
+      const pearlJustReturned = !!s.p && !samePos(s.p, prevS.p);
 
       const grid = document.getElementById('miniWorld');
       grid.innerHTML = '';
@@ -420,8 +437,8 @@
 
           const isKarel   = (r === s.kr && c === s.kc);
           const isRock    = ROCKS.has(`${r},${c}`);
-          const isPearl   = s.pearl && r === PEARL_ROW && c === PEARL_COL;
-          const isOverlap = isKarel && s.onPearl && r === PEARL_ROW && c === PEARL_COL;
+          const isPearl   = samePos(s.p, [r, c]);
+          const isOverlap = isKarel && isPearl;
 
           if (isRock) {
             cell.innerHTML = SVG_ROCK;
@@ -458,7 +475,6 @@
     }, 750);
   </script>
 
-<script src="./kofi.js"></script>
 <script src="./footer.js"></script>
 </body>
 </html>

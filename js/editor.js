@@ -182,6 +182,101 @@ function updateEditor() {
 }
 
 
+// ── Desa el codi de l'alumne ──
+// K.codeStorageKey el decideix main.js: la clau del simulador lliure, la
+// d'un exercici del curs (?save=...) o null (exemples: no es desa res).
+function saveCode(code) {
+  if (K.codeStorageKey) K.lsSet(K.codeStorageKey, code);
+}
+
+
+// ── Edició de text amb suport de «desfer» (Ctrl+Z) ──
+// Substitueix el text entre `from` i `to` per `text`. Fa servir
+// execCommand perquè el navegador ho afegeixi a l'historial de desfer;
+// si no està disponible, modifica el valor directament.
+
+const INDENT = '    ';   // 4 espais per nivell, com diu el glossari
+
+function editText(ta, text, from = ta.selectionStart, to = ta.selectionEnd) {
+  ta.focus();
+  ta.setSelectionRange(from, to);
+  let ok = false;
+  try { ok = document.execCommand(text === '' ? 'delete' : 'insertText', false, text); } catch (e) { ok = false; }
+  if (!ok) {
+    const v = ta.value;
+    ta.value = v.slice(0, from) + text + v.slice(to);
+    ta.selectionStart = ta.selectionEnd = from + text.length;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+}
+
+const _lineStart = (v, pos) => v.lastIndexOf('\n', pos - 1) + 1;
+
+// Enter: la línia nova manté la indentació i n'afegeix un nivell després de ':'
+function newlineWithIndent(ta) {
+  const v = ta.value, s = ta.selectionStart;
+  const line   = v.slice(_lineStart(v, s), s);
+  const indent = (line.match(/^[ \t]*/) || [''])[0];
+  const code   = line.replace(/#.*$/, '').trimEnd();
+  editText(ta, '\n' + indent + (code.endsWith(':') ? INDENT : ''));
+}
+
+// Tab: sense selecció, espais fins al següent múltiple de 4; amb una
+// selecció de diverses línies, indenta totes les línies
+function indentSelection(ta) {
+  const v = ta.value, s = ta.selectionStart;
+  let e = ta.selectionEnd;
+  if (!v.slice(s, e).includes('\n')) {
+    const col = s - _lineStart(v, s);
+    editText(ta, ' '.repeat(4 - (col % 4)));
+    return;
+  }
+  if (v[e - 1] === '\n') e--;
+  const ls = _lineStart(v, s);
+  const block = v.slice(ls, e).split('\n').map(l => (l.trim() ? INDENT + l : l)).join('\n');
+  editText(ta, block, ls, e);
+  ta.setSelectionRange(ls, ls + block.length);
+}
+
+// Maj+Tab: treu un nivell d'indentació de la línia (o de les línies seleccionades)
+function dedentSelection(ta) {
+  const v = ta.value, s = ta.selectionStart;
+  let e = ta.selectionEnd;
+  if (e > s && v[e - 1] === '\n') e--;
+  const ls = _lineStart(v, s);
+  let le = v.indexOf('\n', e);
+  if (le === -1) le = v.length;
+  const lines    = v.slice(ls, le).split('\n');
+  const newLines = lines.map(l => l.replace(/^( {1,4}|\t)/, ''));
+  const block    = newLines.join('\n');
+  if (block === lines.join('\n')) return;
+  const removedFirst = lines[0].length - newLines[0].length;
+  editText(ta, block, ls, le);
+  if (s === ta.selectionEnd && s === e) {
+    const p = Math.max(ls, s - removedFirst);
+    ta.setSelectionRange(p, p);
+  } else {
+    ta.setSelectionRange(ls, ls + block.length);
+  }
+}
+
+// Retrocés just després d'espais d'indentació: esborra fins al múltiple de 4 anterior
+function backspaceIndent(ta) {
+  const v = ta.value, s = ta.selectionStart;
+  if (s !== ta.selectionEnd) return false;
+  const before = v.slice(_lineStart(v, s), s);
+  if (!before.length || /[^ ]/.test(before)) return false;
+  const n = before.length % 4 || 4;
+  if (n === 1) return false;                 // un sol espai: que ho faci el navegador
+  editText(ta, '', s - n, s);
+  return true;
+}
+
+function autocompleteVisible() {
+  return !!document.getElementById('autocomplete')?.classList.contains('visible');
+}
+
+
 // ── Inicialització (cridada des de main.js) ──
 
 function initEditor() {
@@ -191,7 +286,7 @@ function initEditor() {
   // Canal principal: cada canvi de contingut re-ressalta i re-sincronitza.
   ta.addEventListener('input', () => {
     updateEditor();
-    localStorage.setItem(K.LS_KEY_CODE, ta.value);
+    saveCode(ta.value);
     // Safety net: el navegador pot ajustar ta.scrollLeft/scrollTop
     // DESPRÉS de 'input' (clamp al nou max-scroll, scroll per mantenir
     // el caret visible, reflow del teclat virtual en mòbil). Si no es
@@ -228,21 +323,29 @@ function initEditor() {
   }
 
   ta.addEventListener('keydown', e => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const s = ta.selectionStart, end = ta.selectionEnd;
-      ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(end);
-      ta.selectionStart = ta.selectionEnd = s + 2;
-      updateEditor();
-      // Assignació manual a value + selection → possible scroll
-      // asíncron per mantenir el caret visible; sincronitzem després.
-      requestAnimationFrame(syncLayers);
-    }
-    // Ctrl+Enter: equivalent a clicar el botó Executa/Atura
-    // Només s'activa si el cursor és dins el textarea (focus actiu)
-    if (e.ctrlKey && e.key === 'Enter') {
+    // Ctrl+Enter (o Cmd+Enter): equivalent a clicar el botó Executa/Atura
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       K.handleRunClick();
+      return;
+    }
+    if (ta.readOnly) return;
+    // Si l'autocompletat és obert, Tab i Enter són seus (vegeu initAutocomplete)
+    if (e.key === 'Tab' && !autocompleteVisible()) {
+      e.preventDefault();
+      if (e.shiftKey) dedentSelection(ta); else indentSelection(ta);
+    }
+  });
+
+  // Enter i retrocés es tracten a 'beforeinput' (i no a 'keydown') perquè
+  // així també funcionen amb els teclats virtuals de les tauletes.
+  ta.addEventListener('beforeinput', e => {
+    if (ta.readOnly || !e.cancelable || e.isComposing) return;
+    if ((e.inputType === 'insertLineBreak' || e.inputType === 'insertParagraph') && !autocompleteVisible()) {
+      e.preventDefault();
+      newlineWithIndent(ta);
+    } else if (e.inputType === 'deleteContentBackward') {
+      if (backspaceIndent(ta)) e.preventDefault();
     }
   });
 
@@ -279,7 +382,7 @@ function initAutocomplete(ta) {
 
   function currentWord() {
     const before = ta.value.slice(0, ta.selectionStart);
-    return (before.match(/[\w.\-àáèéíïòóúüçñ]+$/) || [''])[0];
+    return (before.match(/[\w\u00B7\u00C0-\u024F]+$/) || [''])[0];
   }
 
   let _acCanvas = null;
@@ -336,14 +439,11 @@ function initAutocomplete(ta) {
     if (!item) return;
     const word = currentWord();
     const pos  = ta.selectionStart;
-    const pre  = ta.value.slice(0, pos - word.length);
-    const post = ta.value.slice(pos);
-    ta.value = pre + item.text + post;
-    ta.selectionStart = ta.selectionEnd = pre.length + item.text.length;
+    // Les ordres i les condicions porten parèntesis: move → move()
+    const needsParens = (item.kind === 'cmd' || item.kind === 'cond') && ta.value[pos] !== '(';
     hideAC();
-    updateEditor();
-    localStorage.setItem(K.LS_KEY_CODE, ta.value);
-    ta.focus();
+    editText(ta, item.text + (needsParens ? '()' : ''), pos - word.length, pos);
+    hideAC();
     // Assignació a value + selection → possible scroll asíncron
     requestAnimationFrame(syncLayers);
   }
@@ -405,3 +505,6 @@ K.clearLineMarks = clearLineMarks;
 K.updateEditor   = updateEditor;
 K.initEditor     = initEditor;
 K.syncLayers     = syncLayers;   // exposat per si algun altre mòdul en depèn
+K.editText       = editText;     // l'usa la barra de tecles tàctil (kbd-accessory.js)
+K.indentSelection = indentSelection;
+K.dedentSelection = dedentSelection;

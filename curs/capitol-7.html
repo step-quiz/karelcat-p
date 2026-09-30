@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 7 — Condicionals | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -45,7 +48,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -151,7 +154,7 @@ else:
 
         <p>Prem ▶ <strong>Executa</strong></p>
 
-        <div class="simulador" data-map=".,.,.,.,.,.|.,.,.,.,.,.|K&gt;,.,.,P,.|.,.,.,.,.,." data-code="for i in range(5):
+        <div class="simulador" data-map=".,.,.,.,.,.|.,.,.,.,.,.|K&gt;,.,.,P,.,.|.,.,.,.,.,." data-code="for i in range(5):
     if front_is_clear():
         move()
     else:
@@ -168,7 +171,7 @@ else:
           <li><code>front_is_clear()</code> — la casella del davant és lliure?</li>
           <li><code>front_is_blocked()</code> — la casella del davant té un obstacle?</li>
           <li><code>bag_is_empty()</code> — la motxilla no conté cap perla?</li>
-          <li><code>bag_is_full()</code> — la motxilla conté, com a mínim, una perla?</li>
+          <li><code>bag_has_pearls()</code> — la motxilla conté, com a mínim, una perla?</li>
         </ul>
 
       </section>
@@ -207,6 +210,27 @@ else:
 <!-- ══════════════════════════════════════════════════════
      Scripts
      ══════════════════════════════════════════════════════ -->
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+for i in range(5):
+    move()
+    if pearl_here():
+        grab()
+</solucio>
+
+<solucio-incorrecta motiu="comprova abans d'avançar i es deixa l'última perla">
+for i in range(5):
+    if pearl_here():
+        grab()
+    move()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 7;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -217,15 +241,6 @@ else:
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

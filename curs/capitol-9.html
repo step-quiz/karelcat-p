@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 9 — Combinant condicions | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -37,7 +40,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -123,13 +126,32 @@ while pearl_here() and front_is_clear():
 
       <nav class="chapter-nav" aria-label="Navegació entre capítols">
         <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
-        <a href="capitol-futur.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+        <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
       </nav>
 
     </div>
   </main>
 
 </div>
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+while not pearl_here() and front_is_clear():
+    move()
+if pearl_here():
+    grab()
+</solucio>
+
+<solucio-incorrecta motiu="troba la perla però no la recull">
+while not pearl_here() and front_is_clear():
+    move()
+</solucio-incorrecta>
+-->
 
 <script>const CURRENT_CAPITOL = 9;</script>
 <script src="progress.js"></script>
@@ -141,15 +163,6 @@ while pearl_here() and front_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

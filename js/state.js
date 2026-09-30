@@ -71,6 +71,10 @@ function applyCodeLang(lang) {
   L.COND_TO_ACTION  = {};
   tk.commands.forEach((c, i)   => L.CMD_TO_ACTION[c]  = K.CMD_ACTIONS[i]);
   tk.conditions.forEach((c, i) => L.COND_TO_ACTION[c] = K.COND_ACTIONS[i]);
+  for (const [alias, name] of Object.entries(tk.condition_aliases || {})) {
+    L.COND_TO_ACTION[alias] = L.COND_TO_ACTION[name];
+    L.CONDS.add(alias);
+  }
 }
 
 K.applyCodeLang = applyCodeLang;

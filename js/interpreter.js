@@ -7,6 +7,15 @@
 // La capa d'execució (execution.js) consumeix els yields.
 // ════════════════════════════════════════════════════════
 
+// Estat complet del món en un string: posició, direcció i motxilla d'en Karel
+// i contingut de totes les caselles. Com que els programes d'en Karel no
+// tenen variables, tot el que passarà a partir d'un punt del programa depèn
+// només d'aquest estat.
+function _worldKey() {
+  const S = K.state, k = S.karel;
+  return `${k.x},${k.y},${k.dir},${k.motxilla}|` + S.world.grid.map(r => r.join('')).join('/');
+}
+
 function* runStmts(stmts) {
   for (const s of stmts) {
     yield* runStmt(s);
@@ -27,8 +36,18 @@ function* runStmt(node) {
       break;
 
     case 'while': {
+      // Detecció exacta d'iteracions infinites: si a l'inici de dues voltes
+      // d'aquest mateix while el món és idèntic, el programa farà exactament
+      // el mateix a partir d'aquí i no acabarà mai (principi del colomar).
+      const seen = new Set();
       let guard = 50000;
       while (K.evalCond(node.cond)) {
+        const key = _worldKey();
+        if (seen.has(key)) {
+          yield { type: 'error', code: 'inf_loop', msg: K.t('log.inf_loop_same'), line: node.line };
+          return;
+        }
+        seen.add(key);
         if (--guard <= 0) {
           yield { type: 'error', code: 'inf_loop', msg: K.t('log.inf_loop'), line: node.line };
           return;
@@ -42,7 +61,7 @@ function* runStmt(node) {
     case 'repeat': {
       const MAX_REPEAT = 10000;
       if (node.count > MAX_REPEAT) {
-        yield { type: 'error', code: 'inf_loop', msg: K.t('log.inf_loop'), line: node.line };
+        yield { type: 'error', code: 'too_many', msg: K.t('log.too_many'), line: node.line };
         return;
       }
       for (let i = 0; i < node.count; i++) {

@@ -92,7 +92,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--muted);
   font-family: var(--mono);
   white-space: nowrap;
@@ -141,7 +141,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
 
 /* Variant: enllaç al simulador lliure (botó de text, més petit) */
 .btn-curs-sim {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   padding: 5px 10px;
   text-decoration: none;
 }
@@ -262,7 +262,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
   gap: 1.25rem;
   padding: 1rem 1rem 0.75rem;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border);
@@ -307,7 +307,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
 
 .sidebar-num {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--accent-hi);
   min-width: 1.6rem;
@@ -318,7 +318,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
 
 .sidebar-titol {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -361,7 +361,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
 .chapter-badge {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--accent-hi);
@@ -433,7 +433,7 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
 .simulador-badge {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   padding: 4px 10px;
@@ -442,10 +442,37 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
   width: 100%;
 }
 .simulador-badge--exemple { color: var(--muted); }
+
+/* Capçalera d'un simulador d'un sol món: etiqueta + botó de pantalla completa */
+.simulador-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding-right: 8px;
+}
+.simulador-head .simulador-badge { border-bottom: none; width: auto; flex: 1; }
+
+/* Botó «⛶ Pantalla completa» (capçalera o barra de mons) */
+.fs-btn {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+.fs-btn:hover { color: var(--text); border-color: var(--accent-hi); }
 .simulador-badge--exercici { color: var(--accent-hi); }
 
 .simulador-caption {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   color: var(--muted);
   padding: 6px 12px;
   background: var(--surface);
@@ -459,7 +486,7 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
   padding: 0.55rem 1rem;
   border-radius: 4px;
   font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   margin-top: 0.4rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -485,25 +512,8 @@ body.curs-light .simulador-feedback.fb-error {
   color: #7f1d1d;
 }
 
-/* ── Label de món actiu (overlay sobre el panel del mapa) ── */
 .simulador-iframe-wrap {
   position: relative;
-}
-.mon-active-label {
-  position: absolute;
-  top: 10px;
-  left: 62%;           /* el panel del mapa comença ~62% des de l'esquerra */
-  right: 0;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--accent-hi);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0.85;
 }
 
 /* ── Selector de mons (capítol 10 — mode N mons) ─────── */
@@ -518,7 +528,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .mon-btn {
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   padding: 6px 16px;
   background: var(--bg);
@@ -612,7 +622,7 @@ body.curs-light .simulador-feedback.fb-error {
 .prog-badge {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-weight: 700;
   padding: 1px 5px;
   border-radius: 3px;
@@ -644,7 +654,7 @@ body.curs-light .simulador-feedback.fb-error {
     display: block;
     padding: 0.75rem 1.25rem;
     font-family: var(--mono);
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--muted);
@@ -687,16 +697,52 @@ body.curs-light .simulador-feedback.fb-error {
   .curs-content { padding: 1.5rem 1rem 3rem; }
   .chapter-header h1 { font-size: 1.4rem; }
 
-  .simulador-frame { height: 320px !important; }
+  /* Alçada proporcional a la pantalla (abans: 320 px fixos, massa petit en tauletes) */
+  .simulador-frame { height: clamp(340px, 75vh, 640px) !important; }
+
+  /* La navegació global ja és a la barra lateral: així la capçalera no desborda */
+  .curs-header .karel-nav,
+  .curs-header .karel-nav-sep { display: none; }
 }
 
 @media (max-width: 540px) {
-  .mon-active-label { display: none; }
   .capitols-list { padding: 0 0.75rem; }
   .capitol-card a { padding: 0.85rem 1rem; }
   .chapter-nav { flex-direction: column; }
   .btn-nav--next { margin-left: 0; width: 100%; justify-content: center; }
   .btn-nav--prev { width: 100%; justify-content: center; }
+}
+
+/* ── Botó «Esborra el meu progrés» ─────────────────────
+   A la part de baix de la barra lateral i al final de l'índex del curs,
+   lluny dels botons que es fan servir sovint. */
+.sidebar-footer {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.curs-index-footer {
+  max-width: var(--content-max);
+  margin: -2rem auto 4rem;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+.karel-clear-btn {
+  font-family: var(--mono, 'Space Mono', monospace);
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.karel-clear-btn:hover,
+.karel-clear-btn:focus-visible {
+  color: var(--error, #dc2626);
+  border-color: var(--error, #dc2626);
 }
 
 /* ════════════════════════════════════════════════════════
@@ -706,7 +752,7 @@ body.curs-light .simulador-feedback.fb-error {
 .glossari-curs-btn {
   margin-left: auto;
   font-family: 'Space Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.8px;
   color: #6b7280;
   background: none;
@@ -755,7 +801,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .glossari-title {
   font-family: 'Space Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #1a1a1a;
   letter-spacing: 0.5px;
@@ -786,7 +832,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .glossari-section h3 {
   font-family: 'Space Mono', monospace;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -796,7 +842,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .glossari-hint {
   font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: #6b7280;
   margin: 0 0 8px;
   line-height: 1.5;
@@ -811,7 +857,7 @@ body.curs-light .simulador-feedback.fb-error {
   grid-template-columns: auto 1fr;
   gap: 3px 14px;
   font-family: 'Space Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   line-height: 1.7;
 }
 .glossari-grid code {
@@ -822,7 +868,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .glossari-example {
   font-family: 'Space Mono', monospace;
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   line-height: 1.6;
   color: #1a1a1a;
   background: #f5f5f5;
@@ -835,7 +881,7 @@ body.curs-light .simulador-feedback.fb-error {
 
 .glossari-rules .glossari-rule {
   font-family: 'Space Mono', monospace;
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   color: #1a1a1a;
   line-height: 1.8;
 }
@@ -867,8 +913,8 @@ body.curs-light .simulador-feedback.fb-error {
     touch-action: pan-y;
     padding: 14px 16px 24px;
   }
-  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
-  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+  .glossari-grid { font-size: 0.74rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.72rem; padding: 6px 10px; }
 }
 
 
@@ -897,4 +943,21 @@ body.curs-light .simulador-feedback.fb-error {
   font-weight: 600;
   width: 22%;
   color: var(--muted);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   PANTALLES TÀCTILS (tauletes, Chromebooks en mode tauleta)
+   Botons i enllaços d'almenys 40 px d'alt.
+   ════════════════════════════════════════════════════════ */
+@media (pointer: coarse) {
+  .mon-btn, .fs-btn, .btn-nav, .glossari-curs-btn, .karel-clear-btn, #sidebar-toggle {
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+  .mon-btn { padding: 8px 16px; }
+  /* Més alçada per als simuladors: la barra de tecles i els botons grans ocupen lloc */
+  .simulador-frame { min-height: min(80vh, 600px); }
+  .sidebar-link { padding-top: 0.7rem; padding-bottom: 0.7rem; }
+  details.consell-box > summary { padding-top: 0.8rem; padding-bottom: 0.8rem; }
 }

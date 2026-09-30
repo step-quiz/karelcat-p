@@ -9,7 +9,7 @@
   align-items: center;
   gap: 1.75rem;
   font-family: var(--mono, 'Space Mono', monospace);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
@@ -85,7 +85,7 @@
 .karel-nav-drawer .karel-nav-link {
   display: block;
   padding: 0.85rem 1.5rem;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   color: var(--muted);
   border-bottom: none;
 }
@@ -114,41 +114,5 @@
   .curs-header .karel-nav-toggle {
     display: inline-flex;
     align-items: center;
-  }
-}
-
-/* ── Botó "Netejar històric" ─────────────────────────── */
-.karel-clear-btn {
-  font-family: var(--mono, 'Space Mono', monospace);
-  font-size: 0.65rem;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--muted);
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 3px 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s;
-  flex-shrink: 0;
-}
-.karel-clear-btn:hover {
-  color: var(--error, #dc2626);
-  border-color: var(--error, #dc2626);
-}
-
-/* En pantalles estretes, el botó "Netejar històric" desborda la topbar
-   (té white-space:nowrap + flex-shrink:0). El compactem a una icona. */
-@media (max-width: 480px) {
-  .karel-clear-btn {
-    font-size: 0;           /* amaga el text */
-    padding: 3px 6px;
-    line-height: 1;
-  }
-  .karel-clear-btn::before {
-    content: "✕";
-    font-size: 0.9rem;
-    letter-spacing: 0;
   }
 }

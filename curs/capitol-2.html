@@ -3,6 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capítol 2 — Recollir i deixar | Karel</title>
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -46,7 +49,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -143,10 +146,10 @@ move()
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          <p>Hi ha dues perles. En Karel ha de recollir les dues perles, ha d'avançar i les ha de deixar al final de la fila del mig.</p>
+          <p>Hi ha dues perles. En Karel ha de recollir les dues perles.<br>Després, ha d'anar fins al final de la fila del mig, amb les dues perles a la motxilla.</p>
         </div>
 
-        <div class="simulador" data-map=".,.,.,.,.|K&gt;,A,.,A,.|.,.,.,.,." data-goal=".,.,.,.,.|.,.,.,.,K&gt;|.,.,.,.,." data-code="
+        <div class="simulador" data-map=".,.,.,.,.|K&gt;,A,.,A,.|.,.,.,.,." data-goal=".,.,.,.,.|.,.,.,.,K&gt;|.,.,.,.,.;motxilla=2" data-code="
 
 
 
@@ -174,6 +177,40 @@ move()
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+move()
+grab()
+move()
+move()
+grab()
+move()
+</solucio>
+
+<solucio-incorrecta motiu="recull només una perla">
+move()
+grab()
+move()
+move()
+move()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="deixa les perles al final (i la motxilla no en té dues)">
+move()
+grab()
+move()
+move()
+grab()
+move()
+drop()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 2;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -184,15 +221,6 @@ move()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
-<script src="../kofi.js"></script>
 <script src="../footer.js"></script>
 
 

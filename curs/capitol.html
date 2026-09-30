@@ -11,15 +11,25 @@
   3. Actualitza el <title> i tots els blocs marcats amb [CAP-N: ...].
   4. Afegeix/elimina seccions <div class="chapter-section"> segons necessitat.
   5. Per a cada exemple/exercici, usa un <div class="simulador"> amb:
-       data-map    = CSV del món (usa \n per a salts de línia)
+       data-map    = mapa del món. Les files se separen amb | (MAI amb \n)
                      P = Roca (obstacle) · A = Perla (recollible) · . = buit
                      K> K^ K< Kv = Karel mirant Est/Nord/Oest/Sud
+                     K>A (etc.) = Karel damunt d'una casella amb perla
+       data-goal   = estat final que ha d'aconseguir l'alumne (mateix format).
+                     · Si l'objectiu no té cap K, no es comprova on acaba en Karel.
+                     · Opcions al final, separades per ';':
+                       ;motxilla=N  (en Karel ha d'acabar amb N perles)
+                       ;direccio    (també es comprova cap a on mira)
        data-code   = codi Karel inicial
        data-label  = "Exemple" o "Exercici"
        data-height = alçada en px (per defecte 340)
        data-title  = llegenda sota el simulador (opcional)
        data-readonly="true" per a exemples no editables
-  6. Afegeix l'arxiu al conjunt DISPONIBLES a curs/index.html.
+       data-error="sintaxi" o "execucio" si l'exemple mostra un error a propòsit
+  6. Per a cada exercici amb data-goal, escriu la solució de referència dins
+     d'un comentari HTML, entre les marques «solucio» (vegeu l'exemple del
+     final d'aquest fitxer). El test `node tests/comprova-curs.js` l'executa.
+  7. Afegeix l'arxiu al conjunt DISPONIBLES a curs/index.html.
 
   NOTES DE L'ARQUITECTURA:
   ────────────────────────
@@ -37,6 +47,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- [CAP-N: canvia el títol] -->
   <title>Capítol N — Títol del capítol | Karel</title>
+ <link rel="icon" href="../favicon.ico" sizes="32x32">
+ <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+ <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
@@ -111,9 +124,9 @@
         <p>[Explicació de l'exemple. Descriu el que fa el codi ABANS que l'alumne l'executi.]</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.\n.,.,.,.,.,.\n.,.,.,.,.,."
-             data-code="move
-move
+             data-map="K>,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,."
+             data-code="move()
+move()
 "
              data-readonly="true"
              data-label="Exemple"
@@ -139,8 +152,9 @@ move
         <p>[Pista opcional.]</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.\n.,.,.,.,.,.\n.,.,.,.,A,."
-             data-code="// Escriu el teu codi aquí:
+             data-map="K>,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,A,."
+             data-goal=".,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,K>,."
+             data-code="# Escriu el teu codi aquí:
 
 "
              data-label="Exercici"
@@ -170,8 +184,32 @@ move
 <!-- ══════════════════════════════════════════════════════
      Scripts
      ══════════════════════════════════════════════════════ -->
+<!--
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (el test tests/comprova-curs.js executa el codi que hi ha entre les marques)
+<solucio>
+turn_right()
+move()
+move()
+turn_left()
+for i in range(4):
+    move()
+grab()
+</solucio>
+  Opcional: errors típics que el verificador ha de detectar
+<solucio-incorrecta motiu="no recull la perla">
+turn_right()
+move()
+move()
+turn_left()
+for i in range(4):
+    move()
+</solucio-incorrecta>
+-->
+
 <!-- [CAP-N: canvia el número aquí per marcar el capítol actiu a la sidebar] -->
 <script>const CURRENT_CAPITOL = 0;</script>
+<script src="progress.js"></script>
 <script src="capitols.js"></script>
 <script>
   injectCursLogo();

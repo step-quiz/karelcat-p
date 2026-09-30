@@ -28,36 +28,66 @@ function injectCursLogo() {
 }
 
 
-// ── Dades dels 10 capítols del curs ──────────────────────
+// ── Dades dels 10 capítols del curs + l'epíleg ───────────
 
 const CAPITOLS_DATA = [
   { num: 1,  titol: 'Coneix en Karel',           arxiu: 'capitol-1.html'  },
-  { num: 2,  titol: 'Agafa i deixa',             arxiu: 'capitol-2.html'  },
+  { num: 2,  titol: 'Recollir i deixar',         arxiu: 'capitol-2.html'  },
   { num: 3,  titol: "Gestió d'errors en un codi", arxiu: 'capitol-3.html' },
   { num: 4,  titol: 'Repeteix',                  arxiu: 'capitol-4.html'  },
-  { num: 5,  titol: 'Procediments',              arxiu: 'capitol-5.html'  },
+  { num: 5,  titol: 'Funcions',                  arxiu: 'capitol-5.html'  },
   { num: 6,  titol: 'Descomposició',             arxiu: 'capitol-6.html'  },
   { num: 7,  titol: 'Condicionals',              arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Mentre',                    arxiu: 'capitol-8.html'  },
   { num: 9,  titol: 'Combinant condicions',      arxiu: 'capitol-9.html'  },
-  { num: 10, titol: 'Escriure codi net',         arxiu: 'capitol-10.html' },
-  { num: 'futur', titol: 'Resum',  arxiu: 'capitol-futur.html' },
+  { num: 10, titol: 'Codi net',                  arxiu: 'capitol-10.html' },
+  { num: 'futur', titol: "D'en Karel al Python", arxiu: 'capitol-futur.html' },
 ];
 
 
 // ── B.2 — Genera i munta la barra lateral ────────────────
 
+// `mons` = nombre de mons de test del repte (el test automàtic comprova
+// que coincideixi amb la pàgina). Al -p cada repte té UN SOL MÓN (data-map /
+// data-goal): és més fàcil d'entendre, i el botó «🎯 Objectiu» mostra com
+// ha de quedar. El mode de diversos mons (data-maps) continua funcionant.
 const REPTES_DATA = [
-  { num: 1,  titol: 'Recollir la perla',   arxiu: 'repte-1.html' },
-  { num: 2,  titol: 'El passadís',         arxiu: 'repte-2.html' },
-  { num: 3,  titol: "L'escala diagonal",   arxiu: 'repte-3.html' },
-  { num: 4,  titol: 'Distribuir les perles',arxiu: 'repte-4.html' },
-  { num: 5,  titol: 'El serpentí',         arxiu: 'repte-5.html' },
-  { num: 6,  titol: 'Construir torres',    arxiu: 'repte-6.html' },
-  { num: 7,  titol: "L'escala doble",      arxiu: 'repte-7.html' },
-  { num: 8,  titol: 'El vigilant',         arxiu: 'repte-8.html' },
-  { num: 9,  titol: 'Les files alternes',  arxiu: 'repte-9.html' },
+  { num: 1,  titol: 'Recollir la perla',    arxiu: 'repte-1.html',  mons: 1 },
+  { num: 2,  titol: 'El passadís',          arxiu: 'repte-2.html',  mons: 1 },
+  { num: 3,  titol: "L'escala diagonal",    arxiu: 'repte-3.html',  mons: 1 },
+  { num: 4,  titol: 'Distribuir les perles', arxiu: 'repte-4.html', mons: 1 },
+  { num: 5,  titol: 'El serpentí',          arxiu: 'repte-5.html',  mons: 1 },
+  { num: 6,  titol: 'Construir torres',     arxiu: 'repte-6.html',  mons: 1 },
+  { num: 7,  titol: "L'escala doble",       arxiu: 'repte-7.html',  mons: 1 },
+  { num: 8,  titol: 'El vigilant',          arxiu: 'repte-8.html',  mons: 1 },
+  { num: 9,  titol: 'Les files alternes',   arxiu: 'repte-9.html',  mons: 1 },
 ];
+
+// ── Esborrar el progrés ──
+// El botó és a la part de baix de la barra lateral (i al final de l'índex del
+// curs), lluny dels botons d'ús freqüent, perquè no s'hi cliqui per error.
+function _sidebarFooter() {
+  return `
+    <div class="sidebar-footer">
+      <button type="button" class="karel-clear-btn" onclick="karelClearProgress()"
+              title="Esborra d'aquest navegador els capítols i reptes superats i el codi desat dels exercicis">🗑 Esborra el meu progrés</button>
+    </div>`;
+}
+
+window.karelClearProgress = function () {
+  const ok = confirm('Vols esborrar tot el progrés desat en aquest navegador?\n\n'
+    + '· els capítols i els reptes marcats com a superats\n'
+    + '· el codi que has escrit als exercicis\n\n'
+    + 'No es pot desfer.');
+  if (!ok) return;
+  try {
+    if (window.KProgress) KProgress.clear(); else localStorage.removeItem('karel_progress');
+    Object.keys(localStorage)
+      .filter(k => k.startsWith('karel-code:'))
+      .forEach(k => localStorage.removeItem(k));
+  } catch (e) { /* localStorage bloquejat: no hi ha res a esborrar */ }
+  location.reload();
+};
 
 function renderReptesSidebar(currentNum) {
   const nav = document.getElementById('sidebar-nav');
@@ -66,14 +96,15 @@ function renderReptesSidebar(currentNum) {
   let html = '<ul class="sidebar-list">';
   for (const r of REPTES_DATA) {
     const isActive = r.num === currentNum;
-    const mons = KProgress.monsRepte(r.num);
-    const nOk  = mons.filter(Boolean).length;
-    const nTot = 3; // sempre 3 mons per repte
+    const nTot  = r.mons;
+    const estat = KProgress.estatRepte(r.num, nTot);
     let badge = '';
-    if (nOk === nTot) {
-      badge = '<span class="prog-badge prog-badge--all" title="Tots els mons superats">✓✓✓</span>';
-    } else if (nOk > 0) {
-      badge = `<span class="prog-badge prog-badge--part" title="${nOk}/${nTot} mons superats">${nOk}/${nTot}</span>`;
+    if (estat.complet && nTot === 1) {
+      badge = '<span class="prog-badge prog-badge--all" title="Repte superat">✓</span>';
+    } else if (estat.complet) {
+      badge = `<span class="prog-badge prog-badge--all" title="Tots els mons superats amb el mateix codi">✓ ${nTot}/${nTot}</span>`;
+    } else if (estat.millor > 0) {
+      badge = `<span class="prog-badge prog-badge--part" title="${estat.millor} de ${nTot} mons superats amb un mateix codi">${estat.millor}/${nTot}</span>`;
     }
     html += `
       <li class="sidebar-item${isActive ? ' active' : ''}">
@@ -84,7 +115,7 @@ function renderReptesSidebar(currentNum) {
         </a>
       </li>`;
   }
-  html += '</ul>';
+  html += '</ul>' + _sidebarFooter();
   nav.innerHTML = html;
 }
 
@@ -111,7 +142,7 @@ function renderSidebar(currentNum) {
         </a>
       </li>`;
   }
-  html += '</ul>';
+  html += '</ul>' + _sidebarFooter();
   nav.innerHTML = html;
 }
 
@@ -120,14 +151,17 @@ function renderSidebar(currentNum) {
 //
 // Atributs reconeguts al div.simulador:
 //
-//   MODE 1 MON (capítols 1–9, comportament original):
-//   data-map      (string) CSV del mapa (raw, sense escapar)
-//   data-goal     (string) CSV de l'estat final esperat
+//   MODE 1 MÓN (capítols):
+//   data-map      (string) mapa del món (files separades per |)
+//   data-goal     (string) estat final esperat (vegeu parseGoal a js/world.js:
+//                          sense K no es comprova la posició; opcions ;motxilla=N
+//                          i ;direccio; alternatives separades per salt de línia)
 //
-//   MODE N MONS (capítol 10, reptes):
-//   data-maps     (string) JSON array de CSVs: '["map1","map2","map3"]'
-//   data-goals    (string) JSON array de goals paral·lel a data-maps
-//                          Les files se separen amb | (barra vertical)
+//   MODE N MONS (reptes):
+//   data-maps     (string) JSON array de mapes: '["map1","map2","map3"]'
+//   data-goals    (string) JSON array d'objectius paral·lel a data-maps. Un element
+//                          pot ser un array d'alternatives: [".,A,.", [".,A", "A,."]]
+//   data-labels   (string) JSON array amb el nom de cada món (opcional)
 //
 //   COMUNS als dos modes:
 //   data-code     (string) Codi Karel inicial
@@ -137,31 +171,37 @@ function renderSidebar(currentNum) {
 //   data-label    (string) badge: 'Exemple' | 'Exercici' | ''
 //   data-bag      (number) perles inicials a la motxilla (valor únic per a tots els mons)
 //   data-bags     (string) JSON array de perles per món: '[3,5,7]' (prioritari sobre data-bag)
+//   data-error    (string) "sintaxi" | "execucio": l'exemple mostra un error a propòsit
+//                          (només el fa servir el test automàtic)
 //
-// Exemple N mons (capítol 10):
-//   <div class="simulador"
-//        data-maps='["K>,.,A|.,.,.", "K>,A,.|.,.,.", "K>,.,.|.,A,."]'
-//        data-goals='[".,.,K>|.,.,.", ".,.,K>|.,.,.", ".,.,K>|.,.,." ]'
-//        data-code="# escriu la solució aquí"
-//        data-height="380"
-//        data-label="Exercici">
-//   </div>
+// El codi que escriu l'alumne en un simulador editable es desa al
+// localStorage amb la clau `karel-code:<pàgina>:<núm. de simulador>`, de
+// manera que si surt de la pàgina i hi torna, el recupera.
 // ════════════════════════════════════════════════════════
 
 let _goalUid = 0;
 function nextGoalId() { return 'goal-' + (++_goalUid); }
 
+// Clau de localStorage per al codi del simulador núm. `idx` d'aquesta pàgina
+function _saveKey(idx) {
+  const page = location.pathname.split('/').pop() || 'index.html';
+  return `karel-code:${page}:${idx}`;
+}
+
 // ── Construeix la URL de l'iframe a partir de les dades en clar ──
-function _iframeSrc(map, code, goalCSV, goalId, readonly, bag, multi) {
-  const theme    = document.body.classList.contains('curs-light') ? '&theme=light' : '';
-  const roParam  = readonly ? '&readonly=1' : '';
-  const bagParam = bag > 0  ? `&bag=${bag}` : '';
-  const multiP   = multi    ? '&multi=1'   : '';
-  const enc      = s => btoa(unescape(encodeURIComponent(s)));
-  const goalP    = goalCSV
-    ? `&goal=${encodeURIComponent(enc(goalCSV))}&goalId=${goalId}`
-    : '';
-  return `../simulador.html?embed=1&map=${encodeURIComponent(enc(map))}&code=${encodeURIComponent(enc(code))}${roParam}${theme}${goalP}${bagParam}${multiP}`;
+function _iframeSrc({ map, code, goal = '', goalId = '', readonly = false, bag = 0,
+                      multi = false, saveKey = '', cur = null, worlds = null }) {
+  const enc = s => encodeURIComponent(btoa(unescape(encodeURIComponent(s))));
+  let src = `../simulador.html?embed=1&map=${enc(map)}&code=${enc(code)}`;
+  if (document.body.classList.contains('curs-light')) src += '&theme=light';
+  if (readonly) src += '&readonly=1';
+  if (goal)     src += `&goal=${enc(goal)}&goalId=${goalId}`;
+  if (bag > 0)  src += `&bag=${bag}`;
+  if (multi)    src += '&multi=1';
+  if (saveKey && !readonly) src += `&save=${encodeURIComponent(saveKey)}`;
+  if (cur !== null && cur !== undefined) src += `&cur=${enc(cur)}`;
+  if (worlds)   src += `&worlds=${enc(JSON.stringify(worlds))}`;
+  return src;
 }
 
 // ── Llegeix el codi de l'editor dins l'iframe (same-origin) ──
@@ -172,6 +212,30 @@ function _readCode(iframe) {
   } catch { return null; }
 }
 
+// ── Botó «Pantalla completa» per a un iframe ──
+// A pantalla completa l'editor i el món ocupen tota la pantalla (molt útil
+// en portàtils petits i tauletes). Es surt amb Esc, amb el gest «enrere»
+// de la tauleta o amb el botó «✕ Surt» que apareix a dins del simulador.
+function _fullscreenButton(iframe) {
+  const enabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  if (!enabled) return null;
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'fs-btn';
+  b.textContent = '⛶ Pantalla completa';
+  b.title = 'Obre el simulador a pantalla completa (Esc per sortir)';
+  b.addEventListener('click', () => {
+    const req = iframe.requestFullscreen || iframe.webkitRequestFullscreen;
+    if (req) Promise.resolve(req.call(iframe)).catch(() => {});
+  });
+  return b;
+}
+
+// Un objectiu de data-goals pot ser un string o un array d'alternatives
+function _goalStr(g) {
+  return Array.isArray(g) ? g.join('\n') : (g || '');
+}
+
 // ── Actualitza el text i les classes de color d'un botó de món ──
 function _updateBtnLabel(btn, idx, status) {
   const icons = { pending: '○', ok: '✓', error: '✗' };
@@ -180,17 +244,23 @@ function _updateBtnLabel(btn, idx, status) {
   btn.classList.toggle('status-err', status === 'error');
 }
 
-// ── Registre global goalId → context multi-món (per al listener de postMessage) ──
+// ── Registre global goalId → { group, idx } (per al listener de postMessage) ──
 const _multiGoalRegistry = new Map();
 
 // ── Registre global goalId → context 1 món (label + pàgina) ──
 const _singleGoalRegistry = new Map();
 
-// ── Renderitza un simulador de N mons (capítol 10) ──
-function _renderMultiMon(div) {
+// ── Renderitza un simulador de N mons (reptes) ──
+//
+// Cada món recorda amb quin codi (empremta codeHash) s'ha superat. Quan el
+// codi canvia, els mons superats amb un codi diferent tornen a «pendent»:
+// el missatge «Tots els mons superats» vol dir que el codi ACTUAL els
+// supera tots, no que cada món s'hagi superat amb un programa diferent.
+function _renderMultiMon(div, simIndex) {
   let maps, goals;
   try { maps  = JSON.parse(div.dataset.maps);  } catch { maps  = []; }
   try { goals = JSON.parse(div.dataset.goals); } catch { goals = []; }
+  goals = maps.map((_, i) => _goalStr(goals[i]));
 
   const code     = (div.dataset.code  || '').replace(/\\n/g, '\n');  // ← conservar: és codi font, no mapa
   const height   = parseInt(div.dataset.height || '380', 10);
@@ -202,13 +272,18 @@ function _renderMultiMon(div) {
   const label    = div.dataset.label || '';
   const title    = div.dataset.title || '';
   const n        = maps.length;
-  let monLabels  = [];
-  try { monLabels = JSON.parse(div.dataset.labels); } catch { monLabels = []; }
+  const saveKey  = readonly ? '' : _saveKey(simIndex);
+  const repteNum = typeof CURRENT_REPTE !== 'undefined' ? CURRENT_REPTE : null;
 
-  // Estat de validació per a cada món
+  // Estat de validació i empremta del codi amb què s'ha superat cada món
   const monState = maps.map(() => 'pending');
+  const monHash  = maps.map(() => null);
   // GoalId únic per a cada món (buit si no hi ha goal per a aquell món)
   const goalIds  = maps.map((_, i) => goals[i] ? nextGoalId() : '');
+  // Tots els mons, per al botó «Comprova tots els mons» de dins l'iframe
+  const worlds   = goals.some(Boolean)
+    ? maps.map((m, i) => ({ map: m, goal: goals[i], bag: getBag(i), goalId: goalIds[i] }))
+    : null;
 
   // ── Estructura DOM ──
   const wrap = document.createElement('div');
@@ -236,15 +311,13 @@ function _renderMultiMon(div) {
   btns.forEach(b => bar.appendChild(b));
   wrap.appendChild(bar);
 
-  // Contenidor relatiu per poder superposar el label de món actiu
   const iframeWrap = document.createElement('div');
   iframeWrap.className = 'simulador-iframe-wrap';
 
-  // Label del món actiu, flotant a dalt-dreta (sobre el mapa)
-  const monActiveLabel = document.createElement('div');
-  monActiveLabel.className = 'mon-active-label';
-  monActiveLabel.textContent = 'Món 1';
-  iframeWrap.appendChild(monActiveLabel);
+  const srcFor = (i, cur) => _iframeSrc({
+    map: maps[i], code, goal: goals[i], goalId: goalIds[i], readonly,
+    bag: getBag(i), multi: true, saveKey, cur, worlds,
+  });
 
   // iframe (comença al món 0)
   const iframe = document.createElement('iframe');
@@ -253,9 +326,14 @@ function _renderMultiMon(div) {
   iframe.title        = title || 'Simulador Karel';
   iframe.setAttribute('loading', 'lazy');
   iframe.setAttribute('allowfullscreen', '');
-  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, getBag(0), true);
+  iframe.src = srcFor(0, null);
   iframeWrap.appendChild(iframe);
   wrap.appendChild(iframeWrap);
+
+  if (!readonly) {
+    const fs = _fullscreenButton(iframe);
+    if (fs) bar.appendChild(fs);
+  }
 
   // Feedback global: "X / N mons superats"
   const fbGlobal = document.createElement('div');
@@ -274,20 +352,11 @@ function _renderMultiMon(div) {
 
   function switchMon(newIdx) {
     if (newIdx === activeIdx) return;
-    const currentCode = _readCode(iframe) ?? code;
+    const currentCode = _readCode(iframe);
     btns[activeIdx].classList.remove('mon-btn--active');
     btns[newIdx].classList.add('mon-btn--active');
-    monActiveLabel.textContent = `Món ${newIdx + 1}`;
     activeIdx = newIdx;
-    iframe.src = _iframeSrc(
-      maps[newIdx],
-      currentCode,
-      goals[newIdx] || '',
-      goalIds[newIdx],
-      readonly,
-      getBag(newIdx),
-      true
-    );
+    iframe.src = srcFor(newIdx, currentCode);
   }
 
   bar.addEventListener('click', e => {
@@ -303,63 +372,85 @@ function _renderMultiMon(div) {
     if (nOk === n) {
       fbGlobal.className   = 'simulador-feedback fb-ok';
       const lastRepteNum = REPTES_DATA[REPTES_DATA.length - 1].num;
-      const isLastRepte = typeof CURRENT_REPTE !== 'undefined' && CURRENT_REPTE === lastRepteNum;
+      const isLastRepte = repteNum === lastRepteNum;
       const nextHint = isLastRepte
         ? 'Ja pots practicar amb el simulador.'
         : 'Ja pots passar al repte següent.';
-      fbGlobal.textContent = `✓ Tots els mons han estat superats. Bona feina! ${nextHint}`;
+      fbGlobal.textContent = `✓ El teu codi supera tots els mons. Bona feina! ${nextHint}`;
     } else if (nErr > 0 || nOk > 0) {
       fbGlobal.className   = 'simulador-feedback fb-error';
-      fbGlobal.textContent = `${nOk}/${n} mons superats. Comprova els mons marcats amb ✗.`;
+      fbGlobal.textContent = `${nOk}/${n} mons superats amb aquest codi. El mateix codi ha de superar-los tots: prova'l als mons marcats amb ○ o ✗ (o prem «Comprova tots els mons»).`;
     } else {
       fbGlobal.className   = 'simulador-feedback';
       fbGlobal.textContent = '';
     }
   }
 
-  // Registra cada goalId al registre global perquè el listener de postMessage
-  // pugui actualitzar l'estat del botó i el feedback global
-  goalIds.forEach((gid, i) => {
-    if (!gid) return;
-    _multiGoalRegistry.set(gid, {
-      monState, btns, idx: i, total: n, updateGlobalFeedback,
-      repteNum: typeof CURRENT_REPTE !== 'undefined' ? CURRENT_REPTE : null,
-    });
-  });
-
-  // Restaura l'estat guardat a localStorage
-  if (typeof CURRENT_REPTE !== 'undefined') {
-    const saved = KProgress.monsRepte(CURRENT_REPTE);
-    saved.forEach((ok, i) => {
-      if (ok && i < monState.length) {
-        monState[i] = 'ok';
-        _updateBtnLabel(btns[i], i, 'ok');
-      }
-    });
-    updateGlobalFeedback();
+  function setState(i, state, hash) {
+    monState[i] = state;
+    monHash[i]  = state === 'pending' ? null : hash;   // amb quin codi s'ha obtingut ✓ o ✗
+    _updateBtnLabel(btns[i], i, state);
   }
+
+  // Els mons superats amb un codi diferent de `hash` deixen de valer
+  function invalidateOthers(hash) {
+    monState.forEach((s, j) => {
+      if (s !== 'pending' && monHash[j] !== hash) setState(j, 'pending', null);
+    });
+  }
+
+  const group = {
+    // L'iframe s'ha carregat amb un codi d'empremta `hash`
+    onReady(hash) {
+      invalidateOthers(hash);
+      // Recupera els mons superats en visites anteriors amb aquest mateix codi
+      if (repteNum !== null) {
+        KProgress.monsRepte(repteNum).forEach((h, j) => {
+          if (h && h === hash && j < n) setState(j, 'ok', hash);
+        });
+      }
+      updateGlobalFeedback();
+    },
+    // El codi ha canviat, o s'ha tornat a executar / reiniciar el món `i`
+    onClear(i, hash) {
+      setState(i, 'pending', null);
+      if (hash) invalidateOthers(hash);
+      updateGlobalFeedback();
+    },
+    // Resultat d'executar el codi d'empremta `hash` al món `i`
+    onResult(i, success, hash) {
+      setState(i, success ? 'ok' : 'error', hash);
+      if (hash) invalidateOthers(hash);
+      updateGlobalFeedback();
+      if (repteNum !== null && success) {
+        KProgress.saveMon(repteNum, i, hash, n);
+        renderReptesSidebar(repteNum);
+      }
+    },
+  };
+
+  goalIds.forEach((gid, i) => {
+    if (gid) _multiGoalRegistry.set(gid, { group, idx: i });
+  });
 
   div.replaceWith(wrap);
 }
 
-// ── Renderitza un simulador d'1 món (comportament original, sense canvis) ──
-function _renderSingleMon(div) {
-  const rawMap  = div.dataset.map  || '';
-  const rawCode = div.dataset.code || '';
-  const height  = parseInt(div.dataset.height || '340', 10);
+// ── Renderitza un simulador d'1 món ──
+function _renderSingleMon(div, simIndex) {
+  const map      = div.dataset.map  || '';                        // ← ja ve amb | directament
+  const code     = (div.dataset.code || '').replace(/\\n/g, '\n'); // ← conservar: és codi font, no mapa
+  const height   = parseInt(div.dataset.height || '340', 10);
   const readonly = div.dataset.readonly === 'true';
-  const title   = div.dataset.title || '';
-  const label   = div.dataset.label || '';
-  const rawGoal = div.dataset.goal || '';
-  const goalCSV = rawGoal;          // ← ja ve amb | directament
-  const goalId  = goalCSV ? nextGoalId() : '';
-  const bag     = parseInt(div.dataset.bag || '0', 10);
-
-  const map  = rawMap;              // ← ja ve amb | directament
-  const code = rawCode.replace(/\\n/g, '\n');  // ← conservar: és codi font, no mapa
+  const title    = div.dataset.title || '';
+  const label    = div.dataset.label || '';
+  const goal     = div.dataset.goal || '';
+  const goalId   = goal ? nextGoalId() : '';
+  const bag      = parseInt(div.dataset.bag || '0', 10);
 
   const iframe = document.createElement('iframe');
-  iframe.src        = _iframeSrc(map, code, goalCSV, goalId, readonly, bag);
+  iframe.src        = _iframeSrc({ map, code, goal, goalId, readonly, bag,
+                                   saveKey: readonly ? '' : _saveKey(simIndex) });
   iframe.className  = 'simulador-frame';
   iframe.style.height = height + 'px';
   iframe.title      = title || 'Simulador Karel';
@@ -368,21 +459,30 @@ function _renderSingleMon(div) {
 
   const wrap = document.createElement('div');
   wrap.className = 'simulador-wrap';
-  if (label) {
+  const fs = readonly ? null : _fullscreenButton(iframe);
+  if (label || fs) {
+    const head = document.createElement('div');
+    head.className = 'simulador-head';
     const badge = document.createElement('span');
     badge.className = `simulador-badge simulador-badge--${label.toLowerCase()}`;
     badge.textContent = label;
-    wrap.appendChild(badge);
+    head.appendChild(badge);
+    if (fs) head.appendChild(fs);
+    wrap.appendChild(head);
   }
   wrap.appendChild(iframe);
 
-  if (goalCSV) {
+  if (goal) {
     const fb = document.createElement('div');
     fb.className = 'simulador-feedback';
     fb.dataset.goalId = goalId;
     wrap.appendChild(fb);
-    // Registra per al progrés
-    _singleGoalRegistry.set(goalId, { label, pageNum: typeof CURRENT_CAPITOL !== 'undefined' ? CURRENT_CAPITOL : null });
+    // Registra per al progrés (capítol o repte d'un sol món)
+    _singleGoalRegistry.set(goalId, {
+      label, fb,
+      pageNum:  typeof CURRENT_CAPITOL !== 'undefined' ? CURRENT_CAPITOL : null,
+      repteNum: typeof CURRENT_REPTE   !== 'undefined' ? CURRENT_REPTE   : null,
+    });
   }
 
   if (title) {
@@ -397,11 +497,11 @@ function _renderSingleMon(div) {
 
 // ── Punt d'entrada: delega al mode adequat segons els atributs ──
 function renderSimuladors() {
-  document.querySelectorAll('.simulador').forEach(div => {
+  document.querySelectorAll('.simulador').forEach((div, idx) => {
     if (div.dataset.maps) {
-      _renderMultiMon(div);
+      _renderMultiMon(div, idx);
     } else {
-      _renderSingleMon(div);
+      _renderSingleMon(div, idx);
     }
   });
 }
@@ -454,14 +554,14 @@ function updateCursThemeBtn() {
 }
 
 (function applyCursTheme() {
-  if (localStorage.getItem('karel-theme') === 'light') {
-    document.body.classList.add('curs-light');
-  }
+  try {
+    if (localStorage.getItem('karel-theme') === 'light') document.body.classList.add('curs-light');
+  } catch (e) { /* localStorage bloquejat: es queda el tema per defecte */ }
 })();
 
 function toggleCursTheme() {
   const isLight = document.body.classList.toggle('curs-light');
-  localStorage.setItem('karel-theme', isLight ? 'light' : 'dark');
+  try { localStorage.setItem('karel-theme', isLight ? 'light' : 'dark'); } catch (e) {}
   updateCursThemeBtn();
 }
 
@@ -470,58 +570,62 @@ window.toggleCursTheme    = toggleCursTheme;
 window.updateCursThemeBtn = updateCursThemeBtn;
 
 // ── Listener global de feedback d'exercicis (B.6 + multi-món) ────────
+//
+// Missatges que envien els iframes del simulador (js/execution.js):
+//   { type:'karel-ready',  goalId, codeHash }            — l'iframe s'ha carregat
+//   { type:'karel-clear',  goalId, codeHash }            — codi modificat / nova execució
+//   { type:'karel-result', goalId, success, error, codeHash } — ha acabat una execució
 window.addEventListener('message', function(e) {
-  if (!e.data) return;
-  const { type, goalId, success } = e.data;
+  if (e.origin !== window.location.origin) return;       // només els nostres iframes
+  const d = e.data;
+  if (!d || typeof d !== 'object') return;
+  const { type, goalId, success, error, codeHash } = d;
+  const single = _singleGoalRegistry.get(goalId);
+  const multi  = _multiGoalRegistry.get(goalId);
+
+  if (type === 'karel-ready') {
+    if (multi) multi.group.onReady(codeHash);
+    return;
+  }
 
   // ── Reset de feedback (qualsevol trigger d'execució) ──
   if (type === 'karel-clear') {
-    // Mode 1 món: feedback per data-goal-id
-    const fb = document.querySelector(`.simulador-feedback[data-goal-id="${goalId}"]`);
-    if (fb) { fb.className = 'simulador-feedback'; fb.textContent = ''; }
-
-    // Mode N mons: neteja l'estat del botó corresponent
-    const ctx = _multiGoalRegistry.get(goalId);
-    if (ctx) {
-      ctx.monState[ctx.idx] = 'pending';
-      _updateBtnLabel(ctx.btns[ctx.idx], ctx.idx, 'pending');
-      ctx.updateGlobalFeedback();
-    }
+    if (single) { single.fb.className = 'simulador-feedback'; single.fb.textContent = ''; }
+    if (multi) multi.group.onClear(multi.idx, codeHash);
     return;
   }
 
   if (type !== 'karel-result') return;
 
   // ── Mode 1 món ──
-  const fb = document.querySelector(`.simulador-feedback[data-goal-id="${goalId}"]`);
-  if (fb) {
+  if (single) {
+    const fb = single.fb;
     if (success) {
       fb.className   = 'simulador-feedback fb-ok';
-      fb.textContent = "✓ Correcte! En Karel ha complert tots els objectius.";
+      const ultim = REPTES_DATA[REPTES_DATA.length - 1].num;
+      fb.textContent = single.repteNum === null ? '✓ Molt bé! En Karel arriba a l\'objectiu 🎯.'
+        : single.repteNum === ultim ? '✓ Molt bé! En Karel arriba a l\'objectiu 🎯. Has acabat tots els reptes! 🎉'
+        : '✓ Molt bé! En Karel arriba a l\'objectiu 🎯. Ja pots passar al repte següent.';
+    } else if (error) {
+      fb.className   = 'simulador-feedback fb-error';
+      fb.textContent = '✗ Hi ha un error. Llegeix el missatge vermell, sota el codi. Canvia el codi i prova-ho una altra vegada.';
     } else {
       fb.className   = 'simulador-feedback fb-error';
-      fb.textContent = '✗ El codi és correcte, però en Karel no ha complert l\'objectiu. Modifica el codi i torna-ho a intentar.';
+      fb.textContent = '✗ En Karel no arriba a l\'objectiu 🎯. Mira les caselles vermelles del món. Clica «🎯 Objectiu» per veure com ha de quedar. Canvia el codi i prova-ho una altra vegada.';
     }
-    // Progrés: només guardem si és un Exercici
-    const sCtx = _singleGoalRegistry.get(goalId);
-    if (sCtx && sCtx.label === 'Exercici' && sCtx.pageNum !== null) {
-      KProgress.saveExercici(sCtx.pageNum, success);
-      if (success) renderSidebar(sCtx.pageNum);
+    // Progrés: exercici d'un capítol, o repte d'un sol món
+    if (single.label === 'Exercici' && single.pageNum !== null) {
+      KProgress.saveExercici(single.pageNum, success);
+      if (success) renderSidebar(single.pageNum);
+    }
+    if (single.repteNum !== null && success) {
+      KProgress.saveMon(single.repteNum, 0, codeHash, 1);
+      renderReptesSidebar(single.repteNum);
     }
   }
 
   // ── Mode N mons ──
-  const ctx = _multiGoalRegistry.get(goalId);
-  if (ctx) {
-    ctx.monState[ctx.idx] = success ? 'ok' : 'error';
-    _updateBtnLabel(ctx.btns[ctx.idx], ctx.idx, ctx.monState[ctx.idx]);
-    ctx.updateGlobalFeedback();
-    // Progrés: guarda l'estat de cada món
-    if (ctx.repteNum !== null) {
-      KProgress.saveMon(ctx.repteNum, ctx.idx, success);
-      if (success) renderReptesSidebar(ctx.repteNum);
-    }
-  }
+  if (multi) multi.group.onResult(multi.idx, !!success, codeHash);
 });
 
 
@@ -557,33 +661,33 @@ function initGlossariCurs() {
           <p class="glossari-hint">Sempre amb parèntesis <code>()</code> al final</p>
           <div class="glossari-grid">
             <code>move()</code><span>Avança una casella</span>
-            <code>turn_left()</code><span>Gira 90° a l'esquerra</span>
-            <code>turn_right()</code><span>Gira 90° a la dreta</span>
-            <code>turn_around()</code><span>Mitja volta (180°)</span>
-            <code>grab()</code><span>Agafa la perla de la casella</span>
-            <code>drop()</code><span>Deixa una perla a la casella</span>
+            <code>turn_left()</code><span>Gira a l'esquerra</span>
+            <code>turn_right()</code><span>Gira a la dreta</span>
+            <code>turn_around()</code><span>Fa mitja volta</span>
+            <code>grab()</code><span>Agafa la perla d'aquesta casella</span>
+            <code>drop()</code><span>Deixa una perla en aquesta casella</span>
           </div>
         </div>
 
         <div class="glossari-section">
           <h3>Condicions</h3>
-          <p class="glossari-hint">Sempre amb parèntesis <code>()</code> — s'usen dins de <code>if</code> i <code>while</code></p>
+          <p class="glossari-hint">Sempre amb parèntesis <code>()</code>. Van després d'<code>if</code> o de <code>while</code></p>
           <div class="glossari-grid">
-            <code>front_is_clear()</code><span>El camí del davant és lliure</span>
-            <code>front_is_blocked()</code><span>Hi ha una roca al davant</span>
-            <code>left_is_clear()</code><span>L'esquerra és lliure</span>
-            <code>left_is_blocked()</code><span>Hi ha una roca a l'esquerra</span>
-            <code>right_is_clear()</code><span>La dreta és lliure</span>
-            <code>right_is_blocked()</code><span>Hi ha una roca a la dreta</span>
-            <code>pearl_here()</code><span>Hi ha una perla aquí</span>
+            <code>front_is_clear()</code><span>Al davant està lliure: en Karel pot avançar</span>
+            <code>front_is_blocked()</code><span>Al davant hi ha una roca o la vora del món</span>
+            <code>left_is_clear()</code><span>A l'esquerra està lliure</span>
+            <code>left_is_blocked()</code><span>A l'esquerra hi ha una roca o la vora del món</span>
+            <code>right_is_clear()</code><span>A la dreta està lliure</span>
+            <code>right_is_blocked()</code><span>A la dreta hi ha una roca o la vora del món</span>
+            <code>pearl_here()</code><span>En aquesta casella hi ha una perla</span>
             <code>bag_is_empty()</code><span>La motxilla és buida</span>
-            <code>bag_is_full()</code><span>La motxilla té perles</span>
+            <code>bag_has_pearls()</code><span>A la motxilla hi ha perles</span>
           </div>
         </div>
 
         <div class="glossari-section">
           <h3>Estructures</h3>
-          <p class="glossari-hint">Acaben amb dos punts <code>:</code> i el bloc interior va <strong>indentat</strong></p>
+          <p class="glossari-hint">Acaben amb dos punts <code>:</code>. Les línies de sota porten <strong>espais al davant</strong></p>
           <pre class="glossari-example">if front_is_clear():
     move()
 elif pearl_here():
@@ -603,7 +707,7 @@ else:
           <h3>Recorda</h3>
           <div class="glossari-rule">① Les instruccions i condicions porten <code>()</code> sempre</div>
           <div class="glossari-rule">② Després de <code>if</code>, <code>while</code>, <code>for</code>, <code>def</code> cal posar <code>:</code></div>
-          <div class="glossari-rule">③ El codi dins d'un bloc s'ha d'indentar (4 espais)</div>
+          <div class="glossari-rule">③ Les línies de sota d'un <code>:</code> porten 4 espais al davant. Quan prems Enter després de <code>:</code>, l'editor posa els espais</div>
         </div>
 
       </div>

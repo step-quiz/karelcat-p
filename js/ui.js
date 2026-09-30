@@ -31,23 +31,22 @@ function setStateUI(state) {
   if (lbl) lbl.textContent = K.t('state.' + state);
 
   // Mutació del botó principal: "Executa" quan res no corre, "Atura" mentre corre
+  // En mode pas a pas, el botó serveix per continuar l'execució contínua.
   const btn = document.getElementById('btn-run');
   if (btn) {
-    const running = (state === 'running' || state === 'step');
-    btn.textContent = K.t(running ? 'ui.stop' : 'ui.run');
-    btn.classList.toggle('p', !running);  // verd/primari quan no corre
+    const running = state === 'running';
+    btn.textContent = K.t(running ? 'ui.stop' : state === 'step' ? 'ui.cont' : 'ui.run');
+    btn.classList.toggle('p', !running);  // primari quan no corre
     btn.classList.toggle('r', running);   // vermell quan corre
   }
 }
 
-// Un sol handler per al botó: segons estat, arrenca o atura
+// Un sol handler per al botó: segons l'estat, arrenca, atura o continua
 function handleRunClick() {
   const s = K.state.currentState;
-  if (s === 'running' || s === 'step') {
-    K.stopProgram();
-  } else {
-    K.runProgram();
-  }
+  if (s === 'running')   K.stopProgram();
+  else if (s === 'step') K.continueProgram();
+  else                   K.runProgram();
 }
 
 
@@ -59,6 +58,9 @@ function updateUI() {
     if (el) el.textContent = K.t(key);
   };
   setText('btn-reset', 'ui.reset');
+  setText('btn-step',  'ui.step');
+  const stepBtn = document.getElementById('btn-step');
+  if (stepBtn) stepBtn.title = K.t('ui.step_title');
   setText('lbl-speed', 'ui.speed');
   setText('lbl-bag',   'ui.bag');
   // btn-run el gestiona setStateUI (muta entre Executa/Atura).
@@ -99,13 +101,13 @@ function updateThemeBtn() {
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle('light');
-  localStorage.setItem(K.LS_KEY_THEME, isLight ? 'light' : 'dark');
+  K.lsSet(K.LS_KEY_THEME, isLight ? 'light' : 'dark');
   updateThemeBtn();
 }
 
 function initTheme() {
   // Default is light; only switch to dark if the user explicitly chose dark.
-  const saved = localStorage.getItem(K.LS_KEY_THEME);
+  const saved = K.lsGet(K.LS_KEY_THEME);
   if (saved !== 'dark') {
     document.body.classList.add('light');
   }

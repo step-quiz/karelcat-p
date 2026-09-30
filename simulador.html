@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Karel</title>
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=1">
   <link rel="stylesheet" href="nav.css">
@@ -47,7 +50,10 @@
 <script>
   (function() {
     var p = new URLSearchParams(location.search);
-    if (p.get('embed') === '1') document.body.classList.add('embed');
+    if (p.get('embed') === '1') {
+      document.body.classList.add('embed');
+      document.documentElement.classList.add('embed');
+    }
     if (p.get('multi') === '1') document.body.classList.add('multi');
     // Aplica el tema immediatament (abans que res es pinti) per evitar el blink fosc→clar.
     // Prioritat: paràmetre URL > localStorage > fosc per defecte.
@@ -98,7 +104,6 @@
       <div id="state-dot"></div>
       <span id="state-lbl">aturat</span>
     </div>
-    <span class="toolbar-bag"><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong></span>
   </div>
 
   <button class="btn btn-glossari" id="btn-glossari" onclick="toggleGlossari()">📖 Glossari</button>
@@ -122,12 +127,14 @@
      ══════════════════════════════════════════════════════ -->
 <div class="toolbar">
   <button class="btn p" id="btn-run" onclick="handleRunClick()">▶ Executa</button>
+  <button class="btn"   id="btn-step" onclick="stepProgram()">⏭ Pas</button>
   <button class="btn"   id="btn-reset" onclick="resetKarel()">↺ Reinicia</button>
   <div class="speed-row">
     <span id="lbl-speed">Velocitat:</span>
-    <input type="range" id="speed" min="1" max="6" step="1" value="2">
+    <input type="range" id="speed" min="1" max="6" step="1" value="2" aria-label="Velocitat">
     <span id="speed-lbl">Lent</span>
   </div>
+  <span class="toolbar-bag" title="Perles que porta en Karel a la motxilla"><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong></span>
 </div>
 
 
@@ -141,7 +148,9 @@
       <div class="editor-inner">
         <div  id="line-bg"        aria-hidden="true"></div>
         <pre  id="code-highlight" aria-hidden="true"></pre>
-        <textarea id="code-editor" spellcheck="false" wrap="off"></textarea>
+        <textarea id="code-editor" spellcheck="false" wrap="off"
+                  autocapitalize="off" autocomplete="off" autocorrect="off"
+                  aria-label="Editor de codi"></textarea>
       </div>
     </div>
     <div id="autocomplete" class="autocomplete-dropdown" role="listbox" aria-label="Autocompletat"></div>
@@ -182,33 +191,33 @@
         <p class="glossari-hint">Sempre amb parèntesis <code>()</code> al final</p>
         <div class="glossari-grid">
           <code>move()</code><span>Avança una casella</span>
-          <code>turn_left()</code><span>Gira 90° a l'esquerra</span>
-          <code>turn_right()</code><span>Gira 90° a la dreta</span>
-          <code>turn_around()</code><span>Mitja volta (180°)</span>
-          <code>grab()</code><span>Agafa la perla de la casella</span>
-          <code>drop()</code><span>Deixa una perla a la casella</span>
+          <code>turn_left()</code><span>Gira a l'esquerra</span>
+          <code>turn_right()</code><span>Gira a la dreta</span>
+          <code>turn_around()</code><span>Fa mitja volta</span>
+          <code>grab()</code><span>Agafa la perla d'aquesta casella</span>
+          <code>drop()</code><span>Deixa una perla en aquesta casella</span>
         </div>
       </div>
 
       <div class="glossari-section">
         <h3>Condicions</h3>
-        <p class="glossari-hint">Sempre amb parèntesis <code>()</code> — s'usen dins de <code>if</code> i <code>while</code></p>
+        <p class="glossari-hint">Sempre amb parèntesis <code>()</code>. Van després d'<code>if</code> o de <code>while</code></p>
         <div class="glossari-grid">
-          <code>front_is_clear()</code><span>El camí del davant és lliure</span>
-          <code>front_is_blocked()</code><span>Hi ha una roca al davant</span>
-          <code>left_is_clear()</code><span>L'esquerra és lliure</span>
-          <code>left_is_blocked()</code><span>Hi ha una roca a l'esquerra</span>
-          <code>right_is_clear()</code><span>La dreta és lliure</span>
-          <code>right_is_blocked()</code><span>Hi ha una roca a la dreta</span>
-          <code>pearl_here()</code><span>Hi ha una perla aquí</span>
+          <code>front_is_clear()</code><span>Al davant està lliure: en Karel pot avançar</span>
+          <code>front_is_blocked()</code><span>Al davant hi ha una roca o la vora del món</span>
+          <code>left_is_clear()</code><span>A l'esquerra està lliure</span>
+          <code>left_is_blocked()</code><span>A l'esquerra hi ha una roca o la vora del món</span>
+          <code>right_is_clear()</code><span>A la dreta està lliure</span>
+          <code>right_is_blocked()</code><span>A la dreta hi ha una roca o la vora del món</span>
+          <code>pearl_here()</code><span>En aquesta casella hi ha una perla</span>
           <code>bag_is_empty()</code><span>La motxilla és buida</span>
-          <code>bag_is_full()</code><span>La motxilla té perles</span>
+          <code>bag_has_pearls()</code><span>A la motxilla hi ha perles</span>
         </div>
       </div>
 
       <div class="glossari-section">
         <h3>Estructures</h3>
-        <p class="glossari-hint">Acaben amb dos punts <code>:</code> i el bloc interior va <strong>indentat</strong></p>
+        <p class="glossari-hint">Acaben amb dos punts <code>:</code>. Les línies de sota porten <strong>espais al davant</strong></p>
         <pre class="glossari-example">if front_is_clear():
     move()
 elif pearl_here():
@@ -228,7 +237,7 @@ else:
         <h3>Recorda</h3>
         <div class="glossari-rule">① Les instruccions i condicions porten <code>()</code> sempre</div>
         <div class="glossari-rule">② Després de <code>if</code>, <code>while</code>, <code>for</code>, <code>def</code> cal posar <code>:</code></div>
-        <div class="glossari-rule">③ El codi dins d'un bloc s'ha d'indentar (4 espais)</div>
+        <div class="glossari-rule">③ Les línies de sota d'un <code>:</code> porten 4 espais al davant. Quan prems Enter després de <code>:</code>, l'editor posa els espais</div>
       </div>
 
     </div>
@@ -241,6 +250,7 @@ else:
      ══════════════════════════════════════════════════════ -->
 <script src="js/constants.js"></script>
 <script src="js/i18n.js"></script>
+<script src="js/i18n-facil.js"></script>
 <script src="js/state.js"></script>
 <script src="js/tokenizer.js"></script>
 <script src="js/parser.js"></script>
@@ -275,17 +285,6 @@ K.DEFAULT_CODE =
       btn.textContent = '☰';
     }
   });
-})();
-</script>
-<script>
-(function() {
-  var KEY = 'karel_progress';
-  window.karelClearProgress = function() {
-    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-      try { localStorage.removeItem(KEY); } catch(e) {}
-      location.reload();
-    }
-  };
 })();
 </script>
 <script>
@@ -324,18 +323,18 @@ function openMapInEditor() {
   window.location.href = 'edit-mapa.html?map=' + _simMapToBase64();
 }
 </script>
-<script src="./kofi.js"></script>
 <script src="./footer.js"></script>
 <script src="./js/kbd-accessory.js"></script>
-<!-- Tour inicial: només la primera vegada que aquest dispositiu obre
-     el simulador directament (no en mode embed dins els capítols).
-     El propi initial-tour.html posa 'karel_tour_done_v1' i s'autodestrueix. -->
+<!-- Presentació inicial: només si en aquest dispositiu encara no s'ha vist
+     (tampoc des de la portada) i mai en mode embed dins els capítols.
+     presentacio-karel.html posa 'karel_tour_done_v1' i, en tancar-la,
+     elimina aquest iframe. És l'única presentació automàtica del lloc. -->
 <script>
   (function () {
     // No el disparem mai dins iframes del curs (?embed=1): allà el
     // simulador és una peça incrustada, el tour no té sentit.
     if (new URLSearchParams(location.search).get('embed') === '1') return;
-    if (localStorage.getItem('karel_tour_done_v1')) return;
+    try { if (localStorage.getItem('karel_tour_done_v1')) return; } catch (e) { return; }
     const f = document.createElement('iframe');
     f.id = 'tour-iframe';   // el tour s'autodestrueix buscant aquest id
     f.src = 'presentacio-karel.html';
