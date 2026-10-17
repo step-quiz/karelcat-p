@@ -1,6 +1,6 @@
-# karelcat2-p
+# karelcat-p
 
-Spin-off de [karelcat2](https://github.com/step-quiz2/karelcat2) per a:
+Spin-off de [karelcat](https://github.com/step-quiz/karelcat) per a:
 
 - alumnat de **Primària**, i
 - alumnat de **Secundària que fa menys de 2 anys que és a Catalunya** (aula d'acollida).
@@ -17,7 +17,7 @@ Un curs de 10 capítols + un epíleg («D'en Karel al Python») i 9 reptes, acce
 navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html).
 Cada capítol combina una explicació breu, exemples executables i un exercici.
 
-El **motor** és el de karelcat2: parser amb les regles de Python, verificador d'objectius,
+El **motor** és el de karelcat: parser amb les regles de Python, verificador d'objectius,
 botó «🎯 Objectiu», diferències marcades en vermell, pas a pas, codi desat per exercici i
 test automàtic. El **contingut** és propi del -p: textos simplificats, sense punts cardinals,
 reptes d'un sol món, i missatges d'error de lectura fàcil (`js/i18n-facil.js`).
@@ -26,7 +26,7 @@ reptes d'un sol món, i missatges d'error de lectura fàcil (`js/i18n-facil.js`)
 
 | Element | Estat |
 |---------|-------|
-| Motor (tokenizer + parser + intèrpret), igual que karelcat2 | ✅ Complet |
+| Motor (tokenizer + parser + intèrpret), igual que karelcat | ✅ Complet |
 | Missatges en català de lectura fàcil | ✅ Fet |
 | Capítol 1 — Coneix en Karel | ✅ Escrit |
 | Capítol 2 — Recollir i deixar | ✅ Escrit |
@@ -40,7 +40,7 @@ reptes d'un sol món, i missatges d'error de lectura fàcil (`js/i18n-facil.js`)
 | Capítol 10 — Codi net | ✅ Escrit |
 | Epíleg — D'en Karel al Python | ✅ Escrit |
 | Reptes 1–9 (un sol món cadascun) | ✅ Tots implementats |
-| Reptes 10–13 de karelcat2 (avançats) | ⛔ No inclosos |
+| Reptes 10–13 de karelcat (avançats) | ⛔ No inclosos |
 
 ## Sintaxi del llenguatge
 
@@ -79,10 +79,15 @@ Qualsevol programa Karel vàlid és Python vàlid (amb un shim que defineixi les
 
 ```
 index.html          — Pàgina d'inici
+presentacio-karel.html — Presentació inicial («És el primer cop?»), pròpia del -p
 simulador.html      — Simulador lliure (i simulador incrustat als capítols)
-style.css           — Estils del simulador
+style.css, nav.css  — Estils del simulador i de la navegació del curs
+footer.js           — Peu de pàgina comú del curs
 edit-mapa.html      — Editor visual de mapes (eina auxiliar)
-js/                 — Motor (igual que karelcat2) + i18n-facil.js (textos de lectura fàcil, només -p)
+editor-reptes.jsx   — Component React per editar els textos dels reptes (eina auxiliar;
+                      no el carrega cap pàgina)
+js/                 — Motor (igual que karelcat) + i18n-facil.js (textos de lectura fàcil, només -p).
+                      `vkbd.js` no el carrega cap pàgina (codi mort, també a karelcat).
 curs/
   index.html        — Índex del curs
   capitol.html      — Plantilla reutilitzable per a capítols
@@ -102,7 +107,7 @@ docs/
 ## Com continuar el desenvolupament
 
 Llegeix `docs/CURRENT-STATE.md` abans de fer cap canvi. Hi ha els criteris de lectura
-fàcil (secció 10) i com portar millores de karelcat2 (secció 17).
+fàcil (secció 10) i com portar millores de karelcat (secció 17).
 
 Després de qualsevol canvi, executa el test automàtic (només cal Node.js):
 
@@ -112,7 +117,7 @@ node tests/comprova-curs.js
 
 Comprova el motor i executa la solució de referència de cada exercici (el bloc
 `<solucio>` que hi ha en un comentari de cada pàgina) contra el seu món.
-A GitHub s'executa sol a cada push (pestanya «Actions»).
+(No hi ha cap GitHub Action que l'executi sol: cal llançar-lo a mà.)
 
 <!-- atribucio-centre:inici -->
 

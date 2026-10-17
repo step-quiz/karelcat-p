@@ -1,8 +1,8 @@
-# karelcat2-p — Estat actual del projecte
+# karelcat-p — Estat actual del projecte
 
-> **Spin-off de karelcat2.** El motor (`js/`, `simulador.html`, estils, test) és
-> el de karelcat2; el contingut del curs és propi, en català de lectura fàcil.
-> Per portar-hi millores futures de karelcat2, vegeu la secció 17.
+> **Spin-off de karelcat.** El motor (`js/`, `simulador.html`, estils, test) és
+> el de karelcat; el contingut del curs és propi, en català de lectura fàcil.
+> Per portar-hi millores futures de karelcat, vegeu la secció 17.
 >
 > **Font única de veritat.** Aquest document descriu l'estat real del projecte
 > en el moment de l'última actualització. Qualsevol sessió de treball que
@@ -15,7 +15,7 @@
 
 ## 1. Visió general
 
-**karelcat2-p** és un entorn interactiu per aprendre a programar en Python, adreçat a:
+**karelcat-p** és un entorn interactiu per aprendre a programar en Python, adreçat a:
 
 - alumnat de **Primària** (uns 9–11 anys), i
 - alumnat de **Secundària que fa menys de 2 anys que és a Catalunya** (aula d'acollida)
@@ -36,7 +36,7 @@ funcions d'en Karel).
 
 **Configuració d'idiomes:** codi en anglès (Python-compatible), interfície en català de lectura fàcil.
 
-**Diferències amb karelcat2:** 10 capítols + epíleg amb el text simplificat, 9 reptes
+**Diferències amb karelcat:** 10 capítols + epíleg amb el text simplificat, 9 reptes
 d'**un sol món** (sense els reptes avançats 10–13), enunciats simplificats (sense punts
 cardinals, sense pistes) i missatges de lectura fàcil.
 
@@ -273,7 +273,7 @@ apple-touch-icon.png — Icona de 180 px per a la pantalla d'inici d'iPhone/iPad
 js/constants.js     — Namespace K, SVG assets, DIRS, CMD_ACTIONS, COND_ACTIONS,
                       SPEED_DELAYS, DEFAULT_CSV, DEFAULT_CODE, escHtml/sanitizeHtml.
 js/i18n.js          — K.CODE_LANGS (vocabulari codi) + K.UI_LANGS (textos UI).
-                      Funcions K.t(key) i K.tf(key, vars). Idèntic a karelcat2.
+                      Funcions K.t(key) i K.tf(key, vars). Idèntic a karelcat.
 js/i18n-facil.js    — NOMÉS del -p. Substitueix textos de K.UI_LANGS.ca per
                       versions de lectura fàcil (vegeu la secció 10).
 js/state.js         — K.state (estat centralitzat) + K.lang (tokens del parser actiu).
@@ -320,7 +320,13 @@ curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/BRIEFING-REPTES.md — Estat detallat de cada repte (mapes, notes pedagògiques).
 
 tests/comprova-curs.js — Test automàtic de tot el curs (vegeu secció 16).
-.github/workflows/comprova-curs.yml — Executa el test a GitHub a cada push.
+                      (No hi ha cap `.github/workflows/`: el test s'executa a mà.)
+
+presentacio-karel.html — Presentació inicial (pròpia del -p).
+footer.js, nav.css  — Peu de pàgina i navegació comuns de les pàgines del curs.
+editor-reptes.jsx   — Component React auxiliar per editar textos dels reptes; no el
+                      carrega cap pàgina.
+js/vkbd.js          — Teclat virtual amb simple-keyboard. Codi mort: no el carrega cap pàgina.
 ```
 
 **Ordre de càrrega a `simulador.html`** (crític — les dependències globals K.* s'han de
@@ -520,7 +526,7 @@ immersió en català és part de l'objectiu (vegeu la secció 1).
 **`js/i18n-facil.js`** (fitxer propi del -p) es carrega just després de `js/i18n.js` i
 substitueix els textos de `K.UI_LANGS.ca` que l'alumne llegeix més sovint: missatges
 d'error, avisos, diferències amb l'objectiu i títols dels botons. Així, la resta de
-`js/` és idèntica a karelcat2.
+`js/` és idèntica a karelcat.
 
 Els textos de retroacció de sota de cada exercici i el glossari són a `curs/capitols.js`
 (i el glossari del simulador lliure, a `simulador.html`).
@@ -569,7 +575,7 @@ El codi només es desa a localStorage al simulador lliure (clau `karel-code-v3`)
 |---|-------|--------|
 | D.3 | Responsive mòbil | El mòbil no és prioritari (massa informació). Portàtil i tauleta sí: fet (vegeu secció 9). |
 
-Fetes (igual que a karelcat2): **D.1** (perla en mode clar: cada color del sprite té una
+Fetes (igual que a karelcat): **D.1** (perla en mode clar: cada color del sprite té una
 classe `pl-*` a `K.KAREL_ASSETS.PEARL` i `style.css` n'enfosqueix la vora, el cos i
 l'ombra quan `body.light`; el mode fosc no canvia) i **D.4** (icona de la pestanya,
 vegeu la secció 5).
@@ -589,7 +595,7 @@ recuperat, amb les seccions 3 i 4 i els exercicis en lectura fàcil).
 | E.7 | Càrrega CSV extern | Recuperar `?mapa=CSV` a la URL o input file. |
 | E.8 | Reptes predefinits al curs | Exposar els 9 reptes del curs via `?repte=N` a `index.html` (additiu a `reptes.js`). |
 
-Les tasques E.1–E.5 de karelcat2 (altres idiomes i selector d'idioma) **no s'apliquen al -p**:
+Les tasques E.1–E.5 de karelcat (altres idiomes i selector d'idioma) **no s'apliquen al -p**:
 és només en català (vegeu la secció 10).
 
 ---
@@ -671,18 +677,18 @@ navegador i comprova:
 3. **`curs/capitols.js`:** que `REPTES_DATA` apunti a fitxers que existeixen i que el
    nombre de mons (`mons`) coincideixi amb la pàgina.
 
-Acaba amb «✓ Tot correcte» o amb la llista d'errors (i codi de sortida 1). A GitHub,
-l'acció `.github/workflows/comprova-curs.yml` l'executa a cada push.
+Acaba amb «✓ Tot correcte» (ara, 175 comprovacions) o amb la llista d'errors (i codi de
+sortida 1). No hi ha cap acció de GitHub que l'executi: s'ha de llançar a mà.
 
 ---
 
 ---
 
-## 17. Com portar millores de karelcat2
+## 17. Com portar millores de karelcat
 
-El -p fa servir el mateix motor que karelcat2. Quan karelcat2 millori:
+El -p fa servir el mateix motor que karelcat. Quan karelcat millori:
 
-1. **Copiar tal qual** de karelcat2: `js/*.js` (sense esborrar `js/i18n-facil.js`),
+1. **Copiar tal qual** de karelcat: `js/*.js` (sense esborrar `js/i18n-facil.js`),
    `style.css`, `nav.css`, `footer.js`, `curs/progress.js`, `curs/curs.css`,
    `curs/capitol.html`, `favicon.svg`, `favicon.ico` i `apple-touch-icon.png`.
 2. **Copiar i tornar a aplicar els canvis del -p:**
@@ -694,16 +700,16 @@ El -p fa servir el mateix motor que karelcat2. Quan karelcat2 millori:
    - `tests/comprova-curs.js`: `'i18n-facil'` a la llista de fitxers i les expressions
      dels missatges d'error.
    - `index.html` i `curs/index.html`: els textos i els números (10 capítols, 9 reptes).
-   - `presentacio-karel.html`: **no copiar-la**, és pròpia del -p. Si karelcat2 hi millora
+   - `presentacio-karel.html`: **no copiar-la**, és pròpia del -p. Si karelcat hi millora
      la navegació (el `<script>` del final), portar només aquell canvi.
-3. **Missatges nous:** si karelcat2 afegeix claus a `K.UI_LANGS.ca`, afegir-ne la versió
+3. **Missatges nous:** si karelcat afegeix claus a `K.UI_LANGS.ca`, afegir-ne la versió
    fàcil a `js/i18n-facil.js`.
 4. **No copiar** les pàgines `curs/capitol-*.html` ni `curs/repte-*.html`: el contingut
-   és propi. Si karelcat2 canvia l'estructura d'aquestes pàgines, aplicar només aquell canvi.
+   és propi. Si karelcat canvia l'estructura d'aquestes pàgines, aplicar només aquell canvi.
 5. Executar `node tests/comprova-curs.js` i comprovar que surt «✓ Tot correcte».
 
 ---
 
 *Última actualització: perla més visible en mode clar (D.1) i icona de la pestanya del
-navegador a totes les pàgines (D.4), portades de karelcat2. Abans: capítol 10 «Codi net»
+navegador a totes les pàgines (D.4), portades de karelcat. Abans: capítol 10 «Codi net»
 recuperat (P.4), presentació inicial pròpia (P.1), capítol futur (P.2), repte 8 (P.3).*

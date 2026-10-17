@@ -1,4 +1,4 @@
-# BRIEFING-REPTES — karelcat2-p
+# BRIEFING-REPTES — karelcat-p
 
 > **Propòsit:** fitxa de cada un dels 9 reptes del -p, generada a partir de les pàgines
 > `curs/repte-N.html`. Si canvies un repte, actualitza'n la fitxa (o torna-la a generar).
@@ -13,14 +13,14 @@
   sense punts cardinals i sense pistes.
 - **Un sol món per repte** (`data-map` + `data-goal`). L'alumne veu l'objectiu amb el
   botó «🎯 Objectiu» i, si falla, les diferències en vermell.
-- **Format dels objectius** (verificador de karelcat2, `K.compareGoal`): es compara
+- **Format dels objectius** (verificador de karelcat, `K.compareGoal`): es compara
   també la casella de sota en Karel (`K>A` = acaba damunt d'una perla). Si l'objectiu
   no té cap `K`, no es mira on acaba en Karel. Vegeu `docs/CURRENT-STATE.md`, secció 4.
 - **Solucions de referència:** dins d'un comentari HTML al final de cada pàgina, entre
   `<solucio>` i `</solucio>`; mai a `data-code`.
 - **Progrés:** quan l'alumne supera el repte, la barra lateral hi posa ✓ (`REPTES_DATA`
   a `curs/capitols.js`, amb `mons: 1`).
-- **No inclosos:** els reptes avançats 10–13 de karelcat2.
+- **No inclosos:** els reptes avançats 10–13 de karelcat.
 
 ---
 
@@ -327,4 +327,4 @@ omple_fila()
 
 ---
 
-*Última actualització: reptes d'un sol món amb el motor de karelcat2; objectius adaptats al verificador nou (reptes 4, 6, 7 i 9) i solucions de referència verificades pel test automàtic.*
+*Última actualització: reptes d'un sol món amb el motor de karelcat; objectius adaptats al verificador nou (reptes 4, 6, 7 i 9) i solucions de referència verificades pel test automàtic.*
