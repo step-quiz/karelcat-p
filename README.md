@@ -87,7 +87,6 @@ edit-mapa.html      — Editor visual de mapes (eina auxiliar)
 editor-reptes.jsx   — Component React per editar els textos dels reptes (eina auxiliar;
                       no el carrega cap pàgina)
 js/                 — Motor (igual que karelcat) + i18n-facil.js (textos de lectura fàcil, només -p).
-                      `vkbd.js` no el carrega cap pàgina (codi mort, també a karelcat).
 curs/
   index.html        — Índex del curs
   capitol.html      — Plantilla reutilitzable per a capítols

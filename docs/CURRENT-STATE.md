@@ -326,7 +326,6 @@ presentacio-karel.html — Presentació inicial (pròpia del -p).
 footer.js, nav.css  — Peu de pàgina i navegació comuns de les pàgines del curs.
 editor-reptes.jsx   — Component React auxiliar per editar textos dels reptes; no el
                       carrega cap pàgina.
-js/vkbd.js          — Teclat virtual amb simple-keyboard. Codi mort: no el carrega cap pàgina.
 ```
 
 **Ordre de càrrega a `simulador.html`** (crític — les dependències globals K.* s'han de
