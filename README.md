@@ -103,6 +103,14 @@ docs/
   CURRENT-STATE.md  — Estat actual complet del projecte (llegir aquí primer)
 ```
 
+## Fitxers comuns
+
+`LICENSE`, `LLICENCIA.md`, `footer.js` i `js/kbd-accessory.js` són **fitxers comuns** dels cursos de la família: l'original és al repositori
+[step-quiz-commons](https://github.com/step-quiz/step-quiz-commons), on també hi ha què té de
+diferent aquest web (`comuns.json`). El workflow `.github/workflows/comuns.yml` els posa al dia
+cada dia (o a mà: Actions → «Fitxers comuns» → Run workflow). **No els editis aquí**: el canvi es
+perdria l'endemà. Canvia'ls a step-quiz-commons.
+
 ## Com continuar el desenvolupament
 
 Llegeix `docs/CURRENT-STATE.md` abans de fer cap canvi. Hi ha els criteris de lectura

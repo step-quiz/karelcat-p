@@ -901,43 +901,6 @@ body.embed { --ed-font-size: 0.875rem; }
 }
 
 
-/* ════════════════════════════════════════════════════════
-   BARRA DE TECLES TÀCTIL (js/kbd-accessory.js)
-   Sota l'editor, només en pantalles tàctils. Es desplaça en horitzontal.
-   ════════════════════════════════════════════════════════ */
-.kbd-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 8px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.kbd-bar::-webkit-scrollbar { display: none; }
-.kbd-bar__btn {
-  flex: 0 0 auto;
-  min-width: 40px;
-  height: 40px;
-  padding: 0 10px;
-  font-family: var(--mono);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
-}
-.kbd-bar__btn--word { font-size: 14px; font-weight: 400; }
-.kbd-bar__btn:active { background: var(--accent-dim); border-color: var(--accent); }
-.kbd-bar__sep { flex: 0 0 1px; align-self: stretch; margin: 4px 2px; background: var(--border); }
-
 /* ── Mode readonly: fons gris + toast "No editable" ── */
 body.is-readonly .code-col {
   border-left: 3px solid transparent;

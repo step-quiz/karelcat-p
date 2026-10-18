@@ -298,7 +298,8 @@ js/editor.js        — Ressaltat sintàctic, numeració de línies, marca d'err
                       automàtica en prémer Enter (+4 espais després de ':'), Tab i
                       Maj+Tab per indentar/desindentar, retrocés que esborra un nivell.
                       K.editText manté l'historial de desfer (Ctrl+Z).
-js/kbd-accessory.js — Barra de tecles tàctil a sota de l'editor (només pantalles tàctils):
+js/kbd-accessory.js — Barra de tecles tàctil a sota de l'editor (només pantalles tàctils; fitxer comú,
+                      ve de step-quiz-commons, i les tecles són a comuns.json d'allà):
                       ⇥ ⇤ ( ) : _ # i les instruccions i paraules clau més habituals.
 js/ui.js            — K.log, K.logError, K.setStateUI, K.updateUI,
                       K.initSpeedSlider, K.handleRunClick, K.toggleTheme, K.initTheme.
@@ -687,9 +688,11 @@ sortida 1). A GitHub l'executa `.github/workflows/tests.yml` a cada canvi a `mai
 
 El -p fa servir el mateix motor que karelcat. Quan karelcat millori:
 
-1. **Copiar tal qual** de karelcat: `js/*.js` (sense esborrar `js/i18n-facil.js`),
-   `style.css`, `nav.css`, `footer.js`, `curs/progress.js`, `curs/curs.css`,
+1. **Copiar tal qual** de karelcat: `js/*.js` (sense esborrar `js/i18n-facil.js` i menys
+   `js/kbd-accessory.js`), `style.css`, `nav.css`, `curs/progress.js`, `curs/curs.css`,
    `curs/capitol.html`, `favicon.svg`, `favicon.ico` i `apple-touch-icon.png`.
+   `footer.js` i `js/kbd-accessory.js` no cal copiar-los: són fitxers comuns i arriben sols
+   de step-quiz-commons (README, «Fitxers comuns»).
 2. **Copiar i tornar a aplicar els canvis del -p:**
    - `simulador.html`: la línia `<script src="js/i18n-facil.js">` després de `js/i18n.js`,
      el codi inicial (`if front_is_clear():` / `move()`) i el glossari de lectura fàcil.
