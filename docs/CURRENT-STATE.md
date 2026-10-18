@@ -320,7 +320,7 @@ curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/BRIEFING-REPTES.md — Estat detallat de cada repte (mapes, notes pedagògiques).
 
 tests/comprova-curs.js — Test automàtic de tot el curs (vegeu secció 16).
-                      (No hi ha cap `.github/workflows/`: el test s'executa a mà.)
+                      (L'únic workflow és `unzip-upload.yml`, el dels ZIP: el test s'executa a mà.)
 
 presentacio-karel.html — Presentació inicial (pròpia del -p).
 footer.js, nav.css  — Peu de pàgina i navegació comuns de les pàgines del curs.
