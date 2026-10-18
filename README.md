@@ -116,7 +116,7 @@ node tests/comprova-curs.js
 
 Comprova el motor i executa la solució de referència de cada exercici (el bloc
 `<solucio>` que hi ha en un comentari de cada pàgina) contra el seu món.
-(No hi ha cap GitHub Action que l'executi sol: cal llançar-lo a mà.)
+A GitHub s'executa sol a cada canvi a `main` i a cada pull request (`.github/workflows/tests.yml`, pestanya «Actions»), i també després de cada ZIP pujat a `_uploads/`.
 
 <!-- atribucio-centre:inici -->
 

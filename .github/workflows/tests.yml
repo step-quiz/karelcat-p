@@ -1,0 +1,30 @@
+# Test del curs sencer: el motor i la solució de referència de cada exercici
+# contra tots els seus mons (tests/comprova-curs.js).
+# S'executa a cada canvi a main, a cada pull request i a mà (Actions → Tests →
+# Run workflow). No escriu res al repositori.
+# Els commits del bot dels ZIP no el disparen per si sols (regla de GitHub):
+# per això unzip-upload.yml el llança després de desar.
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proves:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Test del curs
+        run: node tests/comprova-curs.js
