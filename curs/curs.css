@@ -29,7 +29,7 @@ body.curs-light {
   --surface: #f5f5f5;
   --border:  #d0d0d0;
   --text:    #1a1a1a;
-  --muted:   #6b7280;
+  --muted:   #4b5563;
   --accent:  #2563eb;
 }
 
@@ -314,7 +314,7 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
   line-height: 1.5;
   flex-shrink: 0;
 }
-.sidebar-item.active .sidebar-num { color: var(--accent-hi); }
+.sidebar-item.active .sidebar-num { color: #960e72; }  /* --accent-hi fa 4,2:1 sobre el fons rosa */
 
 .sidebar-titol {
   display: block;
@@ -754,7 +754,7 @@ body.curs-light .simulador-feedback.fb-error {
   font-family: 'Space Mono', monospace;
   font-size: 0.78rem;
   letter-spacing: 0.8px;
-  color: #6b7280;
+  color: #4b5563;
   background: none;
   border: 1px solid #d0d0d0;
   border-radius: 4px;
@@ -810,7 +810,7 @@ body.curs-light .simulador-feedback.fb-error {
 .glossari-close {
   background: none;
   border: 1px solid #d0d0d0;
-  color: #6b7280;
+  color: #4b5563;
   border-radius: 4px;
   width: 28px;
   height: 28px;
@@ -843,7 +843,7 @@ body.curs-light .simulador-feedback.fb-error {
 .glossari-hint {
   font-family: 'Space Mono', monospace;
   font-size: 0.78rem;
-  color: #6b7280;
+  color: #4b5563;
   margin: 0 0 8px;
   line-height: 1.5;
 }
@@ -864,7 +864,7 @@ body.curs-light .simulador-feedback.fb-error {
   color: #059669;
   white-space: nowrap;
 }
-.glossari-grid span { color: #6b7280; }
+.glossari-grid span { color: #4b5563; }
 
 .glossari-example {
   font-family: 'Space Mono', monospace;

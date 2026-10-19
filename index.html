@@ -213,6 +213,10 @@
       color: #fff;
     }
     .intro-link.is-new:hover { color: #fff; filter: brightness(1.08); }
+    /* En fosc, l'accent és més clar i el blanc hi feia 4,2:1 */
+    @media (prefers-color-scheme: dark) {
+      .intro-link.is-new { background: #c4168f; border-color: #c4168f; }
+    }
 
     /* ── GRID DE TARGETES ─────────────────────────── */
     .grid {

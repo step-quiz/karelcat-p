@@ -36,7 +36,7 @@ body.light {
   --surface:    #f5f5f5;            /* superfície gris molt clar */
   --border:     #d0d0d0;            /* vora gris neutre */
   --text:       #1a1a1a;            /* text quasi negre */
-  --muted:      #6b7280;            /* gris mitjà neutre */
+  --muted:      #4b5563;            /* gris mitjà neutre */
   --accent:     #2563eb;            /* blau Stanford-like */
   --accent-dim: rgba(37,99,235,0.08);
   --error:      #dc2626;
@@ -992,3 +992,11 @@ body.is-readonly #line-numbers {
   background: var(--error-dim);
 }
 body.light .cell.cell-diff { background: #fee2e2 !important; }
+
+/* Focus visible a l'editor: el textarea és transparent i sense vora, i qui hi
+   arriba amb el tabulador no veia on era el focus (auditoria d'accessibilitat,
+   2026-10). */
+#code-editor:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
